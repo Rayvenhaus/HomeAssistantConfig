@@ -50,8 +50,8 @@ _Stats as at 05:00, unknown_
 | HA Version | 2025.3.3 |
 | No. Integrations | 220 |
 | No. Custom Integrations | 101 |
-| No. Entities | 6206 |
-| No. Sensors | 4254 |
+| No. Entities | 6201 |
+| No. Sensors | 4264 |
 | No. Automations | 159 |
 
 <details>
@@ -71,7 +71,7 @@ Covers | 0
 Dates | 0
 Date/times | 0
 Device trackers | 54
-Devices | 606
+Devices | 592
 Fans | 3
 Humidifiers | 0
 Images | 7
@@ -83,7 +83,7 @@ Input selects | 3
 Input texts | 3
 Lights | 13
 Locks | 0
-Media players | 35
+Media players | 20
 Numbers | 52
 Persistent notifications | 4
 Persons | 4
@@ -91,7 +91,7 @@ Remotes | 7
 Scenes | 2
 Scripts | 85
 Selects | 57
-Sensors | 4254
+Sensors | 4264
 Sirens | 0
 Speech-to-text | 1
 Suns | 1
@@ -115,7 +115,7 @@ Zones | 4
 Here is a list of all the integrations I use, including any Custom Components (which are also listed below)
 
 
-<details><summary>655 Integrations</summary>
+<details><summary>656 Integrations</summary>
 
 | Name |
 | --- |
@@ -750,6 +750,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [worlds_air_quality_index](https://www.home-assistant.io/components/worlds_air_quality_index) |
 | [worlds_air_quality_index.sensor](https://www.home-assistant.io/components/worlds_air_quality_index.sensor) |
 | [wud_getupdates](https://www.home-assistant.io/components/wud_getupdates) |
+| [wud_getupdates.sensor](https://www.home-assistant.io/components/wud_getupdates.sensor) |
 | [yahoofinance](https://www.home-assistant.io/components/yahoofinance) |
 | [yahoofinance.sensor](https://www.home-assistant.io/components/yahoofinance.sensor) |
 | [youtube](https://www.home-assistant.io/components/youtube) |
@@ -822,7 +823,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Illuminance](https://github.com/pnbruckner/ha-illuminance) |  [v5.6.1] | Home Assistant Illuminance Sensor |[@pnbruckner](https://github.com/pnbruckner).|
 | [Indoor Air Quality Uk Index](https://github.com/Limych/ha-iaquk) |  [v1.6.10] | Indoor Air Quality Sensor Component for Home Assistant |[@Limych](https://github.com/Limych).|
 | [Iphone Device Tracker](https://github.com/mudape/iphonedetect) |  [v2.4.1] | A custom component for Home Assistant to detect iPhones connected to local LAN, even if the phone is in deep sleep. |[@mudape](https://github.com/mudape).|
-| [Llm Vision](https://github.com/valentinfrlch/ha-llmvision) |  [v1.4.0] | Let Home Assistant see! |[@valentinfrlch](https://github.com/valentinfrlch).|
+| [Llm Vision](https://github.com/valentinfrlch/ha-llmvision) |  [v1.4.1] | Let Home Assistant see! |[@valentinfrlch](https://github.com/valentinfrlch).|
 | [Lovelace Gen](https://github.com/thomasloven/hass-lovelace_gen) |  [v0.1.2] | 🔹 Improve the lovelace yaml parser for Home Assistant ||
 | [Lunar Phase](https://github.com/ngocjohn/lunar-phase) |  [v0.2.2] | 🌘  Lunar Phase Integration for Home Assistant |[@ngocjohn](https://github.com/ngocjohn).|
 | [Material Symbols](https://github.com/beecho01/material-symbols) |  [v2025.03.05] | Material Symbols for Home Assistant is a collection of 13,941 Google Material Symbols for use within Home Assistant. It uses the icon-set produced and maintained by iconify. |[@beecho01](https://github.com/beecho01).|
@@ -887,7 +888,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Bom Radar Card](https://github.com/Makin-Things/bom-radar-card) |  [v3.0.2] | A rain radar card using the new tiled images from the Australian BOM |
 | [Bubble Card](https://github.com/Clooos/Bubble-Card) |  [v2.5.0-beta.7] | Bubble Card is a minimalist card collection for Home Assistant with a nice pop-up touch. |
 | [Button Card](https://github.com/custom-cards/button-card) |  [v4.1.2] | ❇️ Lovelace button-card for home assistant |
-| [Calendar Card Pro](https://github.com/alexpfau/calendar-card-pro) |  [v1.0.2] | 📅 A sleek and highly customizable calendar card for Home Assistant, designed for performance and a clean, modern look. |
+| [Calendar Card Pro](https://github.com/alexpfau/calendar-card-pro) |  [v1.1.0] | 📅 A sleek and highly customizable calendar card for Home Assistant, designed for performance and a clean, modern look. |
 | [Card Mod](https://github.com/thomasloven/lovelace-card-mod) |  [v3.4.4] | 🔹 Add CSS styles to (almost) any lovelace card |
 | [Card Tools](https://github.com/thomasloven/lovelace-card-tools) |  [v11] | 🔹A collection of tools for other lovelace plugins to use |
 | [Clock Weather Card](https://github.com/pkissling/clock-weather-card) |  [v2.8.10] | A Home Assistant Card indicating today's date/time, along with an iOS inspired weather forecast for the next days with animated icons |
