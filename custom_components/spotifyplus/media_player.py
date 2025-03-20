@@ -126,6 +126,7 @@ ATTR_SPOTIFYPLUS_DEVICE_IS_BRAND_SONOS = "sp_device_is_brand_sonos"
 ATTR_SPOTIFYPLUS_DEVICE_IS_CHROMECAST = "sp_device_is_chromecast"
 ATTR_SPOTIFYPLUS_DEVICE_MUSIC_SOURCE = "sp_device_music_source"
 ATTR_SPOTIFYPLUS_ITEM_TYPE = "sp_item_type"
+ATTR_SPOTIFYPLUS_PLAY_TIME_REMAINING_EST = "sp_play_time_remaining_est"
 ATTR_SPOTIFYPLUS_PLAYING_TYPE = "sp_playing_type"
 ATTR_SPOTIFYPLUS_PLAYLIST_NAME = "sp_playlist_name"
 ATTR_SPOTIFYPLUS_PLAYLIST_URI = "sp_playlist_uri"
@@ -142,7 +143,7 @@ ATTR_VOLUME_STEP = "volume_step"
 
 ATTRVALUE_NO_DEVICE = "no_device"
 ATTRVALUE_UNKNOWN = "unknown"
-
+ATTRVALUE_NOT_SET = "notset"
 
 
 # annotate the `spotify_exception_handler` callable.
@@ -324,6 +325,7 @@ class SpotifyMediaPlayer(MediaPlayerEntity):
             self._currentScanInterval:int = 0
             self._commandScanInterval:int = 0
             self._lastKnownTimeRemainingSeconds:int = 0
+            self._playTimeRemainingEst:int = 0
             self._isInCommandEvent:bool = False
             self._isInUpdateEvent:bool = False
             self._source_at_poweroff:str = None
@@ -454,6 +456,7 @@ class SpotifyMediaPlayer(MediaPlayerEntity):
         attributes[ATTR_SPOTIFYPLUS_DEVICE_MUSIC_SOURCE] = ATTRVALUE_UNKNOWN
         attributes[ATTR_SPOTIFYPLUS_DEVICE_NAME] = ATTRVALUE_NO_DEVICE
         attributes[ATTR_SPOTIFYPLUS_ITEM_TYPE] = ATTRVALUE_UNKNOWN
+        attributes[ATTR_SPOTIFYPLUS_PLAY_TIME_REMAINING_EST] = None
         attributes[ATTR_SPOTIFYPLUS_PLAYING_TYPE] = ATTRVALUE_UNKNOWN
         attributes[ATTR_SPOTIFYPLUS_TRACK_IS_EXPLICIT] = False
         attributes[ATTR_SPOTIFYPLUS_USER_COUNTRY] = ATTRVALUE_UNKNOWN
@@ -486,6 +489,12 @@ class SpotifyMediaPlayer(MediaPlayerEntity):
                 track:Track = self._playerState.Item
                 if track.Explicit:
                     attributes[ATTR_SPOTIFYPLUS_TRACK_IS_EXPLICIT] = track.Explicit
+                if (self._attr_state == MediaPlayerState.PLAYING):
+                    if (self._playTimeRemainingEst <= self._spotifyScanInterval):
+                        attributes[ATTR_SPOTIFYPLUS_PLAY_TIME_REMAINING_EST] = self._playTimeRemainingEst
+                        _logsi.LogVerbose("'%s': Estimated play time remaining is %s seconds; in last interval window" % (self.name, self._playTimeRemainingEst))
+                    else:
+                        attributes[ATTR_SPOTIFYPLUS_PLAY_TIME_REMAINING_EST] = self._lastKnownTimeRemainingSeconds
             if (self._playerState.CurrentlyPlayingType is not None):
                 attributes[ATTR_SPOTIFYPLUS_PLAYING_TYPE] = self._playerState.CurrentlyPlayingType
 
@@ -672,6 +681,12 @@ class SpotifyMediaPlayer(MediaPlayerEntity):
     def volume_level(self) -> float | None:
         """ Volume level of the media player (0.0 to 1.0). """
         return self._attr_volume_level
+
+
+    @property
+    def volume_step(self) -> float:
+        """Return the step to be used by the volume_up and volume_down services."""
+        return self._attr_volume_step
 
 
     @property
@@ -1117,7 +1132,7 @@ class SpotifyMediaPlayer(MediaPlayerEntity):
             # trace.
             _logsi.EnterMethod(SILevel.Debug)
 
-            _logsi.LogVerbose("'%s': Scan interval %d check - commandScanInterval=%d, currentScanInterval=%d, lastKnownTimeRemainingSeconds=%d, state=%s" % (self.name, self._spotifyScanInterval, self._commandScanInterval, self._currentScanInterval, self._lastKnownTimeRemainingSeconds, str(self._attr_state)))
+            _logsi.LogVerbose("'%s': Scan interval %d check - commandScanInterval=%d, currentScanInterval=%d, lastKnownTimeRemainingSeconds=%d, playTimeRemainingEst=%d, state=%s" % (self.name, self._spotifyScanInterval, self._commandScanInterval, self._currentScanInterval, self._lastKnownTimeRemainingSeconds, self._playTimeRemainingEst, str(self._attr_state)))
             
             # have we reached a scan interval?
             if (self._currentScanInterval == self._spotifyScanInterval) \
@@ -1132,7 +1147,7 @@ class SpotifyMediaPlayer(MediaPlayerEntity):
                 and (self._lastKnownTimeRemainingSeconds < self._currentScanInterval) \
                 and (self._attr_state == MediaPlayerState.PLAYING):
                     self._currentScanInterval = self._lastKnownTimeRemainingSeconds
-                    _logsi.LogVerbose("'%s': Resetting current scan interval to last known time remaining value - currentScanInterval=%d, lastKnownTimeRemainingSeconds=%d, state=%s" % (self.name, self._currentScanInterval, self._lastKnownTimeRemainingSeconds, str(self._attr_state)))
+                    _logsi.LogVerbose("'%s': Resetting current scan interval to last known time remaining value - currentScanInterval=%d, lastKnownTimeRemainingSeconds=%d, playTimeRemainingEst=%d, state=%s" % (self.name, self._currentScanInterval, self._lastKnownTimeRemainingSeconds, self._playTimeRemainingEst, str(self._attr_state)))
 
                 # do we need to query Spotify for player state?
                 if (self._currentScanInterval == 0):
@@ -1153,9 +1168,16 @@ class SpotifyMediaPlayer(MediaPlayerEntity):
                     # decrement the current scan interval count.
                     self._currentScanInterval = self._currentScanInterval - 1
 
-                    # add scan interval time value to last media played position since it's not a real-time value.
+                    # are we playing content?
                     if (self._attr_state == MediaPlayerState.PLAYING):
+
+                        # add scan interval time value to last media played position since it's not a real-time value.
                         self._lastMediaPlayedPosition = (self._lastMediaPlayedPosition + SCAN_INTERVAL.seconds)
+                        
+                        # update estimated play time remaining.
+                        self._playTimeRemainingEst = self._playTimeRemainingEst - 1
+
+                    # bypass HA state update.
                     return
 
             # # TEST TODO - force token expire!!!
@@ -1185,17 +1207,6 @@ class SpotifyMediaPlayer(MediaPlayerEntity):
             
             # update the scan interval for next time.
             self._currentScanInterval = self._spotifyScanInterval
-
-            # calculate the time (in seconds) remaining on the playing track.
-            if self._playerState is not None:
-                if self._playerState.Item is not None:
-                    track:Track = self._playerState.Item
-                    self._lastKnownTimeRemainingSeconds = track.DurationMS - self._playerState.ProgressMS
-                    if self._lastKnownTimeRemainingSeconds > 1000:
-                        self._lastKnownTimeRemainingSeconds = int(self._lastKnownTimeRemainingSeconds / 1000)  # convert MS to Seconds
-                    else:
-                        self._lastKnownTimeRemainingSeconds = 0
-                    _logsi.LogVerbose("'%s': playerState track ProgressMS=%s, DurationMS=%d, lastKnownTimeRemainingSeconds=%d" % (self.name, self._playerState.ProgressMS, track.DurationMS, self._lastKnownTimeRemainingSeconds))
 
             # did the now playing context change?
             context:Context = self._playerState.Context
@@ -1426,6 +1437,12 @@ class SpotifyMediaPlayer(MediaPlayerEntity):
                 self._attr_media_position_updated_at = utcnow()
                 self._lastMediaPlayedPosition = self._attr_media_position
         
+            # calculate the time (in seconds) remaining on the playing track.
+            if (self._attr_media_position is not None) and (self._attr_media_duration):
+                self._lastKnownTimeRemainingSeconds = int(self._attr_media_duration - self._attr_media_position)
+                self._playTimeRemainingEst = self._lastKnownTimeRemainingSeconds
+                _logsi.LogVerbose("'%s': Estimated time remaining - track DurationMS=%d, Position=%s, Remaining=%d" % (self.name, int(self._attr_media_duration), int(self._attr_media_position), self._playTimeRemainingEst))
+
             # update repeat related attributes.
             if playerPlayState.RepeatState is not None:
                 if playerPlayState.RepeatState == 'context':
@@ -8522,7 +8539,7 @@ class SpotifyMediaPlayer(MediaPlayerEntity):
 
     def service_volume_set_step(
             self, 
-            level:float=0.1,
+            level:float=0.10,
             ) -> None:
         """
         Set level used for volume step services.
@@ -8530,7 +8547,10 @@ class SpotifyMediaPlayer(MediaPlayerEntity):
         Args:
             level (float):
                 Level percentage to adjust the volume by.
-                Range is 0.1 to 1.0; Default is 0.1.
+                Range is 0.01 to 1.0; Default is 0.10.
+
+        A system log warning is issued if level is less than 0.01 or greater than 1.0, 
+        and the level is defaulted to 0.10.
         """
         apiMethodName:str = 'service_volume_set_step'
         apiMethodParms:SIMethodParmListContext = None
@@ -8543,18 +8563,18 @@ class SpotifyMediaPlayer(MediaPlayerEntity):
             _logsi.LogMethodParmList(SILevel.Verbose, "Volume Set Step Service", apiMethodParms)
             
             # validations.
-            stepValue:float = 0.1
+            stepValue:float = 0.10
             if (isinstance(level, int)):
                 level = float(level)
             if (not isinstance(level, float)):
-                level = 0.1
+                level = 0.10
             if (isinstance(level, float)):
                 stepValue = level
 
-            # ensure range is between 0.1 and 1.0.
-            if (stepValue < 0.1) or (stepValue > 1.0):
-                _logsi.LogWarning("Volume Step level was not in the range of 0.1 to 1.0; defaulting to 0.1")
-                stepValue = 0.1
+            # ensure range is between 0.01 and 1.0.
+            if (stepValue < 0.01) or (stepValue > 1.0):
+                _logsi.LogWarning(f'Volume Step level \"{stepValue:.3f}\" was not in the range of 0.01 to 1.0; defaulting to 0.10')
+                stepValue = 0.10
 
             # update ha state.
             self._attr_volume_step = stepValue
