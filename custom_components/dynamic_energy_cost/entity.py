@@ -34,12 +34,12 @@ class BaseUtilitySensor(SensorEntity):
 
         if self._interval == HOURLY:
             ## Only activate for testing purpose:
-            #return current_time + timedelta(seconds=30)
+            # return current_time + timedelta(seconds=30)
 
-            return current_time.replace(
-                minute=0, second=0, microsecond=0
-            ) + timedelta(hours=1)
-            
+            return current_time.replace(minute=0, second=0, microsecond=0) + timedelta(
+                hours=1
+            )
+
         if self._interval == DAILY:
             ## Only activate for testing purpose:
             # return current_time + timedelta(seconds=30)
@@ -106,12 +106,23 @@ class BaseUtilitySensor(SensorEntity):
         """Reset the energy cost and cumulative energy kWh."""
         self._state = Decimal(0) if type(self._state) is Decimal else 0
 
-        if hasattr(self, "_cumulative_energy_kwh"):
-            self._cumulative_energy_kwh = 0  # pylint: disable=attribute-defined-outside-init
+        if hasattr(self, "_cumulative_energy"):
+            self._cumulative_energy = (
+                0  # pylint: disable=attribute-defined-outside-init
+            )
+        if hasattr(self, "_cumulative_cost"):
+            self._cumulative_cost = 0  # pylint: disable=attribute-defined-outside-init
 
         self._last_update = now()
         self.async_write_ha_state()
         _LOGGER.debug("Meter reset for %s", self._name)
+
+    @callback
+    def async_calibrate(self, value):
+        """Calibrate the state with a given value."""
+        _LOGGER.debug("Calibrate %s = %s type(%s)", self._name, value, type(value))
+        self._state = float(Decimal(str(value)))
+        self.async_write_ha_state()
 
     async def async_will_remove_from_hass(self):
         """Remove the reset event from the schedule."""
