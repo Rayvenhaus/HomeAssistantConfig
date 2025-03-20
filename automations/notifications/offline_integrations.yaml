@@ -9,7 +9,7 @@ condition:
   - condition: template
     value_template: >
       {{ expand('group.connectivity_monitors')
-          | rejectattr('entity_id', 'in', ['sensor.ha_connected_integration_offline_integrations'])
+          | rejectattr('entity_id', 'in', ['binary_sensor.ha_connected_integration_offline_integrations'])
           | selectattr('state', 'eq', 'off')
           | list
           | count > 0 }}
