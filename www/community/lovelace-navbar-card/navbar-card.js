@@ -1542,7 +1542,7 @@ var NODE_MODE4 = false;
 var global4 = NODE_MODE4 ? globalThis : window;
 var slotAssignedElements = ((_a4 = global4.HTMLSlotElement) === null || _a4 === undefined ? undefined : _a4.prototype.assignedElements) != null ? (slot, opts) => slot.assignedElements(opts) : (slot, opts) => slot.assignedNodes(opts).filter((node) => node.nodeType === Node.ELEMENT_NODE);
 // package.json
-var version = "0.3.0";
+var version = "0.4.0";
 
 // node_modules/custom-card-helpers/dist/index.m.js
 var t;
@@ -1606,6 +1606,15 @@ var processTemplate = (hass, template) => {
     console.warn(`NavbarCard: Error evaluating template: ${e}`);
     return template;
   }
+};
+var fireDOMEvent = (node, type, options, detail) => {
+  const event = new Event(type, options ?? {});
+  event.detail = detail;
+  node.dispatchEvent(event);
+  return event;
+};
+var hapticFeedback = (hapticType = "selection") => {
+  return fireDOMEvent(window, "haptic", undefined, hapticType);
 };
 
 // src/dom-utils.ts
@@ -1943,6 +1952,8 @@ var PROPS_TO_FORCE_UPDATE = [
 var DEFAULT_DESKTOP_POSITION = "bottom" /* bottom */;
 
 class NavbarCard extends LitElement {
+  holdTimeoutId = null;
+  holdTriggered = false;
   connectedCallback() {
     super.connectedCallback();
     this._location = window.location.pathname;
@@ -2042,7 +2053,10 @@ class NavbarCard extends LitElement {
     return html`
       <div
         class="route ${isActive ? "active" : ""}"
-        @click=${(e) => this._handleClick(e, route)}>
+        @pointerdown=${(e) => this._handlePointerDown(e, route)}
+        @pointermove=${(e) => this._handlePointerMove(e, route)}
+        @pointerup=${(e) => this._handlePointerUp(e, route)}
+        @pointercancel=${(e) => this._handlePointerMove(e, route)}>
         ${showBadge ? html`<div
               class="badge ${isActive ? "active" : ""}"
               style="background-color: ${route.badge?.color || "red"};"></div>` : html``}
@@ -2176,21 +2190,55 @@ class NavbarCard extends LitElement {
       }
     });
   };
+  _handlePointerDown = (e, route) => {
+    if (route.hold_action) {
+      this.holdTriggered = false;
+      this.holdTimeoutId = window.setTimeout(() => {
+        hapticFeedback();
+        this.holdTriggered = true;
+      }, 500);
+    }
+  };
+  _handlePointerMove = (e, route) => {
+    if (this.holdTimeoutId !== null) {
+      clearTimeout(this.holdTimeoutId);
+      this.holdTimeoutId = null;
+    }
+  };
+  _handlePointerUp = (e, route) => {
+    if (this.holdTimeoutId !== null) {
+      clearTimeout(this.holdTimeoutId);
+      this.holdTimeoutId = null;
+    }
+    if (this.holdTriggered && route.hold_action) {
+      fireDOMEvent(this, "hass-action", { bubbles: true, composed: true }, {
+        action: "hold",
+        config: {
+          hold_action: route.hold_action
+        }
+      });
+      this.holdTriggered = false;
+    } else {
+      this._handleClick(e, route);
+    }
+  };
   _handleClick = (e, route, isPopup = false) => {
     e.preventDefault();
     e.stopPropagation();
     if (!isPopup && route.submenu) {
+      hapticFeedback();
       const target = e.currentTarget;
-      this._openPopup(route.submenu, target);
+      setTimeout(() => {
+        this._openPopup(route.submenu, target);
+      }, 10);
     } else if (route.tap_action != null) {
-      const event = new Event("hass-action", { bubbles: true, composed: true });
-      event.detail = {
+      hapticFeedback();
+      fireDOMEvent(this, "hass-action", { bubbles: true, composed: true }, {
         action: "tap",
         config: {
           tap_action: route.tap_action
         }
-      };
-      this.dispatchEvent(event);
+      });
       this._closePopup();
     } else {
       de(this, route.url);
