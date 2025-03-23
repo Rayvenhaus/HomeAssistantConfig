@@ -50,8 +50,8 @@ _Stats as at 05:00, unknown_
 | HA Version | 2025.3.4 |
 | No. Integrations | 222 |
 | No. Custom Integrations | 102 |
-| No. Entities | 6079 |
-| No. Sensors | 4000 |
+| No. Entities | 6092 |
+| No. Sensors | 4015 |
 | No. Automations | 159 |
 
 <details>
@@ -83,19 +83,19 @@ Input selects | 3
 Input texts | 3
 Lights | 13
 Locks | 0
-Media players | 18
+Media players | 20
 Numbers | 52
-Persistent notifications | 4
+Persistent notifications | 3
 Persons | 4
 Remotes | 7
 Scenes | 2
 Scripts | 85
 Selects | 57
-Sensors | 4000
+Sensors | 4015
 Sirens | 0
 Speech-to-text | 1
 Suns | 1
-Switches | 244
+Switches | 242
 Texts | 2
 Times | 0
 Text-to-speech | 1
@@ -115,7 +115,7 @@ Zones | 4
 Here is a list of all the integrations I use, including any Custom Components (which are also listed below)
 
 
-<details><summary>685 Integrations</summary>
+<details><summary>684 Integrations</summary>
 
 | Name |
 | --- |
@@ -204,7 +204,6 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [cloudflare_speed_test](https://www.home-assistant.io/components/cloudflare_speed_test) |
 | [cloudflare_speed_test.sensor](https://www.home-assistant.io/components/cloudflare_speed_test.sensor) |
 | [cloudflare_tunnel_monitor](https://www.home-assistant.io/components/cloudflare_tunnel_monitor) |
-| [cloudflare_tunnel_monitor.sensor](https://www.home-assistant.io/components/cloudflare_tunnel_monitor.sensor) |
 | [co2signal](https://www.home-assistant.io/components/co2signal) |
 | [co2signal.sensor](https://www.home-assistant.io/components/co2signal.sensor) |
 | [command_line](https://www.home-assistant.io/components/command_line) |
@@ -936,7 +935,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Flex Table   Highly Customizable, Data Visualization](https://github.com/custom-cards/flex-table-card) |  [v0.7.8] | Highly Flexible Lovelace Card - arbitrary contents/columns/rows, regex matched, perfect to show appdaemon created content and anything breaking out of the entity_id + attributes concept |
 | [Flightradar24 Card](https://github.com/Springvar/home-assistant-flightradar24-card) |  [v0.0.11] | Custom card to use with Flightradar24 integration for Home Assistant |
 | [Fold Entity Row](https://github.com/thomasloven/lovelace-fold-entity-row) |  [v2.2.0] | 🔹 A foldable row for entities card, containing other rows |
-| [Formula One Card](https://github.com/marcokreeft87/formulaone-card) |  [v1.10.1] | Present the data of Formula One in a pretty way |
+| [Formula One Card](https://github.com/marcokreeft87/formulaone-card) |  [v1.10.3] | Present the data of Formula One in a pretty way |
 | [Heatmap Card](https://github.com/kandsten/ha-heatmap-card) |  [vac99408] | Heatmap custom card for Home Assistant |
 | [Horizon Card](https://github.com/rejuvenate/lovelace-horizon-card) |  [v1.3.1] | Sun Card successor: Visualize the position of the Sun over the horizon. |
 | [Hourly Weather Card](https://github.com/decompil3d/lovelace-hourly-weather) |  [v6.6.1] | Hourly weather card for Home Assistant. Visualize upcoming weather conditions as a colored horizontal bar. |
