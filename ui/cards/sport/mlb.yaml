@@ -23,6 +23,7 @@ cards:
         template: sports_card
         variables:
           - entity: sensor.upcoming_sport_mlb_all_teams
+          - calendar: calendar.ical_mlb_all_teams
       - type: custom:mushroom-chips-card
         alignment: center
         card_mod:
@@ -331,6 +332,7 @@ cards:
         template: sports_card
         variables:
           - entity: sensor.upcoming_sport_new_york_yankees
+          - calendar: calendar.ical_new_york_yankees
       - type: custom:mushroom-chips-card
         alignment: center
         card_mod:

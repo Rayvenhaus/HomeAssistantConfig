@@ -48,10 +48,10 @@ _Stats as at 05:00, unknown_
 | Stat | Qty |
 | ---|--- |
 | HA Version | 2025.3.4 |
-| No. Integrations | 222 |
+| No. Integrations | 221 |
 | No. Custom Integrations | 102 |
-| No. Entities | 6092 |
-| No. Sensors | 4015 |
+| No. Entities | 6111 |
+| No. Sensors | 4031 |
 | No. Automations | 159 |
 
 <details>
@@ -91,11 +91,11 @@ Remotes | 7
 Scenes | 2
 Scripts | 85
 Selects | 57
-Sensors | 4015
+Sensors | 4031
 Sirens | 0
 Speech-to-text | 1
 Suns | 1
-Switches | 242
+Switches | 244
 Texts | 2
 Times | 0
 Text-to-speech | 1
@@ -115,7 +115,7 @@ Zones | 4
 Here is a list of all the integrations I use, including any Custom Components (which are also listed below)
 
 
-<details><summary>684 Integrations</summary>
+<details><summary>675 Integrations</summary>
 
 | Name |
 | --- |
@@ -384,15 +384,6 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [lastfm](https://www.home-assistant.io/components/lastfm) |
 | [lastfm.sensor](https://www.home-assistant.io/components/lastfm.sensor) |
 | [lg_thinq](https://www.home-assistant.io/components/lg_thinq) |
-| [lg_thinq.binary_sensor](https://www.home-assistant.io/components/lg_thinq.binary_sensor) |
-| [lg_thinq.climate](https://www.home-assistant.io/components/lg_thinq.climate) |
-| [lg_thinq.event](https://www.home-assistant.io/components/lg_thinq.event) |
-| [lg_thinq.fan](https://www.home-assistant.io/components/lg_thinq.fan) |
-| [lg_thinq.number](https://www.home-assistant.io/components/lg_thinq.number) |
-| [lg_thinq.select](https://www.home-assistant.io/components/lg_thinq.select) |
-| [lg_thinq.sensor](https://www.home-assistant.io/components/lg_thinq.sensor) |
-| [lg_thinq.switch](https://www.home-assistant.io/components/lg_thinq.switch) |
-| [lg_thinq.vacuum](https://www.home-assistant.io/components/lg_thinq.vacuum) |
 | [light](https://www.home-assistant.io/components/light) |
 | [llmvision](https://www.home-assistant.io/components/llmvision) |
 | [local_ip](https://www.home-assistant.io/components/local_ip) |
@@ -901,7 +892,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Wican](https://github.com/jay-oswald/ha-wican) |  [v0.3.0] |  |[@jay-oswald](https://github.com/jay-oswald).|
 | [World'S Air Quality Index](https://github.com/pawkakol1/worlds-air-quality-index) |  [v1.1.0] | HACS World's Air Quality Index integration from waqi.info |[@pawkakol1](https://github.com/pawkakol1).|
 | [XMLTV EPG](https://github.com/shadow578/homeassistant_xmltv-epg) |  [v2.4.1] | XMLTV EPG for HomeAssisstant |[@shadow578](https://github.com/shadow578).|
-| [Xtend Tuya](https://github.com/azerty9971/xtend_tuya) |  [v3.0.10] | eXtend Tuya's integration |[@azerty9971](https://github.com/azerty9971).|
+| [Xtend Tuya](https://github.com/azerty9971/xtend_tuya) |  [v3.0.11] | eXtend Tuya's integration |[@azerty9971](https://github.com/azerty9971).|
 | [Yahoo Finance](https://github.com/iprak/yahoofinance) |  [v1.2.15] | Home Assistant component which allows you to get stock updates from Yahoo finance. |[@iprak](https://github.com/iprak).|
 </details>
 
@@ -915,9 +906,9 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Bar Card](https://github.com/custom-cards/bar-card) |  [v3.2.0] | Customizable Animated Bar card for Home Assistant Lovelace |
 | [Better Moment Card](https://github.com/ibz0q/better-moment-card) |  [v2025.01.11] | Digital date/time card for Lovelace 🕔 |
 | [Bom Radar Card](https://github.com/Makin-Things/bom-radar-card) |  [v3.0.2] | A rain radar card using the new tiled images from the Australian BOM |
-| [Bubble Card](https://github.com/Clooos/Bubble-Card) |  [v2.5.0-beta.8] | Bubble Card is a minimalist card collection for Home Assistant with a nice pop-up touch. |
+| [Bubble Card](https://github.com/Clooos/Bubble-Card) |  [v2.5.0-beta.9] | Bubble Card is a minimalist card collection for Home Assistant with a nice pop-up touch. |
 | [Button Card](https://github.com/custom-cards/button-card) |  [v4.1.2] | ❇️ Lovelace button-card for home assistant |
-| [Calendar Card Pro](https://github.com/alexpfau/calendar-card-pro) |  [v1.2.3] | 📅 A sleek and highly customizable calendar card for Home Assistant, designed for performance and a clean, modern look. |
+| [Calendar Card Pro](https://github.com/alexpfau/calendar-card-pro) |  [v2.0.0] | 📅 A sleek and highly customizable calendar card for Home Assistant, designed for performance and a clean, modern look. |
 | [Card Mod](https://github.com/thomasloven/lovelace-card-mod) |  [v3.4.4] | 🔹 Add CSS styles to (almost) any lovelace card |
 | [Card Tools](https://github.com/thomasloven/lovelace-card-tools) |  [v11] | 🔹A collection of tools for other lovelace plugins to use |
 | [Clock Weather Card](https://github.com/pkissling/clock-weather-card) |  [v2.8.10] | A Home Assistant Card indicating today's date/time, along with an iOS inspired weather forecast for the next days with animated icons |
@@ -925,7 +916,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Compass Card](https://github.com/tomvanswam/compass-card) |  [v2.0.2] | A Lovelace card that shows a directional indicator on a compass for Home Assistant |
 | [Config Template Card](https://github.com/iantrich/config-template-card) |  [v1.3.6] | 📝 Templatable Lovelace Configurations |
 | [Custom Brand Icons](https://github.com/elax46/custom-brand-icons) |  [v2025.2.0] | Custom brand icons for Home Assistant |
-| [Custom Features For Home Assistant Cards](https://github.com/Nerwyn/service-call-tile-feature) |  [v4.3.0] | Home Assistant custom features for tile cards and more. Call any action using buttons, dropdowns, selectors, sliders, spinboxes, and toggles. |
+| [Custom Features For Home Assistant Cards](https://github.com/Nerwyn/service-call-tile-feature) |  [v4.3.1] | Home Assistant custom features for tile cards and more. Call any action using buttons, dropdowns, selectors, sliders, spinboxes, and toggles. |
 | [Decluttering Card](https://github.com/custom-cards/decluttering-card) |  [v1.0.0] | 🧹 Declutter your lovelace configuration with the help of this card |
 | [Device Card](https://github.com/homeassistant-extras/device-card) |  [v0.5.0] | Device Card to summarize device information in Home Assistant |
 | [Digital Clock](https://github.com/wassy92x/lovelace-digital-clock) |  [v1.2.4] | A custom digital clock card for Home Assistant |
@@ -996,7 +987,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | Browserless Chromium | 2.25.0 |  | db21ed7f |
 | Cloudflared | 5.2.11 |  | 9074a9fa |
 | DbStats | 0.5.12 |  | 8bce8ef4 |
-| ESPHome Device Builder | 2025.3.0 |  | 15ef4d2f |
+| ESPHome Device Builder | 2025.3.1 |  | 15ef4d2f |
 | eufy-security-ws | 1.9.1 |  | 402f1039 |
 | Get HACS | 1.3.1 |  | cb646a50 |
 | Glances | 0.21.1 |  | a0d7b954 |

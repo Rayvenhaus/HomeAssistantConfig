@@ -4,6 +4,7 @@
 sports_card:
   default:
     - entity: sensor.upcoming_sport_afl_all_teams
+    - calendar: calendar.ical_afl_all_teams
   card:
     type: custom:stack-in-card
     card_mod:
@@ -18,14 +19,14 @@ sports_card:
         primary: >-
           {{ state_attr(entity, 'friendly_name') | replace('[Upcoming Sport] ', '')
           }}
-        secondary: >-
-          {{ iif(state_attr(entity, 'nextevent_time') == 'No Event Scheduled', 'No
-          Event Scheduled', state_attr(entity, 'nextevent_desc') + ' ' +
-          state_attr(entity, 'nextevent_time')) }}
+        # secondary: >-
+        #   {{ iif(state_attr(entity, 'nextevent_time') == 'No Event Scheduled', 'No
+        #   Event Scheduled', state_attr(entity, 'nextevent_desc') + ' ' +
+        #   state_attr(entity, 'nextevent_time')) }}
 
-          {{ iif(state_attr(entity, 'afterevent_time') == 'No Event Scheduled', 'No
-          Event Scheduled', state_attr(entity, 'afterevent_desc') + ' ' +
-          state_attr(entity, 'afterevent_time')) }}
+        #   {{ iif(state_attr(entity, 'afterevent_time') == 'No Event Scheduled', 'No
+        #   Event Scheduled', state_attr(entity, 'afterevent_desc') + ' ' +
+        #   state_attr(entity, 'afterevent_time')) }}
         entity: "[[entity]]"
         fill_container: true
         tap_action:
@@ -40,12 +41,12 @@ sports_card:
             mushroom-state-info$: |
               .container {
                 text-align: right;
-                # height: 40px;
+                height: 40px;
               }
-              # .primary {
-              #   padding-top: 10px;
-              #   font-weight: 800 !important;
-              # }
+              .primary {
+                padding-top: 10px;
+                font-weight: 800 !important;
+              }
             .: |
               ha-card:before {
                 content: '';
@@ -68,29 +69,62 @@ sports_card:
                 # --card-primary-font-size: 16px;
                 # font-weight: 700 !important;
               }
-      # - type: custom:calendar-card-pro
-      #   entities:
-      #     - entity: "[[entity]]"
-      #   days_to_show: 365
-      #   max_events_to_show: 3
-      #   show_past_events: false
-      #   language: en
-      #   time_24h: true
-      #   show_end_time: true
-      #   show_month: true
-      #   show_location: true
-      #   remove_location_country: false
-      #   row_spacing: 0px
-      #   weekday_font_size: 10px
-      #   day_font_size: 16px
-      #   month_font_size: 10px
-      #   event_font_size: 12px
-      #   time_font_size: 11px
-      #   location_font_size: 11px
-      #   time_location_icon_size: 11px
-      #   refresh_interval: 15
-      #   tap_action:
-      #     action: expand
-      #   hold_action:
-      #     action: navigate
-      #     navigation_path: calendar
+      - type: custom:calendar-card-pro
+        entities:
+          - entity: "[[calendar]]"
+        days_to_show: 365
+        max_events_to_show: 3
+        show_past_events: false
+        language: en
+        time_24h: true
+        show_end_time: true
+        show_month: true
+        remove_location_country: false
+        show_time: true # Generally show time, if not configured otherwise
+        show_location: true # Generally show location, if not configured otherwise
+        show_single_allday_time: false # Hides time row from all single-day all-day events
+        day_spacing: 2px
+        weekday_font_size: 10px
+        day_font_size: 16px
+        month_font_size: 10px
+        event_font_size: 12px
+        time_font_size: 11px
+        location_font_size: 11px
+        time_location_icon_size: 11px
+        event_background_opacity: 5 # Enable semi-transparent backgrounds (0-100 scale)
+        vertical_line_width: 2px # Slightly increase vertical line width
+        event_spacing: 3px # Adjust vertical spacing between calendar events
+        refresh_interval: 15
+        max_height: "200px"
+        refresh_on_navigate: false
+        tap_action:
+          action: expand
+        # hold_action:
+        #   action: navigate
+        #   navigation_path: calendar
+        card_mod:
+          style: |
+            ha-card {
+              border-radius: 0;
+              border: none;
+              padding-top: 0px !important;
+              padding-bottom: 0px !important;
+            }      
+            /* Make today's events stand out */
+            .day-table.today .event-title {
+              font-size: 16px !important;     /* Larger text */
+              font-weight: bold !important;   /* Bold text */
+              color: var(--accent-color) !important; /* Use theme accent color */
+            }
+
+            /* Add subtle left border pulse animation */
+            .day-table.today .event {
+              border-left-width: 4px !important;
+              transition: border-left-color 1s ease-in-out;
+              animation: todayPulse 3s infinite alternate;
+            }
+
+            @keyframes todayPulse {
+              from { border-left-color: var(--accent-color); }
+              to { border-left-color: var(--primary-color); }
+            }
