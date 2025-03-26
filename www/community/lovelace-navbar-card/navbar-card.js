@@ -1542,7 +1542,7 @@ var NODE_MODE4 = false;
 var global4 = NODE_MODE4 ? globalThis : window;
 var slotAssignedElements = ((_a4 = global4.HTMLSlotElement) === null || _a4 === undefined ? undefined : _a4.prototype.assignedElements) != null ? (slot, opts) => slot.assignedElements(opts) : (slot, opts) => slot.assignedNodes(opts).filter((node) => node.nodeType === Node.ELEMENT_NODE);
 // package.json
-var version = "0.4.0";
+var version = "0.5.1";
 
 // node_modules/custom-card-helpers/dist/index.m.js
 var t;
@@ -1586,7 +1586,7 @@ var processBadgeTemplate = (hass, template) => {
     const func = new Function("states", `return ${template}`);
     return func(hass.states);
   } catch (e) {
-    console.warn(`NavbarCard: Error evaluating badge template: ${e}`);
+    console.error(`NavbarCard: Error evaluating badge template: ${e}`);
     return false;
   }
 };
@@ -1603,7 +1603,7 @@ var processTemplate = (hass, template) => {
     const func = new Function("states", "user", "hass", cleanTemplate);
     return func(hass.states, hass.user, hass);
   } catch (e) {
-    console.warn(`NavbarCard: Error evaluating template: ${e}`);
+    console.error(`NavbarCard: Error evaluating template: ${e}`);
     return template;
   }
 };
@@ -1686,7 +1686,7 @@ var NAVBAR_STYLES = css`
     top: unset;
     right: unset;
     bottom: 16px;
-    left: calc((100% + var(--mdc-drawer-width)) / 2);
+    left: calc(50% + var(--mdc-drawer-width, 0px));
     transform: translate(-50%, 0);
   }
   .navbar.desktop.top {
@@ -1694,7 +1694,7 @@ var NAVBAR_STYLES = css`
     bottom: unset;
     right: unset;
     top: 16px;
-    left: calc((100% + var(--mdc-drawer-width)) / 2);
+    left: calc(50% + var(--mdc-drawer-width, 0px));
     transform: translate(-50%, 0);
   }
   .navbar.desktop.left {
@@ -2020,14 +2020,40 @@ class NavbarCard extends LitElement {
         {
           url: `${window.location.pathname}/devices`,
           icon: "mdi:devices",
-          label: "Devices"
+          label: "Devices",
+          hold_action: {
+            action: "navigate",
+            navigation_path: "/config/devices/dashboard"
+          }
         },
         {
           url: "/config/automation/dashboard",
           icon: "mdi:creation",
           label: "Automations"
         },
-        { url: "/config/dashboard", icon: "mdi:cog", label: "Settings" }
+        { url: "/config/dashboard", icon: "mdi:cog", label: "Settings" },
+        {
+          icon: "mdi:dots-horizontal",
+          label: "More",
+          submenu: [
+            { icon: "mdi:cog", url: "/config/dashboard" },
+            {
+              icon: "mdi:hammer",
+              url: "/developer-tools/yaml"
+            },
+            {
+              icon: "mdi:power",
+              tap_action: {
+                action: "call-service",
+                service: "homeassistant.restart",
+                service_data: {},
+                confirmation: {
+                  text: "Are you sure you want to restart Home Assistant?"
+                }
+              }
+            }
+          ]
+        }
       ]
     };
   }
@@ -2040,7 +2066,7 @@ class NavbarCard extends LitElement {
     this._isDesktop = (window.innerWidth ?? 0) >= (this._config?.desktop?.min_width ?? 768);
   };
   _renderRoute = (route) => {
-    const isActive = this._location == route.url;
+    const isActive = route.selected != null ? processTemplate(this.hass, route.selected) : this._location == route.url;
     let showBadge = false;
     if (route.badge?.show) {
       showBadge = processTemplate(this.hass, route.badge?.show);
@@ -2230,7 +2256,7 @@ class NavbarCard extends LitElement {
       const target = e.currentTarget;
       setTimeout(() => {
         this._openPopup(route.submenu, target);
-      }, 10);
+      }, 100);
     } else if (route.tap_action != null) {
       hapticFeedback();
       fireDOMEvent(this, "hass-action", { bubbles: true, composed: true }, {
