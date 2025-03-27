@@ -128,7 +128,7 @@ cards:
               {{x['team']['displayName']}}, {{x['stats']|selectattr("abbreviation", "eq", "PCT")|map(attribute="displayValue")|first}}%
               {%- endif -%}
               {%- endfor -%}
-            card_mod: &style
+            card_mod: 
               style:
                 .: |
                   ha-card {
@@ -202,7 +202,7 @@ cards:
               action: none
             icon: mdi:list-box-outline
             content: WC, Northwest Standings
-            card_mod: &style
+            card_mod: 
               style:
                 .: |
                   ha-card {
@@ -258,7 +258,7 @@ cards:
               {{x['team']['displayName']}}, {{x['stats']|selectattr("abbreviation", "eq", "PCT")|map(attribute="displayValue")|first}}%
               {%- endif -%}
               {%- endfor -%}
-            card_mod: &style
+            card_mod:
               style:
                 .: |
                   ha-card {
