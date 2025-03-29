@@ -47,11 +47,11 @@ _Stats as at 05:00, unknown_
 
 | Stat | Qty |
 | ---|--- |
-| HA Version | 2025.4.0b5 |
+| HA Version | 2025.4.0b8 |
 | No. Integrations | 223 |
 | No. Custom Integrations | 101 |
-| No. Entities | 6125 |
-| No. Sensors | 4046 |
+| No. Entities | 6136 |
+| No. Sensors | 4055 |
 | No. Automations | 159 |
 
 <details>
@@ -71,7 +71,7 @@ Covers | 0
 Dates | 0
 Date/times | 0
 Device trackers | 54
-Devices | 592
+Devices | 593
 Fans | 3
 Humidifiers | 0
 Images | 7
@@ -85,13 +85,13 @@ Lights | 13
 Locks | 0
 Media players | 20
 Numbers | 52
-Persistent notifications | 3
+Persistent notifications | 4
 Persons | 4
 Remotes | 7
 Scenes | 2
 Scripts | 85
 Selects | 57
-Sensors | 4046
+Sensors | 4055
 Sirens | 0
 Speech-to-text | 1
 Suns | 1
@@ -99,7 +99,7 @@ Switches | 245
 Texts | 2
 Times | 0
 Text-to-speech | 1
-Update | 320
+Update | 321
 Vacuums | 0
 Water heaters | 0
 Weather | 14
@@ -115,7 +115,7 @@ Zones | 4
 Here is a list of all the integrations I use, including any Custom Components (which are also listed below)
 
 
-<details><summary>686 Integrations</summary>
+<details><summary>685 Integrations</summary>
 
 | Name |
 | --- |
@@ -308,8 +308,6 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [google](https://www.home-assistant.io/components/google) |
 | [google.calendar](https://www.home-assistant.io/components/google.calendar) |
 | [google_drive](https://www.home-assistant.io/components/google_drive) |
-| [google_fit](https://www.home-assistant.io/components/google_fit) |
-| [google_fit.sensor](https://www.home-assistant.io/components/google_fit.sensor) |
 | [google_home](https://www.home-assistant.io/components/google_home) |
 | [google_home.number](https://www.home-assistant.io/components/google_home.number) |
 | [google_home.sensor](https://www.home-assistant.io/components/google_home.sensor) |
@@ -356,6 +354,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [homeassistant_alerts](https://www.home-assistant.io/components/homeassistant_alerts) |
 | [homeassistant_hardware](https://www.home-assistant.io/components/homeassistant_hardware) |
 | [homeassistant_sky_connect](https://www.home-assistant.io/components/homeassistant_sky_connect) |
+| [homeassistant_sky_connect.update](https://www.home-assistant.io/components/homeassistant_sky_connect.update) |
 | [homekit](https://www.home-assistant.io/components/homekit) |
 | [http](https://www.home-assistant.io/components/http) |
 | [humidifier](https://www.home-assistant.io/components/humidifier) |
@@ -514,6 +513,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [plex.sensor](https://www.home-assistant.io/components/plex.sensor) |
 | [plex.update](https://www.home-assistant.io/components/plex.update) |
 | [plex_recently_added](https://www.home-assistant.io/components/plex_recently_added) |
+| [plex_recently_added.sensor](https://www.home-assistant.io/components/plex_recently_added.sensor) |
 | [pocketcasts.sensor](https://www.home-assistant.io/components/pocketcasts.sensor) |
 | [powercalc](https://www.home-assistant.io/components/powercalc) |
 | [powercalc.sensor](https://www.home-assistant.io/components/powercalc.sensor) |
@@ -761,7 +761,6 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [worlds_air_quality_index](https://www.home-assistant.io/components/worlds_air_quality_index) |
 | [worlds_air_quality_index.sensor](https://www.home-assistant.io/components/worlds_air_quality_index.sensor) |
 | [wud_getupdates](https://www.home-assistant.io/components/wud_getupdates) |
-| [wud_getupdates.sensor](https://www.home-assistant.io/components/wud_getupdates.sensor) |
 | [xtend_tuya](https://www.home-assistant.io/components/xtend_tuya) |
 | [xtend_tuya.alarm_control_panel](https://www.home-assistant.io/components/xtend_tuya.alarm_control_panel) |
 | [xtend_tuya.binary_sensor](https://www.home-assistant.io/components/xtend_tuya.binary_sensor) |
@@ -866,7 +865,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Nsw Rural Fire Service   Fire Danger](https://github.com/exxamalte/home-assistant-custom-components-nsw-rural-fire-service-fire-danger) |  [v0.20] | Home Assistant Custom Component: NSW Rural Fire Service Fire Danger |[@exxamalte](https://github.com/exxamalte).|
 | [Open Meteo Solar Forecast](https://github.com/rany2/ha-open-meteo-solar-forecast) |  [v0.1.20] | Home Assistant Open-Meteo Solar Forecast Integration |[@rany2](https://github.com/rany2).|
 | [Opennem (Au) Data](https://github.com/bacco007/sensor.opennem) |  [v2023.09.1] | OpenNEM Sensor for Home Assistant |[@bacco007](https://github.com/bacco007).|
-| [Passive Ble Monitor Integration](https://github.com/custom-components/ble_monitor) |  [v13.0.3] | BLE monitor for passive BLE sensors |[@Ernst79](https://github.com/Ernst79), [@myhomeiot](https://github.com/myhomeiot).|
+| [Passive Ble Monitor Integration](https://github.com/custom-components/ble_monitor) |  [v13.1.0] | BLE monitor for passive BLE sensors |[@Ernst79](https://github.com/Ernst79), [@myhomeiot](https://github.com/myhomeiot).|
 | [Pirate Weather](https://github.com/Pirate-Weather/pirate-weather-ha) |  [v1.7.1] | Replacement for the default Dark Sky Home Assistant integration using Pirate Weather |[@alexander0042](https://github.com/alexander0042).|
 | [Playstation Network](https://github.com/JackJPowell/hass-psn) |  [v0.7.2] | Home Assistant integration for the Playstation Network |[@jackjpowell](https://github.com/jackjpowell).|
 | [Plex Recently Added](https://github.com/custom-components/sensor.plex_recently_added) |  [v0.5.3] | ▶️ Plex component to feed Upcoming Media Card. |[@maykar](https://github.com/maykar).|
@@ -918,7 +917,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Bom Radar Card](https://github.com/Makin-Things/bom-radar-card) |  [v3.0.2] | A rain radar card using the new tiled images from the Australian BOM |
 | [Bubble Card](https://github.com/Clooos/Bubble-Card) |  [v2.5.0-beta.9] | Bubble Card is a minimalist card collection for Home Assistant with a nice pop-up touch. |
 | [Button Card](https://github.com/custom-cards/button-card) |  [v4.1.2] | ❇️ Lovelace button-card for home assistant |
-| [Calendar Card Pro](https://github.com/alexpfau/calendar-card-pro) |  [v2.1.2] | 📅 A sleek and highly customizable calendar card for Home Assistant, designed for performance and a clean, modern look. |
+| [Calendar Card Pro](https://github.com/alexpfau/calendar-card-pro) |  [v2.2.0] | 📅 A sleek and highly customizable calendar card for Home Assistant, designed for performance and a clean, modern look. |
 | [Card Mod](https://github.com/thomasloven/lovelace-card-mod) |  [v3.4.4] | 🔹 Add CSS styles to (almost) any lovelace card |
 | [Card Tools](https://github.com/thomasloven/lovelace-card-tools) |  [v11] | 🔹A collection of tools for other lovelace plugins to use |
 | [Clock Weather Card](https://github.com/pkissling/clock-weather-card) |  [v2.8.10] | A Home Assistant Card indicating today's date/time, along with an iOS inspired weather forecast for the next days with animated icons |
@@ -984,7 +983,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 
 | Name | Version | Description |
 | --- | --- | --- |
-| [Bubble](https://github.com/Clooos/Bubble) |  [v1.1] | A dark minimalist theme with a mobile first approach for Home Assistant |
+| [Bubble](https://github.com/Clooos/Bubble) |  [v1.2] | A dark minimalist theme with a mobile first approach for Home Assistant |
 | [Metrology   Metro + Fluent + Windows Themes   By Mmak.Es](https://github.com/Madelena/Metrology-for-Hass) |  [v.1.9.1] | 🎨 Give your Home Assistant a modern and clean facelift. 🟥🟧🟩🟦🟪 24 Variations with 2 Styles + 6 Colors (Magenta Red / Orange / Green / Blue / Purple) + 🌞 Light and 🌚 Dark modes included. Based on Metro and Fluent UI Design Systems from Microsoft Windows. |
 | [Noctis](https://github.com/aFFekopp/noctis) |  [v3.1] | 🐵 Dark Blue Theme for Home Assistant |
 </details>
@@ -994,7 +993,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | Name | Version | Description | Repository |
 | --- | --- | --- | --- |
 | Advanced SSH & Web Terminal | 20.0.2 |  | a0d7b954 |
-| Browserless Chromium | 2.25.0 |  | db21ed7f |
+| Browserless Chromium | 2.26.1 |  | db21ed7f |
 | Cloudflared | 5.2.11 |  | 9074a9fa |
 | DbStats | 0.5.12 |  | 8bce8ef4 |
 | ESPHome Device Builder | 2025.3.2 |  | 15ef4d2f |
@@ -1062,7 +1061,7 @@ Generated by the [custom readme integration](https://github.com/custom-component
 [home-assistant]: https://home-assistant.io
 
 [ha-version]: https://www.home-assistant.io/blog/categories/release-notes/
-[ha-version-shield]: https://img.shields.io/badge/2025.4.0b5-555555?style=flat-square&logo=home-assistant
+[ha-version-shield]: https://img.shields.io/badge/2025.4.0b8-555555?style=flat-square&logo=home-assistant
 
 [github-build-status-shield]: https://img.shields.io/github/actions/workflow/status/bacco007/HomeAssistantConfig/homeassistant.yaml?branch=master&style=flat-square&logo=github-actions&logoColor=838B95
 [github-build-status]: https://github.com/bacco007/HomeAssistantConfig/actions/workflows/homeassistant.yaml
