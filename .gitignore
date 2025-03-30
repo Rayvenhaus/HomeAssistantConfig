@@ -23,6 +23,7 @@ gtfs2
 glances
 www/browserless
 .mypy_cache
+custom_icons
 
 # Ignore File Extensions
 *.conf
