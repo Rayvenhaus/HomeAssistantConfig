@@ -47,11 +47,11 @@ _Stats as at 05:00, unknown_
 
 | Stat | Qty |
 | ---|--- |
-| HA Version | 2025.4.0b8 |
+| HA Version | 2025.4.0b9 |
 | No. Integrations | 223 |
-| No. Custom Integrations | 101 |
-| No. Entities | 6136 |
-| No. Sensors | 4055 |
+| No. Custom Integrations | 102 |
+| No. Entities | 6143 |
+| No. Sensors | 4063 |
 | No. Automations | 159 |
 
 <details>
@@ -71,7 +71,7 @@ Covers | 0
 Dates | 0
 Date/times | 0
 Device trackers | 54
-Devices | 593
+Devices | 594
 Fans | 3
 Humidifiers | 0
 Images | 7
@@ -85,13 +85,13 @@ Lights | 13
 Locks | 0
 Media players | 20
 Numbers | 52
-Persistent notifications | 4
+Persistent notifications | 3
 Persons | 4
 Remotes | 7
 Scenes | 2
 Scripts | 85
 Selects | 57
-Sensors | 4055
+Sensors | 4063
 Sirens | 0
 Speech-to-text | 1
 Suns | 1
@@ -99,7 +99,7 @@ Switches | 245
 Texts | 2
 Times | 0
 Text-to-speech | 1
-Update | 321
+Update | 322
 Vacuums | 0
 Water heaters | 0
 Weather | 14
@@ -115,7 +115,7 @@ Zones | 4
 Here is a list of all the integrations I use, including any Custom Components (which are also listed below)
 
 
-<details><summary>685 Integrations</summary>
+<details><summary>686 Integrations</summary>
 
 | Name |
 | --- |
@@ -205,7 +205,6 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [cloudflare_speed_test](https://www.home-assistant.io/components/cloudflare_speed_test) |
 | [cloudflare_speed_test.sensor](https://www.home-assistant.io/components/cloudflare_speed_test.sensor) |
 | [cloudflare_tunnel_monitor](https://www.home-assistant.io/components/cloudflare_tunnel_monitor) |
-| [cloudflare_tunnel_monitor.sensor](https://www.home-assistant.io/components/cloudflare_tunnel_monitor.sensor) |
 | [co2signal](https://www.home-assistant.io/components/co2signal) |
 | [co2signal.sensor](https://www.home-assistant.io/components/co2signal.sensor) |
 | [command_line](https://www.home-assistant.io/components/command_line) |
@@ -216,6 +215,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [counter](https://www.home-assistant.io/components/counter) |
 | [cover](https://www.home-assistant.io/components/cover) |
 | [cupertino](https://www.home-assistant.io/components/cupertino) |
+| [custom_icons](https://www.home-assistant.io/components/custom_icons) |
 | [custom_templates](https://www.home-assistant.io/components/custom_templates) |
 | [daily](https://www.home-assistant.io/components/daily) |
 | [daily.sensor](https://www.home-assistant.io/components/daily.sensor) |
@@ -761,6 +761,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [worlds_air_quality_index](https://www.home-assistant.io/components/worlds_air_quality_index) |
 | [worlds_air_quality_index.sensor](https://www.home-assistant.io/components/worlds_air_quality_index.sensor) |
 | [wud_getupdates](https://www.home-assistant.io/components/wud_getupdates) |
+| [wud_getupdates.sensor](https://www.home-assistant.io/components/wud_getupdates.sensor) |
 | [xtend_tuya](https://www.home-assistant.io/components/xtend_tuya) |
 | [xtend_tuya.alarm_control_panel](https://www.home-assistant.io/components/xtend_tuya.alarm_control_panel) |
 | [xtend_tuya.binary_sensor](https://www.home-assistant.io/components/xtend_tuya.binary_sensor) |
@@ -806,7 +807,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [zone](https://www.home-assistant.io/components/zone) |
 </details>
 
-<details><summary>93 Custom Integrations</summary>
+<details><summary>94 Custom Integrations</summary>
 
 | Name | Version | Description | Authors |
 | --- | --- | --- | --- |
@@ -825,6 +826,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Cloudflare Tunnel Monitor](https://github.com/deadbeef3137/ha-cloudflare-tunnel-monitor) |  [v2.1.7.2] | Integration (custom_component) for Home Assistant that monitors the status of your Cloudflare tunnels. |[@deadbeef3137](https://github.com/deadbeef3137).|
 | [Composite Device Tracker](https://github.com/pnbruckner/ha-composite-tracker) |  [v3.4.5] | Home Assistant Composite Device Tracker |[@pnbruckner](https://github.com/pnbruckner).|
 | [Cupertino Icons](https://github.com/menahishayan/HomeAssistant-Cupertino-Icons) |  [v3.0.2] | Apple SF Symbols icons for Home Assistant! (3000+ icons) ||
+| [Custom Icons](https://github.com/thomasloven/hass-custom_icons) |  | 🔹 Use custom svg icons in Home Assistant |[@thomasloven](https://github.com/thomasloven).|
 | [Custom Templates](https://github.com/PiotrMachowski/Home-Assistant-custom-components-Custom-Templates) |  [v1.4.1] | This integration adds possibility to use new functions in Home Assistant Jinja2 templating engine. |[@PiotrMachowski](https://github.com/PiotrMachowski).|
 | [Daily Sensor](https://github.com/jeroenterheerdt/HADailySensor) |  [v2024.10.1] | Sensor for Home Assistant that gets reset at midnight |[@jeroenterheerdt](https://github.com/jeroenterheerdt).|
 | [Default Config Disabler](https://github.com/tronikos/default_config_disabler) |  [v0.0.5] | Disables components from Home Assistant's default_config |[@tronikos](https://github.com/tronikos).|
@@ -917,7 +919,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Bom Radar Card](https://github.com/Makin-Things/bom-radar-card) |  [v3.0.2] | A rain radar card using the new tiled images from the Australian BOM |
 | [Bubble Card](https://github.com/Clooos/Bubble-Card) |  [v2.5.0-beta.9] | Bubble Card is a minimalist card collection for Home Assistant with a nice pop-up touch. |
 | [Button Card](https://github.com/custom-cards/button-card) |  [v4.1.2] | ❇️ Lovelace button-card for home assistant |
-| [Calendar Card Pro](https://github.com/alexpfau/calendar-card-pro) |  [v2.2.0] | 📅 A sleek and highly customizable calendar card for Home Assistant, designed for performance and a clean, modern look. |
+| [Calendar Card Pro](https://github.com/alexpfau/calendar-card-pro) |  [v2.2.1] | 📅 A sleek and highly customizable calendar card for Home Assistant, designed for performance and a clean, modern look. |
 | [Card Mod](https://github.com/thomasloven/lovelace-card-mod) |  [v3.4.4] | 🔹 Add CSS styles to (almost) any lovelace card |
 | [Card Tools](https://github.com/thomasloven/lovelace-card-tools) |  [v11] | 🔹A collection of tools for other lovelace plugins to use |
 | [Clock Weather Card](https://github.com/pkissling/clock-weather-card) |  [v2.8.10] | A Home Assistant Card indicating today's date/time, along with an iOS inspired weather forecast for the next days with animated icons |
@@ -1061,7 +1063,7 @@ Generated by the [custom readme integration](https://github.com/custom-component
 [home-assistant]: https://home-assistant.io
 
 [ha-version]: https://www.home-assistant.io/blog/categories/release-notes/
-[ha-version-shield]: https://img.shields.io/badge/2025.4.0b8-555555?style=flat-square&logo=home-assistant
+[ha-version-shield]: https://img.shields.io/badge/2025.4.0b9-555555?style=flat-square&logo=home-assistant
 
 [github-build-status-shield]: https://img.shields.io/github/actions/workflow/status/bacco007/HomeAssistantConfig/homeassistant.yaml?branch=master&style=flat-square&logo=github-actions&logoColor=838B95
 [github-build-status]: https://github.com/bacco007/HomeAssistantConfig/actions/workflows/homeassistant.yaml
