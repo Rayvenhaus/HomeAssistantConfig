@@ -85,7 +85,7 @@ Lights | 13
 Locks | 0
 Media players | 20
 Numbers | 52
-Persistent notifications | 2
+Persistent notifications | 3
 Persons | 4
 Remotes | 7
 Scenes | 2
@@ -919,7 +919,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Bom Radar Card](https://github.com/Makin-Things/bom-radar-card) |  [v3.0.2] | A rain radar card using the new tiled images from the Australian BOM |
 | [Bubble Card](https://github.com/Clooos/Bubble-Card) |  [v2.5.0-beta.9] | Bubble Card is a minimalist card collection for Home Assistant with a nice pop-up touch. |
 | [Button Card](https://github.com/custom-cards/button-card) |  [v4.1.2] | ❇️ Lovelace button-card for home assistant |
-| [Calendar Card Pro](https://github.com/alexpfau/calendar-card-pro) |  [v2.3.0] | 📅 A sleek and highly customizable calendar card for Home Assistant, designed for performance and a clean, modern look. |
+| [Calendar Card Pro](https://github.com/alexpfau/calendar-card-pro) |  [v2.3.1] | 📅 A sleek and highly customizable calendar card for Home Assistant, designed for performance and a clean, modern look. |
 | [Card Mod](https://github.com/thomasloven/lovelace-card-mod) |  [v3.4.4] | 🔹 Add CSS styles to (almost) any lovelace card |
 | [Card Tools](https://github.com/thomasloven/lovelace-card-tools) |  [v11] | 🔹A collection of tools for other lovelace plugins to use |
 | [Clock Weather Card](https://github.com/pkissling/clock-weather-card) |  [v2.8.11] | A Home Assistant Card indicating today's date/time, along with an iOS inspired weather forecast for the next days with animated icons |
@@ -1008,7 +1008,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | JupyterLab | 0.15.9 |  | a0d7b954 |
 | MariaDB | 2.7.2 |  | core |
 | Matter Server | 7.0.0 |  | core |
-| Music Assistant Server | 2.4.4 |  | d5369777 |
+| Music Assistant Server | 2.5.0 |  | d5369777 |
 | Node-RED | 19.0.2 |  | a0d7b954 |
 | OpenThread Border Router | 2.13.0 |  | core |
 | phpMyAdmin | 0.11.1 |  | a0d7b954 |
