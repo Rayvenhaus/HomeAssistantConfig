@@ -368,7 +368,7 @@ cards:
           - type: template
             icon: mdi:calendar-alert
             content: Calendar
-            card_mod: 
+            card_mod:
               style:
                 .: |
                   ha-card {
@@ -418,7 +418,7 @@ cards:
           - type: template
             icon: mdi:calendar-alert
             content: Calendar
-            card_mod: 
+            card_mod:
               style:
                 .: |
                   ha-card {

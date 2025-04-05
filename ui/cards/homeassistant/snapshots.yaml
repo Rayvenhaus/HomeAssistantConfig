@@ -19,10 +19,13 @@ cards:
           margin: 0 !important;
         }
     entities:
-      - entity: sensor.backup_backup_manager_state
-        name: Backup State
-        icon: mdi:folder-sync
-      - entity: sensor.backup_next_scheduled_automatic_backup
-        name: Next Scheduled Backup
-      - entity: sensor.backup_last_successful_automatic_backup
-        name: Last Successful Backup
+      - type: custom:fold-entity-row
+        head:
+          entity: sensor.backup_backup_manager_state
+          name: Backup State
+          icon: mdi:folder-sync
+        entities:
+          - entity: sensor.backup_last_successful_automatic_backup
+            name: Last Successful Backup
+          - entity: sensor.backup_next_scheduled_automatic_backup
+            name: Next Scheduled Backup
