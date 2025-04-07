@@ -1542,7 +1542,7 @@ var NODE_MODE4 = false;
 var global4 = NODE_MODE4 ? globalThis : window;
 var slotAssignedElements = ((_a4 = global4.HTMLSlotElement) === null || _a4 === undefined ? undefined : _a4.prototype.assignedElements) != null ? (slot, opts) => slot.assignedElements(opts) : (slot, opts) => slot.assignedNodes(opts).filter((node) => node.nodeType === Node.ELEMENT_NODE);
 // package.json
-var version = "0.5.1";
+var version = "0.6.0";
 
 // node_modules/custom-card-helpers/dist/index.m.js
 var t;
@@ -1954,6 +1954,8 @@ var DEFAULT_DESKTOP_POSITION = "bottom" /* bottom */;
 class NavbarCard extends LitElement {
   holdTimeoutId = null;
   holdTriggered = false;
+  pointerStartX = 0;
+  pointerStartY = 0;
   connectedCallback() {
     super.connectedCallback();
     this._location = window.location.pathname;
@@ -1970,6 +1972,7 @@ class NavbarCard extends LitElement {
   disconnectedCallback() {
     super.disconnectedCallback();
     window.removeEventListener("resize", this._checkDesktop);
+    this._popup = null;
   }
   setConfig(config) {
     if (config?.template) {
@@ -1996,8 +1999,8 @@ class NavbarCard extends LitElement {
       if (route.icon == null) {
         throw new Error('Each route must have an "icon" property configured');
       }
-      if (route.submenu == null && route.tap_action == null && route.url == null) {
-        throw new Error('Each route must have either "url", "submenu" or "tap_action" property configured');
+      if (route.popup == null && route.submenu == null && route.tap_action == null && route.url == null) {
+        throw new Error('Each route must have either "url", "popup" or "tap_action" property configured');
       }
     });
     this._config = config;
@@ -2035,7 +2038,10 @@ class NavbarCard extends LitElement {
         {
           icon: "mdi:dots-horizontal",
           label: "More",
-          submenu: [
+          tap_action: {
+            action: "open-popup"
+          },
+          popup: [
             { icon: "mdi:cog", url: "/config/dashboard" },
             {
               icon: "mdi:hammer",
@@ -2165,7 +2171,11 @@ class NavbarCard extends LitElement {
         }
     }
   }
-  _openPopup = (popupConfig, target) => {
+  _openPopup = (popupItems, target) => {
+    if (!popupItems || popupItems.length === 0) {
+      console.warn("No popup items provided");
+      return;
+    }
     const anchorRect = target.getBoundingClientRect();
     const { style, labelPositionClassName, popupDirectionClassName } = this._getPopupStyles(anchorRect, !this._isDesktop ? "mobile" : this._config?.desktop?.position ?? DEFAULT_DESKTOP_POSITION);
     this._popup = html`
@@ -2180,7 +2190,7 @@ class NavbarCard extends LitElement {
           ${this._isDesktop ? "desktop" : ""}
         "
         style="${style}">
-        ${popupConfig.map((popupItem, index) => {
+        ${popupItems.map((popupItem, index) => {
       const showBadge = processBadgeTemplate(this.hass, popupItem.badge?.template);
       if (processTemplate(this.hass, popupItem.hidden)) {
         return null;
@@ -2217,6 +2227,8 @@ class NavbarCard extends LitElement {
     });
   };
   _handlePointerDown = (e, route) => {
+    this.pointerStartX = e.clientX;
+    this.pointerStartY = e.clientY;
     if (route.hold_action) {
       this.holdTriggered = false;
       this.holdTimeoutId = window.setTimeout(() => {
@@ -2226,9 +2238,13 @@ class NavbarCard extends LitElement {
     }
   };
   _handlePointerMove = (e, route) => {
-    if (this.holdTimeoutId !== null) {
-      clearTimeout(this.holdTimeoutId);
-      this.holdTimeoutId = null;
+    const moveX = Math.abs(e.clientX - this.pointerStartX);
+    const moveY = Math.abs(e.clientY - this.pointerStartY);
+    if (moveX > 10 || moveY > 10) {
+      if (this.holdTimeoutId !== null) {
+        clearTimeout(this.holdTimeoutId);
+        this.holdTimeoutId = null;
+      }
     }
   };
   _handlePointerUp = (e, route) => {
@@ -2237,26 +2253,41 @@ class NavbarCard extends LitElement {
       this.holdTimeoutId = null;
     }
     if (this.holdTriggered && route.hold_action) {
-      fireDOMEvent(this, "hass-action", { bubbles: true, composed: true }, {
-        action: "hold",
-        config: {
-          hold_action: route.hold_action
+      if (route.hold_action.action === "open-popup") {
+        const popupItems = route.popup ?? route.submenu;
+        if (!popupItems) {
+          console.error("No popup items found for route:", route);
+        } else {
+          const target = e.currentTarget;
+          this._openPopup(popupItems, target);
         }
-      });
+      } else {
+        fireDOMEvent(this, "hass-action", { bubbles: true, composed: true }, {
+          action: "hold",
+          config: {
+            hold_action: route.hold_action
+          }
+        });
+      }
       this.holdTriggered = false;
     } else {
       this._handleClick(e, route);
     }
   };
-  _handleClick = (e, route, isPopup = false) => {
+  _handleClick = (e, route, isPopupItem = false) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!isPopup && route.submenu) {
-      hapticFeedback();
-      const target = e.currentTarget;
-      setTimeout(() => {
-        this._openPopup(route.submenu, target);
-      }, 100);
+    if (!isPopupItem && route.tap_action?.action === "open-popup") {
+      const popupItems = route.popup ?? route.submenu;
+      if (!popupItems) {
+        console.error("No popup items found for route:", route);
+      } else {
+        hapticFeedback();
+        const target = e.currentTarget;
+        setTimeout(() => {
+          this._openPopup(popupItems, target);
+        }, 100);
+      }
     } else if (route.tap_action != null) {
       hapticFeedback();
       fireDOMEvent(this, "hass-action", { bubbles: true, composed: true }, {
@@ -2266,7 +2297,7 @@ class NavbarCard extends LitElement {
         }
       });
       this._closePopup();
-    } else {
+    } else if (route.url) {
       de(this, route.url);
       this._closePopup();
     }
