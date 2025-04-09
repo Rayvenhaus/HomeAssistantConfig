@@ -48,9 +48,9 @@ _Stats as at 05:00, unknown_
 | Stat | Qty |
 | ---|--- |
 | HA Version | 2025.4.1 |
-| No. Integrations | 224 |
+| No. Integrations | 223 |
 | No. Custom Integrations | 103 |
-| No. Entities | 6028 |
+| No. Entities | 6026 |
 | No. Sensors | 3922 |
 | No. Automations | 159 |
 
@@ -85,7 +85,7 @@ Lights | 13
 Locks | 0
 Media players | 30
 Numbers | 52
-Persistent notifications | 4
+Persistent notifications | 5
 Persons | 4
 Remotes | 7
 Scenes | 2
@@ -115,7 +115,7 @@ Zones | 4
 Here is a list of all the integrations I use, including any Custom Components (which are also listed below)
 
 
-<details><summary>689 Integrations</summary>
+<details><summary>679 Integrations</summary>
 
 | Name |
 | --- |
@@ -389,16 +389,6 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [lastfm](https://www.home-assistant.io/components/lastfm) |
 | [lastfm.sensor](https://www.home-assistant.io/components/lastfm.sensor) |
 | [lg_thinq](https://www.home-assistant.io/components/lg_thinq) |
-| [lg_thinq.binary_sensor](https://www.home-assistant.io/components/lg_thinq.binary_sensor) |
-| [lg_thinq.climate](https://www.home-assistant.io/components/lg_thinq.climate) |
-| [lg_thinq.event](https://www.home-assistant.io/components/lg_thinq.event) |
-| [lg_thinq.fan](https://www.home-assistant.io/components/lg_thinq.fan) |
-| [lg_thinq.number](https://www.home-assistant.io/components/lg_thinq.number) |
-| [lg_thinq.select](https://www.home-assistant.io/components/lg_thinq.select) |
-| [lg_thinq.sensor](https://www.home-assistant.io/components/lg_thinq.sensor) |
-| [lg_thinq.switch](https://www.home-assistant.io/components/lg_thinq.switch) |
-| [lg_thinq.vacuum](https://www.home-assistant.io/components/lg_thinq.vacuum) |
-| [lg_thinq.water_heater](https://www.home-assistant.io/components/lg_thinq.water_heater) |
 | [light](https://www.home-assistant.io/components/light) |
 | [llmvision](https://www.home-assistant.io/components/llmvision) |
 | [local_ip](https://www.home-assistant.io/components/local_ip) |
@@ -835,7 +825,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Daily Sensor](https://github.com/jeroenterheerdt/HADailySensor) |  [v2024.10.1] | Sensor for Home Assistant that gets reset at midnight |[@jeroenterheerdt](https://github.com/jeroenterheerdt).|
 | [Default Config Disabler](https://github.com/tronikos/default_config_disabler) |  [v0.0.5] | Disables components from Home Assistant's default_config |[@tronikos](https://github.com/tronikos).|
 | [Device Tools](https://github.com/EuleMitKeule/device-tools) |  [v1.9.0] | Device Tools: Create, modify and merge your Home Assistant devices. |[@EuleMitKeule](https://github.com/EuleMitKeule).|
-| [Dynamic Energy Cost](https://github.com/martinarva/dynamic_energy_cost) |  [v0.7.5] | A Home Assistant integration to provide real-time and cumulative energy cost tracking, optimized for dynamic electricity prices like Nord Pool. |[@martinarva](https://github.com/martinarva).|
+| [Dynamic Energy Cost](https://github.com/martinarva/dynamic_energy_cost) |  [v0.8.0] | A Home Assistant integration to provide real-time and cumulative energy cost tracking, optimized for dynamic electricity prices like Nord Pool. |[@martinarva](https://github.com/martinarva).|
 | [Dyson](https://github.com/libdyson-wg/ha-dyson) |  [v1.5.2] | Home Assistant custom integration for Wi-Fi connected Dyson devices |[@libdyson-wg](https://github.com/libdyson-wg), [@dotvezz](https://github.com/dotvezz).|
 | [Emsc Earthquake](https://github.com/febalci/ha_emsc_earthquake) |  | Home Assistant Custom Component for Near Realtime Notifications of Earthquakes from EMSC |[@your_github_handle](https://github.com/your_github_handle).|
 | [Eufy Security](https://github.com/fuatakgun/eufy_security) |  [v8.1.1] | Home Assistant integration to manage Eufy Security devices as cameras, home base stations, doorbells, motion and contact sensors. |[@fuatakgun](https://github.com/fuatakgun).|
@@ -923,7 +913,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Bom Radar Card](https://github.com/Makin-Things/bom-radar-card) |  [v3.0.2] | A rain radar card using the new tiled images from the Australian BOM |
 | [Bubble Card](https://github.com/Clooos/Bubble-Card) |  [v2.5.0-beta.9] | Bubble Card is a minimalist card collection for Home Assistant with a nice pop-up touch. |
 | [Button Card](https://github.com/custom-cards/button-card) |  [v4.1.2] | ❇️ Lovelace button-card for home assistant |
-| [Calendar Card Pro](https://github.com/alexpfau/calendar-card-pro) |  [v2.3.1] | 📅 A sleek and highly customizable calendar card for Home Assistant, designed for performance and a clean, modern look. |
+| [Calendar Card Pro](https://github.com/alexpfau/calendar-card-pro) |  [v2.4.1] | 📅 A sleek and highly customizable calendar card for Home Assistant, designed for performance and a clean, modern look. |
 | [Card Mod](https://github.com/thomasloven/lovelace-card-mod) |  [v3.4.4] | 🔹 Add CSS styles to (almost) any lovelace card |
 | [Card Tools](https://github.com/thomasloven/lovelace-card-tools) |  [v11] | 🔹A collection of tools for other lovelace plugins to use |
 | [Clock Weather Card](https://github.com/pkissling/clock-weather-card) |  [v2.8.11] | A Home Assistant Card indicating today's date/time, along with an iOS inspired weather forecast for the next days with animated icons |
@@ -1004,7 +994,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | Cloudflared | 5.2.12 |  | 9074a9fa |
 | DbStats | 0.5.12 |  | 8bce8ef4 |
 | ESPHome Device Builder | 2025.3.3 |  | 15ef4d2f |
-| eufy-security-ws | 1.9.1 |  | 402f1039 |
+| eufy-security-ws | 1.9.2 |  | 402f1039 |
 | Get HACS | 1.3.1 |  | cb646a50 |
 | Glances | 0.21.1 |  | a0d7b954 |
 | GoSungrow | 3.0.7 |  | ba22da74 |
