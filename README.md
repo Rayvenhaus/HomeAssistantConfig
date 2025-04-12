@@ -48,10 +48,10 @@ _Stats as at 05:00, unknown_
 | Stat | Qty |
 | ---|--- |
 | HA Version | 2025.4.1 |
-| No. Integrations | 223 |
+| No. Integrations | 224 |
 | No. Custom Integrations | 103 |
-| No. Entities | 6029 |
-| No. Sensors | 3922 |
+| No. Entities | 5781 |
+| No. Sensors | 3757 |
 | No. Automations | 159 |
 
 <details>
@@ -71,7 +71,7 @@ Covers | 0
 Dates | 0
 Date/times | 0
 Device trackers | 54
-Devices | 605
+Devices | 606
 Fans | 3
 Humidifiers | 0
 Images | 7
@@ -83,7 +83,7 @@ Input selects | 3
 Input texts | 3
 Lights | 13
 Locks | 0
-Media players | 30
+Media players | 31
 Numbers | 52
 Persistent notifications | 5
 Persons | 4
@@ -91,7 +91,7 @@ Remotes | 7
 Scenes | 2
 Scripts | 85
 Selects | 57
-Sensors | 3922
+Sensors | 3757
 Sirens | 0
 Speech-to-text | 1
 Suns | 1
@@ -115,7 +115,7 @@ Zones | 4
 Here is a list of all the integrations I use, including any Custom Components (which are also listed below)
 
 
-<details><summary>679 Integrations</summary>
+<details><summary>687 Integrations</summary>
 
 | Name |
 | --- |
@@ -223,7 +223,6 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [custom_templates](https://www.home-assistant.io/components/custom_templates) |
 | [daily](https://www.home-assistant.io/components/daily) |
 | [daily.sensor](https://www.home-assistant.io/components/daily.sensor) |
-| [default_config](https://www.home-assistant.io/components/default_config) |
 | [default_config_disabler](https://www.home-assistant.io/components/default_config_disabler) |
 | [derivative](https://www.home-assistant.io/components/derivative) |
 | [derivative.sensor](https://www.home-assistant.io/components/derivative.sensor) |
@@ -308,7 +307,6 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [geo_location](https://www.home-assistant.io/components/geo_location) |
 | [github](https://www.home-assistant.io/components/github) |
 | [github.sensor](https://www.home-assistant.io/components/github.sensor) |
-| [go2rtc](https://www.home-assistant.io/components/go2rtc) |
 | [google](https://www.home-assistant.io/components/google) |
 | [google.calendar](https://www.home-assistant.io/components/google.calendar) |
 | [google_drive](https://www.home-assistant.io/components/google_drive) |
@@ -389,6 +387,16 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [lastfm](https://www.home-assistant.io/components/lastfm) |
 | [lastfm.sensor](https://www.home-assistant.io/components/lastfm.sensor) |
 | [lg_thinq](https://www.home-assistant.io/components/lg_thinq) |
+| [lg_thinq.binary_sensor](https://www.home-assistant.io/components/lg_thinq.binary_sensor) |
+| [lg_thinq.climate](https://www.home-assistant.io/components/lg_thinq.climate) |
+| [lg_thinq.event](https://www.home-assistant.io/components/lg_thinq.event) |
+| [lg_thinq.fan](https://www.home-assistant.io/components/lg_thinq.fan) |
+| [lg_thinq.number](https://www.home-assistant.io/components/lg_thinq.number) |
+| [lg_thinq.select](https://www.home-assistant.io/components/lg_thinq.select) |
+| [lg_thinq.sensor](https://www.home-assistant.io/components/lg_thinq.sensor) |
+| [lg_thinq.switch](https://www.home-assistant.io/components/lg_thinq.switch) |
+| [lg_thinq.vacuum](https://www.home-assistant.io/components/lg_thinq.vacuum) |
+| [lg_thinq.water_heater](https://www.home-assistant.io/components/lg_thinq.water_heater) |
 | [light](https://www.home-assistant.io/components/light) |
 | [llmvision](https://www.home-assistant.io/components/llmvision) |
 | [local_ip](https://www.home-assistant.io/components/local_ip) |
@@ -923,7 +931,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Custom Brand Icons](https://github.com/elax46/custom-brand-icons) |  [v2025.2.0] | Custom brand icons for Home Assistant |
 | [Custom Features For Home Assistant Cards](https://github.com/Nerwyn/service-call-tile-feature) |  [v4.3.4] | Home Assistant custom features for tile cards and more. Call any action using buttons, dropdowns, selectors, sliders, spinboxes, and toggles. |
 | [Decluttering Card](https://github.com/custom-cards/decluttering-card) |  [v1.0.0] | 🧹 Declutter your lovelace configuration with the help of this card |
-| [Device Card](https://github.com/homeassistant-extras/device-card) |  [v0.5.0] | Device Card to summarize device information in Home Assistant |
+| [Device Card](https://github.com/homeassistant-extras/device-card) |  [v0.8.0] | Device Card to summarize device information in Home Assistant |
 | [Digital Clock](https://github.com/wassy92x/lovelace-digital-clock) |  [v1.2.4] | A custom digital clock card for Home Assistant |
 | [Easy Layout Card](https://github.com/kamtschatka/lovelace-easy-layout-card) |  | A modified version of the layout-card with an easier way to configure cards |
 | [Expander Card](https://github.com/MelleD/lovelace-expander-card) |  [v2.3.2] | Expander card for HomeAssistant |
@@ -999,11 +1007,11 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | Glances | 0.21.1 |  | a0d7b954 |
 | GoSungrow | 3.0.7 |  | ba22da74 |
 | Home Assistant Google Drive Backup | 0.112.1 |  | cebe7a76 |
-| Home Assistant Stream Deck | 2024.7.5 |  | dc473884 |
+| Home Assistant Stream Deck | 2025.4.3 |  | dc473884 |
 | JupyterLab | 0.15.9 |  | a0d7b954 |
 | MariaDB | 2.7.2 |  | core |
 | Matter Server | 7.0.0 |  | core |
-| Music Assistant Server | 2.5.0 |  | d5369777 |
+| Music Assistant Server | 2.5.1 |  | d5369777 |
 | Node-RED | 19.0.2 |  | a0d7b954 |
 | OpenThread Border Router | 2.13.0 |  | core |
 | phpMyAdmin | 0.11.1 |  | a0d7b954 |
