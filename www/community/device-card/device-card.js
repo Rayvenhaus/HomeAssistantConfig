@@ -1,10 +1,4 @@
-/**
- * Device Card Registration Module
- *
- * This module handles the registration of the Device Card custom element
- * with the browser and Home Assistant's custom card registry. It makes the
- * component available for use in Home Assistant dashboards.
- */ /******************************************************************************
+/******************************************************************************
 Copyright (c) Microsoft Corporation.
 
 Permission to use, copy, modify, and/or distribute this software for any
@@ -543,6 +537,19 @@ var $24c52f343453d62d$export$2e2bcd8739ae039 = {
 };
 
 
+/**
+ * Configuration utilities for feature flag management
+ */ const $a64cd1666b27644b$export$805ddaeeece0413e = (config, feature)=>!config || config.features?.includes(feature) || false;
+
+
+const $5bd3a7e1f19a6de3$export$30c823bc834d6ab4 = (hass, deviceId)=>hass.devices[deviceId];
+
+
+/**
+ * https://github.com/home-assistant/frontend/blob/dev/src/common/entity/compute_domain.ts
+ */ const $e7dc90bb09bfe22d$export$2044bdc9670769ab = (entityId)=>entityId.substring(0, entityId.indexOf('.'));
+
+
 const $e24dedcf9e480b2d$export$50fdfeece43146fd = (hass, entityId, fakeState = false)=>{
     if (!entityId) return undefined;
     const state = hass.states[entityId] || (fakeState ? {
@@ -588,10 +595,6 @@ const $fa460070836bbf6d$export$8ccd97e727a09c65 = [
 const $fa460070836bbf6d$export$dea4173a348a2153 = (0, $2dcc326b5e422db7$export$2fff862a498eed4d)($fa460070836bbf6d$export$565a86226f245f0b);
 const $fa460070836bbf6d$export$3473ff6928139ced = (0, $2dcc326b5e422db7$export$2fff862a498eed4d)($fa460070836bbf6d$export$8ccd97e727a09c65);
 
-
-/**
- * https://github.com/home-assistant/frontend/blob/dev/src/common/entity/compute_domain.ts
- */ const $e7dc90bb09bfe22d$export$2044bdc9670769ab = (entityId)=>entityId.substring(0, entityId.indexOf('.'));
 
 
 function $043ab5348dd51237$export$c0e85c3982a3daa6(stateObj, state) {
@@ -673,7 +676,9 @@ const $093edc2594769ee5$export$c6a2d06cc40e579 = (hass, config, deviceId, device
             isActive: active,
             config: {
                 tap_action: config.tap_action,
-                hold_action: config.hold_action,
+                hold_action: config.hold_action || {
+                    action: 'more-info'
+                },
                 double_tap_action: config.double_tap_action
             },
             attributes: {
@@ -686,50 +691,58 @@ const $093edc2594769ee5$export$c6a2d06cc40e579 = (hass, config, deviceId, device
 };
 
 
-/**
- * https://github.com/home-assistant/frontend/blob/dev/src/common/dom/fire_event.ts
- */ // Polymer legacy event helpers used courtesy of the Polymer project.
-//
-// Copyright (c) 2017 The Polymer Authors. All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-//
-//    * Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-//    * Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-//    * Neither the name of Google Inc. nor the names of its
-// contributors may be used to endorse or promote products derived from
-// this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-const $9c83ab07519e6203$export$43835e9acf248a15 = (node, type, detail, options)=>{
-    options = options || {};
-    // @ts-ignore
-    detail = detail === null || detail === undefined ? {} : detail;
-    const event = new Event(type, {
-        bubbles: options.bubbles === undefined ? true : options.bubbles,
-        cancelable: Boolean(options.cancelable),
-        composed: options.composed === undefined ? true : options.composed
+const $562e4e067cd81a2b$export$30c823bc834d6ab4 = (hass, config)=>{
+    const device = {
+        sensors: [],
+        controls: [],
+        diagnostics: [],
+        configurations: []
+    };
+    const hassDevice = (0, $5bd3a7e1f19a6de3$export$30c823bc834d6ab4)(hass, config.device_id);
+    if (!hassDevice) return undefined;
+    device.name = hassDevice.name || 'Device';
+    device.model = [
+        hassDevice.manufacturer,
+        hassDevice.model,
+        hassDevice.model_id
+    ].filter((s)=>s).join(' ');
+    const entities = (0, $093edc2594769ee5$export$c6a2d06cc40e579)(hass, config, hassDevice.id, hassDevice.name);
+    entities.forEach((entity)=>{
+        if (config.exclude_entities?.includes(entity.entity_id)) return;
+        if (entity.category === 'diagnostic') {
+            if (config.exclude_sections?.includes('diagnostics')) return;
+            device.diagnostics.push(entity);
+        } else if (entity.category === 'config') {
+            if (config.exclude_sections?.includes('configurations')) return;
+            device.configurations.push(entity);
+        } else {
+            const domain = (0, $e7dc90bb09bfe22d$export$2044bdc9670769ab)(entity.entity_id);
+            if ([
+                'text',
+                'button',
+                'number',
+                'switch',
+                'select'
+            ].includes(domain)) {
+                if (config.exclude_sections?.includes('controls')) return;
+                device.controls.push(entity);
+            } else {
+                if (config.exclude_sections?.includes('sensors')) return;
+                // everything else is a sensor
+                device.sensors.push(entity);
+            }
+        }
     });
-    event.detail = detail;
-    node.dispatchEvent(event);
-    return event;
+    return device;
 };
+
+
+const $8dc66e7a4cb4d971$export$3b8a32145ce395a1 = (unit)=>unit ? [
+        ...unit.controls,
+        ...unit.sensors,
+        ...unit.diagnostics,
+        ...unit.configurations
+    ].some((entity)=>entity.isProblemEntity && entity.isActive) : false;
 
 
 /**
@@ -1343,6 +1356,663 @@ const $ab210b2da7b39b9d$export$f5c524615a7708d6 = {
 
 
 
+const $fc7b5ec53f835fd3$export$9dd6ff9ea0189349 = (0, $def2de46b9306e8a$export$dbf350e5966cf602)`
+  :host {
+    --icon-color: var(--primary-text-color);
+    --section-color: var(--secondary-text-color);
+    --row-height: 40px;
+  }
+
+  ha-card {
+    padding: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-header {
+    padding: 0px 0px 10px 16px;
+    line-height: 35px;
+    border-bottom: 1px solid var(--divider-color);
+    margin-bottom: 8px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Style for when card is on fire */
+  .problem::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: var(--ha-card-border-radius, 12px);
+    background: var(--error-color);
+    opacity: 0.08;
+    z-index: -1;
+  }
+
+  /* Section header with expand/collapse functionality */
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .section-title {
+    font-weight: 500;
+    color: var(--section-color);
+    padding: 4px 0 4px 0; /* Reduced top padding for all sections */
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+  }
+
+  .section-chevron {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    color: var(--secondary-text-color);
+    display: flex;
+    align-items: center;
+  }
+
+  .section-footer {
+    text-align: center;
+    padding: 4px 0;
+  }
+
+  .show-more {
+    color: var(--primary-color);
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 4px 0;
+  }
+
+  .show-more:hover {
+    text-decoration: underline;
+  }
+
+  .model {
+    font-size: 0.9rem;
+    color: var(--secondary-text-color);
+  }
+
+  /* Base section spacing */
+  .section {
+    margin-bottom: 16px;
+  }
+
+  /* Apply larger margin only to expanded sections or those with fewer than 5 items */
+  .section.expanded:not(:last-child):not(.compact),
+  .section.few-items:not(:last-child):not(.compact) {
+    margin-bottom: 40px;
+  }
+
+  ha-icon {
+    color: var(--icon-color);
+    width: 22px;
+    height: 22px;
+  }
+
+  /* Container for a row */
+  .row {
+    position: relative;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .row:hover {
+    background-color: var(--secondary-background-color);
+  }
+
+  .row.expanded-row {
+    margin-bottom: 8px;
+  }
+
+  /* Style for the status colors */
+  .row.status-ok {
+    border-left: 2px solid var(--success-color);
+  }
+  .status-ok {
+    --primary-text-color: var(--success-color);
+  }
+
+  .row.status-warning {
+    border-left: 2px solid var(--warning-color);
+  }
+  .status-warning {
+    --primary-text-color: var(--warning-color);
+  }
+
+  .row.status-error {
+    border-left: 2px solid var(--error-color);
+  }
+  .status-error {
+    --primary-text-color: var(--error-color);
+  }
+
+  /* Style for the percentage bar that goes below the state-card-content */
+  .percent-gauge {
+    position: absolute;
+    bottom: 1px;
+    left: 10px;
+    width: 98%;
+    height: 4px;
+    background-color: var(--divider-color, #333);
+    overflow: hidden;
+    border-radius: 0 0 4px 4px;
+  }
+
+  /* The colored fill part of the gauge */
+  .percent-gauge-fill {
+    height: 100%;
+    background-color: var(--primary-color);
+    transition:
+      width 0.3s ease,
+      background-color 0.3s ease;
+  }
+
+  /* Color variations based on percentage */
+  .percent-gauge-fill.high {
+    background-color: var(--success-color, #4caf50);
+  }
+
+  .percent-gauge-fill.medium {
+    background-color: var(--warning-color, #ffc107);
+  }
+
+  .percent-gauge-fill.low {
+    background-color: var(--error-color, #f44336);
+  }
+
+  /* Entity attributes section */
+  .entity-attributes {
+    padding: 4px 16px 8px;
+    margin: 0 0 4px 50px;
+    font-size: 0.9rem;
+    border-left: 1px solid var(--divider-color);
+  }
+
+  .entity-attributes-empty {
+    padding: 4px 16px 8px;
+    margin: 0 0 4px 50px;
+    color: var(--secondary-text-color);
+    font-style: italic;
+    font-size: 0.9rem;
+  }
+
+  .attribute-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 0;
+    border-bottom: 1px dotted var(--divider-color);
+  }
+
+  .attribute-row:last-child {
+    border-bottom: none;
+  }
+
+  .attribute-key {
+    font-weight: 500;
+    color: var(--secondary-text-color);
+    flex: 1;
+  }
+
+  .attribute-value {
+    color: var(--primary-text-color);
+    flex: 2;
+    text-align: right;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  /* Kitty pics */
+  .portrait {
+    background: none;
+  }
+
+  .portrait img {
+    width: 100%;
+    border-radius: var(--ha-card-border-radius, 12px);
+  }
+
+  .portrait .title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+
+/**
+ * @file section.ts
+ * @description Section rendering for the device card
+ * This file handles the rendering of collapsible sections within the device card,
+ * organizing entities by their type (sensors, controls, etc.) and managing
+ * expandable/collapsible behavior.
+ */ /**
+ * @file section.ts
+ * @description Section rendering for the device card
+ * This file handles the rendering of collapsible sections within the device card,
+ * organizing entities by their type (sensors, controls, etc.) and managing
+ * expandable/collapsible behavior.
+ */ 
+
+/**
+ * @file row.ts
+ * @description Entity row rendering for the device card
+ * This file handles the rendering of individual entity rows within the device card,
+ * including their state content, percentage bars, and expandable attribute details.
+ */ /**
+ * https://github.com/home-assistant/frontend/blob/dev/src/common/dom/fire_event.ts
+ */ // Polymer legacy event helpers used courtesy of the Polymer project.
+//
+// Copyright (c) 2017 The Polymer Authors. All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+//    * Redistributions of source code must retain the above copyright
+// notice, this list of conditions and the following disclaimer.
+//    * Redistributions in binary form must reproduce the above
+// copyright notice, this list of conditions and the following disclaimer
+// in the documentation and/or other materials provided with the
+// distribution.
+//    * Neither the name of Google Inc. nor the names of its
+// contributors may be used to endorse or promote products derived from
+// this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+const $9c83ab07519e6203$export$43835e9acf248a15 = (node, type, detail, options)=>{
+    options = options || {};
+    // @ts-ignore
+    detail = detail === null || detail === undefined ? {} : detail;
+    const event = new Event(type, {
+        bubbles: options.bubbles === undefined ? true : options.bubbles,
+        cancelable: Boolean(options.cancelable),
+        composed: options.composed === undefined ? true : options.composed
+    });
+    event.detail = detail;
+    node.dispatchEvent(event);
+    return event;
+};
+
+
+/**
+ * https://github.com/home-assistant/frontend/blob/dev/src/panels/lovelace/common/directives/action-handler-directive.ts
+ */ 
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */ const $107bb7d062dde330$export$9ba3b3f20a85bfa = {
+    ATTRIBUTE: 1,
+    CHILD: 2,
+    PROPERTY: 3,
+    BOOLEAN_ATTRIBUTE: 4,
+    EVENT: 5,
+    ELEMENT: 6
+}, $107bb7d062dde330$export$99b43ad1ed32e735 = (t)=>(...e)=>({
+            _$litDirective$: t,
+            values: e
+        });
+class $107bb7d062dde330$export$befdefbdce210f91 {
+    constructor(t){}
+    get _$AU() {
+        return this._$AM._$AU;
+    }
+    _$AT(t, e, i) {
+        this._$Ct = t, this._$AM = e, this._$Ci = i;
+    }
+    _$AS(t, e) {
+        return this.update(t, e);
+    }
+    update(t, e) {
+        return this.render(...e);
+    }
+}
+
+
+
+
+const $69fb27e443983086$var$getActionHandler = ()=>{
+    const body = document.body;
+    if (body.querySelector('action-handler')) return body.querySelector('action-handler');
+    const actionhandler = document.createElement('action-handler');
+    body.appendChild(actionhandler);
+    return actionhandler;
+};
+const $69fb27e443983086$export$520aee61eb0a2770 = (element, options)=>{
+    const actionhandler = $69fb27e443983086$var$getActionHandler();
+    if (!actionhandler) return;
+    actionhandler.bind(element, options);
+};
+const $69fb27e443983086$export$8a44987212de21b = (0, $107bb7d062dde330$export$99b43ad1ed32e735)(class extends (0, $107bb7d062dde330$export$befdefbdce210f91) {
+    update(part, [options]) {
+        $69fb27e443983086$export$520aee61eb0a2770(part.element, options);
+        return 0, $f58f44579a4747ac$export$9c068ae9cc5db4e8;
+    }
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    render(_options) {}
+});
+
+
+/**
+ * Toggles the expanded state of an entity row to show/hide attributes
+ *
+ * @param {DeviceCard} element - The device card component instance
+ * @param {string} entityId - The entity ID to toggle
+ * @param {Event} e - The click event that triggered the toggle
+ */ const $57febad8376708f1$var$toggleEntityAttributes = (element, entityId, e)=>{
+    // Prevent event from bubbling up
+    e.stopPropagation();
+    // Initialize expandedEntities if it doesn't exist
+    if (!element.expandedEntities) element.expandedEntities = {};
+    // Create a new expandedEntities object with the toggled entity
+    element.expandedEntities = {
+        ...element.expandedEntities,
+        [entityId]: !element.expandedEntities[entityId]
+    };
+};
+const $57febad8376708f1$export$8a44987212de21b = (entity)=>{
+    const isActionEnabled = (actionConfig)=>actionConfig?.action !== 'none' && actionConfig?.action !== undefined;
+    return (0, $69fb27e443983086$export$8a44987212de21b)({
+        hasDoubleClick: isActionEnabled(entity.config?.double_tap_action),
+        hasHold: isActionEnabled(entity.config?.hold_action)
+    });
+};
+const $57febad8376708f1$export$3d3654ce4577c53d = (element, config, entity)=>{
+    return {
+        /**
+     * Handles an action event by creating and dispatching a 'hass-action' custom event.
+     * The event contains the entity configuration and the action type (tap, double_tap, hold).
+     *
+     * @param {ActionHandlerEvent} ev - The action handler event to process
+     */ handleEvent: (ev)=>{
+            // Extract action from event detail
+            const action = ev.detail?.action;
+            if (!action) return;
+            // If the action is 'tap' and no specific tap action is set, toggle entity attributes
+            if (action === 'tap' && !entity.config?.tap_action) {
+                $57febad8376708f1$var$toggleEntityAttributes(element, entity.entity_id, ev);
+                return;
+            }
+            // Create configuration object for the action
+            const actionConfig = {
+                entity: entity.entity_id,
+                ...entity.config
+            };
+            // @ts-ignore
+            (0, $9c83ab07519e6203$export$43835e9acf248a15)(element, 'hass-action', {
+                config: actionConfig,
+                action: action
+            });
+        }
+    };
+};
+
+
+
+
+const $5cc8c88379d13dba$export$16bd37df0047a29c = (attributes)=>{
+    // Filter out common attributes that are less interesting or already shown
+    const filteredAttributes = {
+        ...attributes
+    };
+    // List of attributes to exclude
+    const excludeList = [
+        'icon',
+        'friendly_name',
+        'entity_picture',
+        'supported_features',
+        'assumed_state',
+        'attribution',
+        'hidden'
+    ];
+    excludeList.forEach((attr)=>delete filteredAttributes[attr]);
+    const attributeEntries = Object.entries(filteredAttributes);
+    if (attributeEntries.length === 0) return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<div class="entity-attributes-empty">
+      No additional attributes
+    </div>`;
+    return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
+    <div class="entity-attributes">
+      ${attributeEntries.map(([key, value])=>(0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
+          <div class="attribute-row">
+            <span class="attribute-key">${key}:</span>
+            <span class="attribute-value"
+              >${typeof value === 'object' ? JSON.stringify(value) : value}</span
+            >
+          </div>
+        `)}
+    </div>
+  `;
+};
+
+
+
+
+
+/**
+ * @license
+ * Copyright 2018 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */ const $19f464fcda7d2482$var$n = "important", $19f464fcda7d2482$var$i = " !" + $19f464fcda7d2482$var$n, $19f464fcda7d2482$export$1e5b4ce2fa884e6a = (0, $107bb7d062dde330$export$99b43ad1ed32e735)(class extends (0, $107bb7d062dde330$export$befdefbdce210f91) {
+    constructor(t){
+        if (super(t), t.type !== (0, $107bb7d062dde330$export$9ba3b3f20a85bfa).ATTRIBUTE || "style" !== t.name || t.strings?.length > 2) throw Error("The `styleMap` directive must be used in the `style` attribute and must be the only part in the attribute.");
+    }
+    render(t) {
+        return Object.keys(t).reduce((e, r)=>{
+            const s = t[r];
+            return null == s ? e : e + `${r = r.includes("-") ? r : r.replace(/(?:^(webkit|moz|ms|o)|)(?=[A-Z])/g, "-$&").toLowerCase()}:${s};`;
+        }, "");
+    }
+    update(e, [r]) {
+        const { style: s } = e.element;
+        if (void 0 === this.ft) return this.ft = new Set(Object.keys(r)), this.render(r);
+        for (const t of this.ft)null == r[t] && (this.ft.delete(t), t.includes("-") ? s.removeProperty(t) : s[t] = null);
+        for(const t in r){
+            const e = r[t];
+            if (null != e) {
+                this.ft.add(t);
+                const r = "string" == typeof e && e.endsWith($19f464fcda7d2482$var$i);
+                t.includes("-") || r ? s.setProperty(t, r ? e.slice(0, -11) : e, r ? $19f464fcda7d2482$var$n : "") : s[t] = e;
+            }
+        }
+        return 0, $f58f44579a4747ac$export$9c068ae9cc5db4e8;
+    }
+});
+
+
+
+
+const $a6a6434f1848f426$export$40075bc608c4544e = (entity)=>{
+    // Extract the percentage value from the entity state
+    const percentage = Number(entity.state);
+    // Determine the color class based on percentage value
+    const colorClass = percentage > 60 ? 'high' : percentage > 30 ? 'medium' : 'low';
+    return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
+    <div class="percent-gauge">
+      <div
+        class="percent-gauge-fill ${colorClass}"
+        style=${(0, $19f464fcda7d2482$export$1e5b4ce2fa884e6a)({
+        width: `${percentage}%`
+    })}
+      ></div>
+    </div>
+  `;
+};
+
+
+
+const $91384c06f34fa41f$export$535a09426ee2ea59 = (hass, entity, className)=>(0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<state-card-content
+    .hass=${hass}
+    .stateObj=${entity}
+    class="${className}"
+  ></state-card-content>`;
+
+
+const $68e7242076c3e34e$export$120ff0929b202a6d = (hass, config, entity, element)=>{
+    let statusClassName;
+    // Determine status class based on problem state
+    if (entity.isProblemEntity) // Add color to problem class based on state
+    statusClassName = entity.isActive ? 'status-error' : 'status-ok';
+    // Determine if we should show a percentage bar
+    const showBar = entity.attributes.state_class === 'measurement' && entity.attributes.unit_of_measurement === '%';
+    // Check if this entity's details are expanded
+    const isEntityExpanded = element.expandedEntities[entity.entity_id] || false;
+    return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)` <div
+    class="${[
+        'row',
+        statusClassName,
+        isEntityExpanded ? 'expanded-row' : ''
+    ].join(' ')}"
+    @action=${(0, $57febad8376708f1$export$3d3654ce4577c53d)(element, config, entity)}
+    .actionHandler=${(0, $57febad8376708f1$export$8a44987212de21b)(entity)}
+  >
+    <div class="row-content">
+      ${(0, $91384c06f34fa41f$export$535a09426ee2ea59)(hass, entity, statusClassName)}
+      ${showBar ? (0, $a6a6434f1848f426$export$40075bc608c4544e)(entity) : (0, $f58f44579a4747ac$export$45b790e32b2810ee)}
+    </div>
+    ${isEntityExpanded ? (0, $5cc8c88379d13dba$export$16bd37df0047a29c)(entity.attributes) : (0, $f58f44579a4747ac$export$45b790e32b2810ee)}
+  </div>`;
+};
+
+
+/**
+ * @file show-more.ts
+ * @description UI components for expandable section toggling in the device card
+ * This file contains components for the chevron icon and "show more" buttons that
+ * allow sections to be expanded and collapsed.
+ */ 
+/**
+ * Toggles the expanded state of a section in the device card
+ *
+ * @param {DeviceCard} element - The device card component instance
+ * @param {string} sectionTitle - The title of the section to toggle
+ * @param {Event} e - The click event that triggered the toggle
+ */ const $2ae7b32fc5b69f7f$var$toggleSection = (element, sectionTitle, e)=>{
+    const expandedSections = element.expandedSections;
+    // Create a new expanded sections object with the toggled section
+    element.expandedSections = {
+        ...expandedSections,
+        [sectionTitle]: !expandedSections[sectionTitle]
+    };
+};
+const $2ae7b32fc5b69f7f$export$980c1089c0604ea3 = (element, title, isExpanded)=>(0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<div
+    class="section-chevron ${isExpanded ? 'expanded' : ''}"
+    @click=${(e)=>$2ae7b32fc5b69f7f$var$toggleSection(element, title, e)}
+  >
+    <ha-icon icon="mdi:chevron-${isExpanded ? 'up' : 'down'}"></ha-icon>
+  </div>`;
+const $2ae7b32fc5b69f7f$export$ae9a281c4379b144 = (element, title, entities, isExpanded, size)=>(0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<div class="section-footer">
+    ${isExpanded ? (0, $f58f44579a4747ac$export$45b790e32b2810ee) : (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
+          <div
+            class="show-more"
+            @click=${(e)=>$2ae7b32fc5b69f7f$var$toggleSection(element, title, e)}
+          >
+            Show ${entities.length - size} more...
+          </div>
+        `}
+  </div>`;
+
+
+const $9b8ea5fddc8bd48e$export$4c0287abd2ec956e = (element, hass, config, title, entities)=>{
+    // Don't render anything if there are no entities to display
+    if (!entities || entities.length === 0) return 0, $f58f44579a4747ac$export$45b790e32b2810ee;
+    // Determine how many entities to preview based on config
+    const size = config.preview_count || 3;
+    // Check if this section needs collapsible functionality
+    const needsExpansion = entities.length > size;
+    // Get the current expanded state from the element
+    const isExpanded = element.expandedSections[title] || false;
+    // Filter entities based on expanded state
+    const displayEntities = needsExpansion && !isExpanded ? entities.slice(0, size) : entities;
+    // Determine section class based on expanded state, number of items, and compact feature
+    const isCompact = (0, $a64cd1666b27644b$export$805ddaeeece0413e)(config, 'compact');
+    const sectionClass = `section ${isExpanded ? 'expanded' : ''} ${!needsExpansion ? 'few-items' : ''} ${isCompact ? 'compact' : ''}`;
+    // Initialize expandedEntities if it doesn't exist
+    if (!element.expandedEntities) element.expandedEntities = {};
+    return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<div class="${sectionClass}">
+    <div class="section-header">
+      <div class="section-title">${title}</div>
+      ${needsExpansion ? (0, $2ae7b32fc5b69f7f$export$980c1089c0604ea3)(element, title, isExpanded) : (0, $f58f44579a4747ac$export$45b790e32b2810ee)}
+    </div>
+    ${displayEntities.map((entity)=>(0, $68e7242076c3e34e$export$120ff0929b202a6d)(hass, config, entity, element))}
+    ${needsExpansion && !isCompact ? (0, $2ae7b32fc5b69f7f$export$ae9a281c4379b144)(element, title, entities, isExpanded, size) : (0, $f58f44579a4747ac$export$45b790e32b2810ee)}
+  </div>`;
+};
+
+
+const $10f7eb590266dd05$export$7dcefa9ef83b8269 = (element, hass, config, device)=>{
+    const sectionConfig = [
+        {
+            name: 'Controls',
+            key: 'controls',
+            entities: device.controls
+        },
+        {
+            name: 'Configuration',
+            key: 'configurations',
+            entities: device.configurations
+        },
+        {
+            name: 'Sensors',
+            key: 'sensors',
+            entities: device.sensors
+        },
+        {
+            name: 'Diagnostic',
+            key: 'diagnostics',
+            entities: device.diagnostics
+        }
+    ];
+    let orderedSections = [];
+    // if custom order is provided, reorder the sections
+    if (config.section_order && config.section_order.length > 0) {
+        orderedSections = config.section_order.map((section)=>sectionConfig.find((s)=>s.key === section)).filter((section)=>section !== undefined);
+        sectionConfig.forEach((section)=>{
+            if (!orderedSections.some((s)=>s?.key === section.key)) orderedSections.push(section);
+        });
+    } else // default order
+    orderedSections = sectionConfig;
+    return orderedSections.map((section)=>(0, $9b8ea5fddc8bd48e$export$4c0287abd2ec956e)(element, hass, config, section.name, section.entities));
+};
+
+
+
+const $856d8633325a4fe5$export$1188214e9d38144e = (device)=>{
+    const entity = device.sensors.find((sensor)=>sensor.attributes.entity_picture !== undefined);
+    if (!entity) return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<ha-alert alert-type="error"
+      >No entity picture found!</ha-alert
+    >`;
+    return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<ha-card class="portrait">
+    <img src=${entity.attributes.entity_picture} />
+    <div class="title">
+      <span>${device.name}</span>
+    </div>
+  </ha-card>`;
+};
+
+
+
 /**
  * @license
  * Copyright 2017 Google LLC
@@ -1535,7 +2205,125 @@ function $ed34c589b230c255$export$dcd0d083aa86c355(r) {
 
 
 
-const $b642db848cc622aa$var$getSchema = (entityIds)=>[
+var $b06602ab53bd58a3$exports = {};
+$b06602ab53bd58a3$exports = JSON.parse("{\"name\":\"device-card\",\"version\":\"0.7.0\",\"author\":\"Patrick Masters\",\"license\":\"ISC\",\"description\":\"Custom Home Assistant card to show info about your devices.\",\"source\":\"src/index.ts\",\"module\":\"dist/device-card.js\",\"targets\":{\"module\":{\"includeNodeModules\":true}},\"scripts\":{\"watch\":\"parcel watch\",\"build\":\"parcel build\",\"test\":\"TS_NODE_PROJECT='./tsconfig.test.json' mocha\",\"test:coverage\":\"nyc npm run test\",\"test:watch\":\"TS_NODE_PROJECT='./tsconfig.test.json' mocha --watch\",\"update\":\"npx npm-check-updates -u && npm i\"},\"devDependencies\":{\"@istanbuljs/nyc-config-typescript\":\"^1.0.2\",\"@open-wc/testing\":\"^4.0.0\",\"@parcel/transformer-inline-string\":\"^2.14.4\",\"@testing-library/dom\":\"^10.4.0\",\"@trivago/prettier-plugin-sort-imports\":\"^5.2.2\",\"@types/chai\":\"^5.2.1\",\"@types/jsdom\":\"^21.1.7\",\"@types/mocha\":\"^10.0.10\",\"@types/sinon\":\"^17.0.4\",\"chai\":\"^5.2.0\",\"jsdom\":\"^26.0.0\",\"mocha\":\"^11.1.0\",\"nyc\":\"^17.1.0\",\"parcel\":\"^2.14.4\",\"prettier\":\"3.5.3\",\"prettier-plugin-organize-imports\":\"^4.1.0\",\"proxyquire\":\"^2.1.3\",\"sinon\":\"^20.0.0\",\"ts-node\":\"^10.9.2\",\"tsconfig-paths\":\"^4.2.0\",\"typescript\":\"^5.8.3\"},\"dependencies\":{\"@lit/task\":\"^1.0.2\",\"fast-deep-equal\":\"^3.1.3\",\"lit\":\"^3.2.1\"}}");
+
+
+var $30856da572fd852b$exports = {};
+'use strict';
+// do not edit .js files directly - edit src/index.jst
+$30856da572fd852b$exports = function equal(a, b) {
+    if (a === b) return true;
+    if (a && b && typeof a == 'object' && typeof b == 'object') {
+        if (a.constructor !== b.constructor) return false;
+        var length, i, keys;
+        if (Array.isArray(a)) {
+            length = a.length;
+            if (length != b.length) return false;
+            for(i = length; i-- !== 0;)if (!equal(a[i], b[i])) return false;
+            return true;
+        }
+        if (a.constructor === RegExp) return a.source === b.source && a.flags === b.flags;
+        if (a.valueOf !== Object.prototype.valueOf) return a.valueOf() === b.valueOf();
+        if (a.toString !== Object.prototype.toString) return a.toString() === b.toString();
+        keys = Object.keys(a);
+        length = keys.length;
+        if (length !== Object.keys(b).length) return false;
+        for(i = length; i-- !== 0;)if (!Object.prototype.hasOwnProperty.call(b, keys[i])) return false;
+        for(i = length; i-- !== 0;){
+            var key = keys[i];
+            if (!equal(a[key], b[key])) return false;
+        }
+        return true;
+    }
+    // true if both NaN, false otherwise
+    return a !== a && b !== b;
+};
+
+
+class $76efc5be730c974a$export$cee8aa229c046b5e extends (0, $ab210b2da7b39b9d$export$3f2f9f5909897157) {
+    constructor(){
+        super(), /**
+   * Track expanded state of sections
+   */ this.expandedSections = {}, /**
+   * Track expanded state of entity attributes
+   */ this.expandedEntities = {};
+        console.info(`%c\u{1F431} Poat's Tools: device-card-card - ${(0, $b06602ab53bd58a3$exports.version)}`, 'color: #CFC493;');
+    }
+    /**
+   * Returns the component's styles
+   */ static get styles() {
+        return 0, $fc7b5ec53f835fd3$export$9dd6ff9ea0189349;
+    }
+    /**
+   * Sets up the card configuration
+   * @param {Config} config - The card configuration
+   */ setConfig(config) {
+        if (!$30856da572fd852b$exports(config, this._config)) this._config = config;
+    }
+    // required for integration card
+    set config(config) {
+        this.setConfig(config);
+    }
+    /**
+   * Updates the card's state when Home Assistant state changes
+   * @param {HomeAssistant} hass - The Home Assistant instance
+   */ set hass(hass) {
+        this._hass = hass;
+        const device = (0, $562e4e067cd81a2b$export$30c823bc834d6ab4)(hass, this._config);
+        if (device && !$30856da572fd852b$exports(device, this._device)) this._device = device;
+    }
+    // card configuration
+    static getConfigElement() {
+        return document.createElement('device-card-editor');
+    }
+    static async getStubConfig(hass) {
+        const device = Object.values(hass.devices)[0];
+        return {
+            device_id: device?.id || ''
+        };
+    }
+    /**
+   * renders the lit element card
+   * @returns {TemplateResult} The rendered HTML template
+   */ render() {
+        if (!this._device) return 0, $f58f44579a4747ac$export$45b790e32b2810ee;
+        if ((0, $a64cd1666b27644b$export$805ddaeeece0413e)(this._config, 'entity_picture')) return (0, $856d8633325a4fe5$export$1188214e9d38144e)(this._device);
+        const problem = (0, $8dc66e7a4cb4d971$export$3b8a32145ce395a1)(this._device);
+        return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
+      <ha-card class="${problem ? 'problem' : ''}">
+        <div class="card-header">
+          <div class="title">
+            <span>${this._config.title || this._device.name}</span>
+            ${(0, $a64cd1666b27644b$export$805ddaeeece0413e)(this._config, 'hide_device_model') ? (0, $f58f44579a4747ac$export$45b790e32b2810ee) : (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<span class="model">${this._device.model}</span>`}
+          </div>
+        </div>
+
+        ${(0, $10f7eb590266dd05$export$7dcefa9ef83b8269)(this, this._hass, this._config, this._device)}
+      </ha-card>
+    `;
+    }
+}
+(0, $24c52f343453d62d$export$29e00dfd3077644b)([
+    (0, $04c21ea1ce1f6057$export$ca000e230c0caa3e)()
+], $76efc5be730c974a$export$cee8aa229c046b5e.prototype, "_config", void 0);
+(0, $24c52f343453d62d$export$29e00dfd3077644b)([
+    (0, $04c21ea1ce1f6057$export$ca000e230c0caa3e)()
+], $76efc5be730c974a$export$cee8aa229c046b5e.prototype, "_device", void 0);
+(0, $24c52f343453d62d$export$29e00dfd3077644b)([
+    (0, $04c21ea1ce1f6057$export$ca000e230c0caa3e)()
+], $76efc5be730c974a$export$cee8aa229c046b5e.prototype, "expandedSections", void 0);
+(0, $24c52f343453d62d$export$29e00dfd3077644b)([
+    (0, $04c21ea1ce1f6057$export$ca000e230c0caa3e)()
+], $76efc5be730c974a$export$cee8aa229c046b5e.prototype, "expandedEntities", void 0);
+
+
+
+
+
+
+
+const $4d8f78da09198f60$var$getSchema = (entityIds)=>[
         {
             name: 'device_id',
             selector: {
@@ -1652,6 +2440,10 @@ const $b642db848cc622aa$var$getSchema = (entityIds)=>[
                                 {
                                     label: 'Hide Device Model',
                                     value: 'hide_device_model'
+                                },
+                                {
+                                    label: 'Compact Layout',
+                                    value: 'compact'
                                 }
                             ]
                         }
@@ -1701,7 +2493,7 @@ const $b642db848cc622aa$var$getSchema = (entityIds)=>[
             ]
         }
     ];
-class $b642db848cc622aa$export$eb3c6eb92a4f4397 extends (0, $ab210b2da7b39b9d$export$3f2f9f5909897157) {
+class $4d8f78da09198f60$export$eb3c6eb92a4f4397 extends (0, $ab210b2da7b39b9d$export$3f2f9f5909897157) {
     /**
    * renders the lit element card
    * @returns {TemplateResult} The rendered HTML template
@@ -1712,7 +2504,7 @@ class $b642db848cc622aa$export$eb3c6eb92a4f4397 extends (0, $ab210b2da7b39b9d$ex
       <ha-form
         .hass=${this.hass}
         .data=${this._config}
-        .schema=${$b642db848cc622aa$var$getSchema(entities)}
+        .schema=${$4d8f78da09198f60$var$getSchema(entities)}
         .computeLabel=${(s)=>s.label}
         @value-changed=${this._valueChanged}
       ></ha-form>
@@ -1738,735 +2530,95 @@ class $b642db848cc622aa$export$eb3c6eb92a4f4397 extends (0, $ab210b2da7b39b9d$ex
 }
 (0, $24c52f343453d62d$export$29e00dfd3077644b)([
     (0, $04c21ea1ce1f6057$export$ca000e230c0caa3e)()
-], $b642db848cc622aa$export$eb3c6eb92a4f4397.prototype, "_config", void 0);
+], $4d8f78da09198f60$export$eb3c6eb92a4f4397.prototype, "_config", void 0);
 
 
 
 /**
- * Configuration utilities for feature flag management
- */ const $a64cd1666b27644b$export$805ddaeeece0413e = (config, feature)=>!config || config.features?.includes(feature) || false;
+ * https://github.com/home-assistant/frontend/blob/dev/src/common/string/capitalize-first-letter.ts
+ */ const $1409036132f3ee41$export$d07f57595c356899 = (str)=>str.charAt(0).toUpperCase() + str.slice(1);
 
 
-const $5bd3a7e1f19a6de3$export$30c823bc834d6ab4 = (hass, deviceId)=>hass.devices[deviceId];
+const $68e99829eee639f8$export$26c6f48841fe1a8a = (str)=>str.split('_').map((s)=>(0, $1409036132f3ee41$export$d07f57595c356899)(s)).join(' ');
 
 
-
-
-const $562e4e067cd81a2b$export$30c823bc834d6ab4 = (hass, config)=>{
-    const device = {
-        sensors: [],
-        controls: [],
-        diagnostics: [],
-        configurations: []
-    };
-    const hassDevice = (0, $5bd3a7e1f19a6de3$export$30c823bc834d6ab4)(hass, config.device_id);
-    if (!hassDevice) return undefined;
-    device.name = hassDevice.name || 'Device';
-    device.model = [
-        hassDevice.manufacturer,
-        hassDevice.model,
-        hassDevice.model_id
-    ].filter((s)=>s).join(' ');
-    const entities = (0, $093edc2594769ee5$export$c6a2d06cc40e579)(hass, config, hassDevice.id, hassDevice.name);
-    entities.forEach((entity)=>{
-        if (config.exclude_entities?.includes(entity.entity_id)) return;
-        if (entity.category === 'diagnostic') {
-            if (config.exclude_sections?.includes('diagnostics')) return;
-            device.diagnostics.push(entity);
-        } else if (entity.category === 'config') {
-            if (config.exclude_sections?.includes('configurations')) return;
-            device.configurations.push(entity);
-        } else {
-            const domain = (0, $e7dc90bb09bfe22d$export$2044bdc9670769ab)(entity.entity_id);
-            if ([
-                'text',
-                'button',
-                'switch',
-                'select'
-            ].includes(domain)) {
-                if (config.exclude_sections?.includes('controls')) return;
-                device.controls.push(entity);
-            } else {
-                if (config.exclude_sections?.includes('sensors')) return;
-                // everything else is a sensor
-                device.sensors.push(entity);
-            }
-        }
-    });
-    return device;
-};
-
-
-const $8dc66e7a4cb4d971$export$3b8a32145ce395a1 = (unit)=>unit ? [
-        ...unit.controls,
-        ...unit.sensors,
-        ...unit.diagnostics,
-        ...unit.configurations
-    ].some((entity)=>entity.isProblemEntity && entity.isActive) : false;
-
-
-/**
- * @file section.ts
- * @description Section rendering for the device card
- * This file handles the rendering of collapsible sections within the device card,
- * organizing entities by their type (sensors, controls, etc.) and managing
- * expandable/collapsible behavior.
- */ /**
- * @file section.ts
- * @description Section rendering for the device card
- * This file handles the rendering of collapsible sections within the device card,
- * organizing entities by their type (sensors, controls, etc.) and managing
- * expandable/collapsible behavior.
- */ 
-/**
- * @file row.ts
- * @description Entity row rendering for the device card
- * This file handles the rendering of individual entity rows within the device card,
- * including their state content, percentage bars, and expandable attribute details.
- */ 
-/**
- * https://github.com/home-assistant/frontend/blob/dev/src/panels/lovelace/common/directives/action-handler-directive.ts
- */ 
-/**
- * @license
- * Copyright 2017 Google LLC
- * SPDX-License-Identifier: BSD-3-Clause
- */ const $107bb7d062dde330$export$9ba3b3f20a85bfa = {
-    ATTRIBUTE: 1,
-    CHILD: 2,
-    PROPERTY: 3,
-    BOOLEAN_ATTRIBUTE: 4,
-    EVENT: 5,
-    ELEMENT: 6
-}, $107bb7d062dde330$export$99b43ad1ed32e735 = (t)=>(...e)=>({
-            _$litDirective$: t,
-            values: e
-        });
-class $107bb7d062dde330$export$befdefbdce210f91 {
-    constructor(t){}
-    get _$AU() {
-        return this._$AM._$AU;
+const $be605d8f132c1e28$export$48cc0f50054c9113 = (device, integration)=>{
+    if (!device.identifiers) return false;
+    for (const parts of device.identifiers)for (const part of parts){
+        if (part === integration) return true;
     }
-    _$AT(t, e, i) {
-        this._$Ct = t, this._$AM = e, this._$Ci = i;
-    }
-    _$AS(t, e) {
-        return this.update(t, e);
-    }
-    update(t, e) {
-        return this.render(...e);
-    }
-}
-
-
-
-
-const $69fb27e443983086$var$getActionHandler = ()=>{
-    const body = document.body;
-    if (body.querySelector('action-handler')) return body.querySelector('action-handler');
-    const actionhandler = document.createElement('action-handler');
-    body.appendChild(actionhandler);
-    return actionhandler;
-};
-const $69fb27e443983086$export$520aee61eb0a2770 = (element, options)=>{
-    const actionhandler = $69fb27e443983086$var$getActionHandler();
-    if (!actionhandler) return;
-    actionhandler.bind(element, options);
-};
-const $69fb27e443983086$export$8a44987212de21b = (0, $107bb7d062dde330$export$99b43ad1ed32e735)(class extends (0, $107bb7d062dde330$export$befdefbdce210f91) {
-    update(part, [options]) {
-        $69fb27e443983086$export$520aee61eb0a2770(part.element, options);
-        return 0, $f58f44579a4747ac$export$9c068ae9cc5db4e8;
-    }
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    render(_options) {}
-});
-
-
-/**
- * Toggles the expanded state of an entity row to show/hide attributes
- *
- * @param {DeviceCard} element - The device card component instance
- * @param {string} entityId - The entity ID to toggle
- * @param {Event} e - The click event that triggered the toggle
- */ const $57febad8376708f1$var$toggleEntityAttributes = (element, entityId, e)=>{
-    // Prevent event from bubbling up
-    e.stopPropagation();
-    // Initialize expandedEntities if it doesn't exist
-    if (!element.expandedEntities) element.expandedEntities = {};
-    // Create a new expandedEntities object with the toggled entity
-    element.expandedEntities = {
-        ...element.expandedEntities,
-        [entityId]: !element.expandedEntities[entityId]
-    };
-};
-const $57febad8376708f1$export$8a44987212de21b = (entity)=>{
-    const isActionEnabled = (actionConfig)=>actionConfig?.action !== 'none' && actionConfig?.action !== undefined;
-    return (0, $69fb27e443983086$export$8a44987212de21b)({
-        hasDoubleClick: isActionEnabled(entity.config?.double_tap_action),
-        hasHold: isActionEnabled(entity.config?.hold_action)
-    });
-};
-const $57febad8376708f1$export$3d3654ce4577c53d = (element, config, entity)=>{
-    return {
-        /**
-     * Handles an action event by creating and dispatching a 'hass-action' custom event.
-     * The event contains the entity configuration and the action type (tap, double_tap, hold).
-     *
-     * @param {ActionHandlerEvent} ev - The action handler event to process
-     */ handleEvent: (ev)=>{
-            // Extract action from event detail
-            const action = ev.detail?.action;
-            if (!action) return;
-            // If the action is 'tap' and no specific tap action is set, toggle entity attributes
-            if (action === 'tap' && !entity.config?.tap_action) {
-                $57febad8376708f1$var$toggleEntityAttributes(element, entity.entity_id, ev);
-                return;
-            }
-            // Create configuration object for the action
-            const actionConfig = {
-                entity: entity.entity_id,
-                ...entity.config
-            };
-            // @ts-ignore
-            (0, $9c83ab07519e6203$export$43835e9acf248a15)(element, 'hass-action', {
-                config: actionConfig,
-                action: action
-            });
-        }
-    };
-};
-
-
-
-
-const $5cc8c88379d13dba$export$16bd37df0047a29c = (attributes)=>{
-    // Filter out common attributes that are less interesting or already shown
-    const filteredAttributes = {
-        ...attributes
-    };
-    // List of attributes to exclude
-    const excludeList = [
-        'icon',
-        'friendly_name',
-        'entity_picture',
-        'supported_features',
-        'assumed_state',
-        'attribution',
-        'hidden'
-    ];
-    excludeList.forEach((attr)=>delete filteredAttributes[attr]);
-    const attributeEntries = Object.entries(filteredAttributes);
-    if (attributeEntries.length === 0) return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<div class="entity-attributes-empty">
-      No additional attributes
-    </div>`;
-    return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
-    <div class="entity-attributes">
-      ${attributeEntries.map(([key, value])=>(0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
-          <div class="attribute-row">
-            <span class="attribute-key">${key}:</span>
-            <span class="attribute-value"
-              >${typeof value === 'object' ? JSON.stringify(value) : value}</span
-            >
-          </div>
-        `)}
-    </div>
-  `;
+    return false;
 };
 
 
 
 
 
-/**
- * @license
- * Copyright 2018 Google LLC
- * SPDX-License-Identifier: BSD-3-Clause
- */ const $19f464fcda7d2482$var$n = "important", $19f464fcda7d2482$var$i = " !" + $19f464fcda7d2482$var$n, $19f464fcda7d2482$export$1e5b4ce2fa884e6a = (0, $107bb7d062dde330$export$99b43ad1ed32e735)(class extends (0, $107bb7d062dde330$export$befdefbdce210f91) {
-    constructor(t){
-        if (super(t), t.type !== (0, $107bb7d062dde330$export$9ba3b3f20a85bfa).ATTRIBUTE || "style" !== t.name || t.strings?.length > 2) throw Error("The `styleMap` directive must be used in the `style` attribute and must be the only part in the attribute.");
-    }
-    render(t) {
-        return Object.keys(t).reduce((e, r)=>{
-            const s = t[r];
-            return null == s ? e : e + `${r = r.includes("-") ? r : r.replace(/(?:^(webkit|moz|ms|o)|)(?=[A-Z])/g, "-$&").toLowerCase()}:${s};`;
-        }, "");
-    }
-    update(e, [r]) {
-        const { style: s } = e.element;
-        if (void 0 === this.ft) return this.ft = new Set(Object.keys(r)), this.render(r);
-        for (const t of this.ft)null == r[t] && (this.ft.delete(t), t.includes("-") ? s.removeProperty(t) : s[t] = null);
-        for(const t in r){
-            const e = r[t];
-            if (null != e) {
-                this.ft.add(t);
-                const r = "string" == typeof e && e.endsWith($19f464fcda7d2482$var$i);
-                t.includes("-") || r ? s.setProperty(t, r ? e.slice(0, -11) : e, r ? $19f464fcda7d2482$var$n : "") : s[t] = e;
-            }
-        }
-        return 0, $f58f44579a4747ac$export$9c068ae9cc5db4e8;
-    }
-});
-
-
-
-
-const $a6a6434f1848f426$export$40075bc608c4544e = (entity)=>{
-    // Extract the percentage value from the entity state
-    const percentage = Number(entity.state);
-    // todo - flip for humidity?
-    // Determine the color class based on percentage value
-    const colorClass = percentage > 60 ? 'high' : percentage > 30 ? 'medium' : 'low';
-    return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
-    <div class="percent-gauge">
-      <div
-        class="percent-gauge-fill ${colorClass}"
-        style=${(0, $19f464fcda7d2482$export$1e5b4ce2fa884e6a)({
-        width: `${percentage}%`
-    })}
-      ></div>
-    </div>
-  `;
-};
-
-
-
-const $91384c06f34fa41f$export$535a09426ee2ea59 = (hass, entity, className)=>(0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<state-card-content
-    .hass=${hass}
-    .stateObj=${entity}
-    class="${className}"
-  ></state-card-content>`;
-
-
-const $68e7242076c3e34e$export$120ff0929b202a6d = (hass, config, entity, element)=>{
-    let statusClassName;
-    // Determine status class based on problem state
-    if (entity.isProblemEntity) // Add color to problem class based on state
-    statusClassName = entity.isActive ? 'status-error' : 'status-ok';
-    // Determine if we should show a percentage bar
-    const showBar = entity.attributes.state_class === 'measurement' && entity.attributes.unit_of_measurement === '%';
-    // Check if this entity's details are expanded
-    const isEntityExpanded = element.expandedEntities[entity.entity_id] || false;
-    return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)` <div
-    class="${[
-        'row',
-        statusClassName,
-        isEntityExpanded ? 'expanded-row' : ''
-    ].join(' ')}"
-    @action=${(0, $57febad8376708f1$export$3d3654ce4577c53d)(element, config, entity)}
-    .actionHandler=${(0, $57febad8376708f1$export$8a44987212de21b)(entity)}
-  >
-    <div class="row-content">
-      ${(0, $91384c06f34fa41f$export$535a09426ee2ea59)(hass, entity, statusClassName)}
-      ${showBar ? (0, $a6a6434f1848f426$export$40075bc608c4544e)(entity) : (0, $f58f44579a4747ac$export$45b790e32b2810ee)}
-    </div>
-    ${isEntityExpanded ? (0, $5cc8c88379d13dba$export$16bd37df0047a29c)(entity.attributes) : (0, $f58f44579a4747ac$export$45b790e32b2810ee)}
-  </div>`;
-};
-
-
-/**
- * @file show-more.ts
- * @description UI components for expandable section toggling in the device card
- * This file contains components for the chevron icon and "show more" buttons that
- * allow sections to be expanded and collapsed.
- */ 
-/**
- * Toggles the expanded state of a section in the device card
- *
- * @param {DeviceCard} element - The device card component instance
- * @param {string} sectionTitle - The title of the section to toggle
- * @param {Event} e - The click event that triggered the toggle
- */ const $2ae7b32fc5b69f7f$var$toggleSection = (element, sectionTitle, e)=>{
-    const expandedSections = element.expandedSections;
-    // Create a new expanded sections object with the toggled section
-    element.expandedSections = {
-        ...expandedSections,
-        [sectionTitle]: !expandedSections[sectionTitle]
-    };
-};
-const $2ae7b32fc5b69f7f$export$980c1089c0604ea3 = (element, title, isExpanded)=>(0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<div
-    class="section-chevron ${isExpanded ? 'expanded' : ''}"
-    @click=${(e)=>$2ae7b32fc5b69f7f$var$toggleSection(element, title, e)}
-  >
-    <ha-icon icon="mdi:chevron-${isExpanded ? 'up' : 'down'}"></ha-icon>
-  </div>`;
-const $2ae7b32fc5b69f7f$export$ae9a281c4379b144 = (element, title, entities, isExpanded, size)=>(0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<div class="section-footer">
-    ${isExpanded ? (0, $f58f44579a4747ac$export$45b790e32b2810ee) : (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
-          <div
-            class="show-more"
-            @click=${(e)=>$2ae7b32fc5b69f7f$var$toggleSection(element, title, e)}
-          >
-            Show ${entities.length - size} more...
-          </div>
-        `}
-  </div>`;
-
-
-const $9b8ea5fddc8bd48e$export$4c0287abd2ec956e = (element, hass, config, title, entities)=>{
-    // Don't render anything if there are no entities to display
-    if (!entities || entities.length === 0) return 0, $f58f44579a4747ac$export$45b790e32b2810ee;
-    // Determine how many entities to preview based on config
-    const size = config.preview_count || 3;
-    // Check if this section needs collapsible functionality
-    const needsExpansion = entities.length > size;
-    // Get the current expanded state from the element
-    const isExpanded = element.expandedSections[title] || false;
-    // Filter entities based on expanded state
-    const displayEntities = needsExpansion && !isExpanded ? entities.slice(0, size) : entities;
-    // Determine section class based on expanded state and number of items
-    const sectionClass = `section ${isExpanded ? 'expanded' : ''} ${!needsExpansion ? 'few-items' : ''}`;
-    // Initialize expandedEntities if it doesn't exist
-    if (!element.expandedEntities) element.expandedEntities = {};
-    return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<div class="${sectionClass}">
-    <div class="section-header">
-      <div class="section-title">${title}</div>
-      ${needsExpansion ? (0, $2ae7b32fc5b69f7f$export$980c1089c0604ea3)(element, title, isExpanded) : (0, $f58f44579a4747ac$export$45b790e32b2810ee)}
-    </div>
-    ${displayEntities.map((entity)=>(0, $68e7242076c3e34e$export$120ff0929b202a6d)(hass, config, entity, element))}
-    ${needsExpansion ? (0, $2ae7b32fc5b69f7f$export$ae9a281c4379b144)(element, title, entities, isExpanded, size) : (0, $f58f44579a4747ac$export$45b790e32b2810ee)}
-  </div>`;
-};
-
-
-const $10f7eb590266dd05$export$7dcefa9ef83b8269 = (element, hass, config, device)=>{
-    const sectionConfig = [
-        {
-            name: 'Controls',
-            key: 'controls',
-            entities: device.controls
-        },
-        {
-            name: 'Configuration',
-            key: 'configurations',
-            entities: device.configurations
-        },
-        {
-            name: 'Sensors',
-            key: 'sensors',
-            entities: device.sensors
-        },
-        {
-            name: 'Diagnostic',
-            key: 'diagnostics',
-            entities: device.diagnostics
-        }
-    ];
-    let orderedSections = [];
-    // if custom order is provided, reorder the sections
-    if (config.section_order && config.section_order.length > 0) {
-        orderedSections = config.section_order.map((section)=>sectionConfig.find((s)=>s.key === section)).filter((section)=>section !== undefined);
-        sectionConfig.forEach((section)=>{
-            if (!orderedSections.some((s)=>s?.key === section.key)) orderedSections.push(section);
-        });
-    } else // default order
-    orderedSections = sectionConfig;
-    return orderedSections.map((section)=>(0, $9b8ea5fddc8bd48e$export$4c0287abd2ec956e)(element, hass, config, section.name, section.entities));
-};
-
-
-
-const $856d8633325a4fe5$export$1188214e9d38144e = (device)=>{
-    const entity = device.sensors.find((sensor)=>sensor.attributes.entity_picture !== undefined);
-    if (!entity) return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<ha-alert alert-type="error"
-      >No entity picture found!</ha-alert
-    >`;
-    return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<ha-card class="portrait">
-    <img src=${entity.attributes.entity_picture} />
-    <div class="title">
-      <span>${device.name}</span>
-    </div>
-  </ha-card>`;
-};
-
-
-
-const $f2817cae210645dc$export$9dd6ff9ea0189349 = (0, $def2de46b9306e8a$export$dbf350e5966cf602)`
+const $5d5dec7c32377406$export$d424543ab4012665 = (0, $def2de46b9306e8a$export$dbf350e5966cf602)`
   :host {
-    --icon-color: var(--primary-text-color);
-    --section-color: var(--secondary-text-color);
-    --row-height: 40px;
+    --card-padding: 16px;
+    --title-font-size: 1.5rem;
+    --title-font-weight: 500;
+    --title-margin-bottom: 16px;
+    --card-gap: 16px;
   }
 
-  ha-card {
-    padding: 16px;
-    position: relative;
-    z-index: 1;
+  .integration-wrapper {
+    padding: var(--card-padding);
   }
 
-  .card-header {
-    padding: 0px 0px 10px 16px;
-    line-height: 35px;
+  .integration-title {
+    font-size: var(--title-font-size);
+    font-weight: var(--title-font-weight);
+    margin: 0 0 var(--title-margin-bottom) 0;
+    color: var(--primary-text-color);
     border-bottom: 1px solid var(--divider-color);
-    margin-bottom: 8px;
+    padding-bottom: 8px;
   }
 
-  .title {
-    font-size: 1.5rem;
-    font-weight: 500;
-    display: flex;
-    flex-direction: column;
+  .devices-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--card-gap);
   }
 
-  /* Style for when card is on fire */
-  .problem::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: var(--ha-card-border-radius, 12px);
-    background: var(--error-color);
-    opacity: 0.08;
-    z-index: -1;
+  @media (max-width: 600px) {
+    .devices-container {
+      grid-template-columns: 1fr;
+    }
   }
 
-  /* Section header with expand/collapse functionality */
-  .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-  }
-
-  .section-title {
-    font-weight: 500;
-    color: var(--section-color);
-    padding: 4px 0 4px 0; /* Reduced top padding for all sections */
-    text-transform: uppercase;
-    font-size: 0.9rem;
-    letter-spacing: 0.5px;
-  }
-
-  .section-chevron {
-    cursor: pointer;
-    transition: transform 0.3s ease;
-    color: var(--secondary-text-color);
-    display: flex;
-    align-items: center;
-  }
-
-  .section-footer {
+  .no-devices {
+    padding: 32px 16px;
     text-align: center;
-    padding: 4px 0;
-  }
-
-  .show-more {
-    color: var(--primary-color);
-    cursor: pointer;
-    font-size: 0.9rem;
-    padding: 4px 0;
-  }
-
-  .show-more:hover {
-    text-decoration: underline;
-  }
-
-  .model {
-    font-size: 0.9rem;
-    color: var(--secondary-text-color);
-  }
-
-  /* Base section spacing */
-  .section {
-    margin-bottom: 16px;
-  }
-
-  /* Apply larger margin only to expanded sections or those with fewer than 5 items */
-  .section.expanded:not(:last-child),
-  .section.few-items:not(:last-child) {
-    margin-bottom: 40px;
-  }
-
-  ha-icon {
-    color: var(--icon-color);
-    width: 22px;
-    height: 22px;
-  }
-
-  /* Container for a row */
-  .row {
-    position: relative;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-
-  .row:hover {
-    background-color: var(--secondary-background-color);
-  }
-
-  .row.expanded-row {
-    margin-bottom: 8px;
-  }
-
-  /* Style for the status colors */
-  .row.status-ok {
-    border-left: 2px solid var(--success-color);
-  }
-  .status-ok {
-    --primary-text-color: var(--success-color);
-  }
-
-  .row.status-warning {
-    border-left: 2px solid var(--warning-color);
-  }
-  .status-warning {
-    --primary-text-color: var(--warning-color);
-  }
-
-  .row.status-error {
-    border-left: 2px solid var(--error-color);
-  }
-  .status-error {
-    --primary-text-color: var(--error-color);
-  }
-
-  /* Style for the percentage bar that goes below the state-card-content */
-  .percent-gauge {
-    position: absolute;
-    bottom: 1px;
-    left: 10px;
-    width: 98%;
-    height: 4px;
-    background-color: var(--divider-color, #333);
-    overflow: hidden;
-    border-radius: 0 0 4px 4px;
-  }
-
-  /* The colored fill part of the gauge */
-  .percent-gauge-fill {
-    height: 100%;
-    background-color: var(--primary-color);
-    transition:
-      width 0.3s ease,
-      background-color 0.3s ease;
-  }
-
-  /* Color variations based on percentage */
-  .percent-gauge-fill.high {
-    background-color: var(--success-color, #4caf50);
-  }
-
-  .percent-gauge-fill.medium {
-    background-color: var(--warning-color, #ffc107);
-  }
-
-  .percent-gauge-fill.low {
-    background-color: var(--error-color, #f44336);
-  }
-
-  /* Entity attributes section */
-  .entity-attributes {
-    padding: 4px 16px 8px;
-    margin: 0 0 4px 50px;
-    font-size: 0.9rem;
-    border-left: 1px solid var(--divider-color);
-  }
-
-  .entity-attributes-empty {
-    padding: 4px 16px 8px;
-    margin: 0 0 4px 50px;
     color: var(--secondary-text-color);
     font-style: italic;
-    font-size: 0.9rem;
   }
 
-  .attribute-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 2px 0;
-    border-bottom: 1px dotted var(--divider-color);
+  /* For large screens, enable more columns */
+  @media (min-width: 1200px) {
+    .devices-container {
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
   }
 
-  .attribute-row:last-child {
-    border-bottom: none;
-  }
-
-  .attribute-key {
-    font-weight: 500;
-    color: var(--secondary-text-color);
-    flex: 1;
-  }
-
-  .attribute-value {
-    color: var(--primary-text-color);
-    flex: 2;
-    text-align: right;
-    overflow-wrap: break-word;
-    word-break: break-word;
-  }
-
-  /* Kitty pics */
-  .portrait {
-    background: none;
-  }
-
-  .portrait img {
-    width: 100%;
-    border-radius: var(--ha-card-border-radius, 12px);
-  }
-
-  .portrait .title {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  /* Styles for when in a dashboard edit preview */
+  :host([editor]) .devices-container {
+    grid-template-columns: 1fr;
   }
 `;
 
 
 
-
-var $b06602ab53bd58a3$exports = {};
-$b06602ab53bd58a3$exports = JSON.parse("{\"name\":\"device-card\",\"version\":\"0.4.1\",\"author\":\"Patrick Masters\",\"license\":\"ISC\",\"description\":\"Custom Home Assistant card to show info about your devices.\",\"source\":\"src/index.ts\",\"module\":\"dist/device-card.js\",\"targets\":{\"module\":{\"includeNodeModules\":true}},\"scripts\":{\"watch\":\"parcel watch\",\"build\":\"parcel build\",\"test\":\"TS_NODE_PROJECT='./tsconfig.test.json' mocha\",\"test:coverage\":\"nyc npm run test\",\"test:watch\":\"TS_NODE_PROJECT='./tsconfig.test.json' mocha --watch\",\"update\":\"npx npm-check-updates -u && npm i\"},\"devDependencies\":{\"@istanbuljs/nyc-config-typescript\":\"^1.0.2\",\"@open-wc/testing\":\"^4.0.0\",\"@parcel/transformer-inline-string\":\"^2.14.0\",\"@testing-library/dom\":\"^10.4.0\",\"@trivago/prettier-plugin-sort-imports\":\"^5.2.2\",\"@types/chai\":\"^5.2.0\",\"@types/jsdom\":\"^21.1.7\",\"@types/mocha\":\"^10.0.10\",\"@types/sinon\":\"^17.0.4\",\"chai\":\"^5.2.0\",\"jsdom\":\"^26.0.0\",\"mocha\":\"^11.1.0\",\"nyc\":\"^17.1.0\",\"parcel\":\"^2.14.0\",\"prettier\":\"3.5.3\",\"prettier-plugin-organize-imports\":\"^4.1.0\",\"proxyquire\":\"^2.1.3\",\"sinon\":\"^19.0.2\",\"ts-node\":\"^10.9.2\",\"tsconfig-paths\":\"^4.2.0\",\"typescript\":\"^5.8.2\"},\"dependencies\":{\"@lit/task\":\"^1.0.2\",\"fast-deep-equal\":\"^3.1.3\",\"lit\":\"^3.2.1\"}}");
-
-
-var $30856da572fd852b$exports = {};
-'use strict';
-// do not edit .js files directly - edit src/index.jst
-$30856da572fd852b$exports = function equal(a, b) {
-    if (a === b) return true;
-    if (a && b && typeof a == 'object' && typeof b == 'object') {
-        if (a.constructor !== b.constructor) return false;
-        var length, i, keys;
-        if (Array.isArray(a)) {
-            length = a.length;
-            if (length != b.length) return false;
-            for(i = length; i-- !== 0;)if (!equal(a[i], b[i])) return false;
-            return true;
-        }
-        if (a.constructor === RegExp) return a.source === b.source && a.flags === b.flags;
-        if (a.valueOf !== Object.prototype.valueOf) return a.valueOf() === b.valueOf();
-        if (a.toString !== Object.prototype.toString) return a.toString() === b.toString();
-        keys = Object.keys(a);
-        length = keys.length;
-        if (length !== Object.keys(b).length) return false;
-        for(i = length; i-- !== 0;)if (!Object.prototype.hasOwnProperty.call(b, keys[i])) return false;
-        for(i = length; i-- !== 0;){
-            var key = keys[i];
-            if (!equal(a[key], b[key])) return false;
-        }
-        return true;
-    }
-    // true if both NaN, false otherwise
-    return a !== a && b !== b;
-};
-
-
-class $e4f1b26747081709$export$cee8aa229c046b5e extends (0, $ab210b2da7b39b9d$export$3f2f9f5909897157) {
-    constructor(){
-        super(), /**
-   * Track expanded state of sections
-   */ this.expandedSections = {}, /**
-   * Track expanded state of entity attributes
-   */ this.expandedEntities = {};
-        console.info(`%c\u{1F431} Poat's Tools: device-card-card - ${(0, $b06602ab53bd58a3$exports.version)}`, 'color: #CFC493;');
-    }
+class $3bda94c4eb71d8c0$export$ad4bbebd033175bb extends (0, $ab210b2da7b39b9d$export$3f2f9f5909897157) {
     /**
    * Returns the component's styles
    */ static get styles() {
-        return 0, $f2817cae210645dc$export$9dd6ff9ea0189349;
+        return 0, $5d5dec7c32377406$export$d424543ab4012665;
+    }
+    // getter for preview mode detection
+    get isPreview() {
+        return this.parentElement?.classList.contains('preview') || false;
     }
     /**
    * Sets up the card configuration
@@ -2479,60 +2631,305 @@ class $e4f1b26747081709$export$cee8aa229c046b5e extends (0, $ab210b2da7b39b9d$ex
    * @param {HomeAssistant} hass - The Home Assistant instance
    */ set hass(hass) {
         this._hass = hass;
-        const device = (0, $562e4e067cd81a2b$export$30c823bc834d6ab4)(hass, this._config);
-        if (device && !$30856da572fd852b$exports(device, this._device)) this._device = device;
+        const data = {
+            name: '',
+            devices: []
+        };
+        // Get all devices from the specified integration
+        if (this._config.integration) {
+            data.name = (0, $68e99829eee639f8$export$26c6f48841fe1a8a)(this._config.integration);
+            Object.values(hass.devices).forEach((device)=>{
+                if ((0, $be605d8f132c1e28$export$48cc0f50054c9113)(device, this._config.integration)) data.devices.push(device.id);
+            });
+        }
+        // Update state if changed
+        if (!$30856da572fd852b$exports(data, this._integration)) this._integration = data;
     }
     // card configuration
     static getConfigElement() {
-        return document.createElement('device-card-editor');
+        return document.createElement('integration-card-editor');
     }
-    static async getStubConfig(hass) {
-        const device = Object.values(hass.devices)[0];
+    /**
+   * Returns a stub configuration for the card
+   * @param {HomeAssistant} hass - The Home Assistant instance
+   */ static async getStubConfig(hass) {
+        const device = Object.values(hass.devices).find((device)=>device.identifiers && device.identifiers.length > 0);
+        const integration = device?.identifiers?.[0]?.[0] || '';
         return {
-            device_id: device?.id || ''
+            integration: integration
         };
     }
     /**
-   * renders the lit element card
+   * Renders the lit element card
    * @returns {TemplateResult} The rendered HTML template
    */ render() {
-        if (!this._device) return 0, $f58f44579a4747ac$export$45b790e32b2810ee;
-        if ((0, $a64cd1666b27644b$export$805ddaeeece0413e)(this._config, 'entity_picture')) return (0, $856d8633325a4fe5$export$1188214e9d38144e)(this._device);
-        const problem = (0, $8dc66e7a4cb4d971$export$3b8a32145ce395a1)(this._device);
-        return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
-      <ha-card class="${problem ? 'problem' : ''}">
-        <div class="card-header">
-          <div class="title">
-            <span>${this._config.title || this._device.name}</span>
-            ${(0, $a64cd1666b27644b$export$805ddaeeece0413e)(this._config, 'hide_device_model') ? (0, $f58f44579a4747ac$export$45b790e32b2810ee) : (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<span class="model">${this._device.model}</span>`}
+        if (!this._integration || !this._integration.devices.length) return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<ha-card>
+        <div class="card-content">
+          <div class="no-devices">
+            No devices found for integration:
+            ${this._config.integration || 'not specified'}
           </div>
         </div>
+      </ha-card>`;
+        // For preview, only show one device
+        const devicesToShow = this.isPreview ? this._integration.devices.slice(0, 1) : this._integration.devices;
+        const title = this._config.title || this._integration.name;
+        return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
+      <div class="integration-wrapper">
+        ${title ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<h1 class="integration-title">${title}</h1>` : (0, $f58f44579a4747ac$export$45b790e32b2810ee)}
 
-        ${(0, $10f7eb590266dd05$export$7dcefa9ef83b8269)(this, this._hass, this._config, this._device)}
-      </ha-card>
+        <div class="devices-container">
+          ${devicesToShow.map((deviceId)=>{
+            return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
+              <device-card
+                .config=${{
+                device_id: deviceId,
+                ...this._config
+            }}
+                .hass=${this._hass}
+              ></device-card>
+            `;
+        })}
+        </div>
+      </div>
     `;
     }
 }
 (0, $24c52f343453d62d$export$29e00dfd3077644b)([
     (0, $04c21ea1ce1f6057$export$ca000e230c0caa3e)()
-], $e4f1b26747081709$export$cee8aa229c046b5e.prototype, "_config", void 0);
+], $3bda94c4eb71d8c0$export$ad4bbebd033175bb.prototype, "_config", void 0);
 (0, $24c52f343453d62d$export$29e00dfd3077644b)([
     (0, $04c21ea1ce1f6057$export$ca000e230c0caa3e)()
-], $e4f1b26747081709$export$cee8aa229c046b5e.prototype, "_device", void 0);
-(0, $24c52f343453d62d$export$29e00dfd3077644b)([
-    (0, $04c21ea1ce1f6057$export$ca000e230c0caa3e)()
-], $e4f1b26747081709$export$cee8aa229c046b5e.prototype, "expandedSections", void 0);
-(0, $24c52f343453d62d$export$29e00dfd3077644b)([
-    (0, $04c21ea1ce1f6057$export$ca000e230c0caa3e)()
-], $e4f1b26747081709$export$cee8aa229c046b5e.prototype, "expandedEntities", void 0);
+], $3bda94c4eb71d8c0$export$ad4bbebd033175bb.prototype, "_integration", void 0);
 
 
-// Register the custom element with the browser
-customElements.define('device-card', (0, $e4f1b26747081709$export$cee8aa229c046b5e));
-customElements.define('device-card-editor', (0, $b642db848cc622aa$export$eb3c6eb92a4f4397));
+
+
+
+
+
+class $bb372a36f92bd9c9$export$9e322cdd8735282 extends (0, $ab210b2da7b39b9d$export$3f2f9f5909897157) {
+    /**
+   * Generates the schema for the card editor form
+   */ _getSchema() {
+        const integrations = [];
+        Object.values(this.hass.devices).forEach((device)=>{
+            for (const parts of device.identifiers){
+                const part = parts[0];
+                if (!integrations.includes(part)) integrations.push(part);
+            }
+        });
+        return [
+            {
+                name: 'integration',
+                selector: {
+                    select: {
+                        options: integrations.sort().map((integration)=>({
+                                value: integration,
+                                label: (0, $68e99829eee639f8$export$26c6f48841fe1a8a)(integration)
+                            })),
+                        mode: 'dropdown'
+                    }
+                },
+                required: true,
+                label: 'Integration'
+            },
+            {
+                name: 'content',
+                label: 'Content',
+                type: 'expandable',
+                flatten: true,
+                icon: 'mdi:text-short',
+                schema: [
+                    {
+                        name: 'title',
+                        required: false,
+                        label: 'Card Title',
+                        selector: {
+                            text: {}
+                        }
+                    },
+                    {
+                        name: 'preview_count',
+                        required: false,
+                        label: 'Preview Count',
+                        selector: {
+                            text: {
+                                type: 'number'
+                            }
+                        }
+                    },
+                    {
+                        name: 'exclude_sections',
+                        label: 'Sections to exclude',
+                        required: false,
+                        selector: {
+                            select: {
+                                multiple: true,
+                                mode: 'list',
+                                options: [
+                                    {
+                                        label: 'Controls',
+                                        value: 'controls'
+                                    },
+                                    {
+                                        label: 'Configuration',
+                                        value: 'configurations'
+                                    },
+                                    {
+                                        label: 'Sensors',
+                                        value: 'sensors'
+                                    },
+                                    {
+                                        label: 'Diagnostic',
+                                        value: 'diagnostics'
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        name: 'section_order',
+                        label: 'Section display order (click in order)',
+                        required: false,
+                        selector: {
+                            select: {
+                                multiple: true,
+                                mode: 'list',
+                                options: [
+                                    {
+                                        label: 'Controls',
+                                        value: 'controls'
+                                    },
+                                    {
+                                        label: 'Configuration',
+                                        value: 'configurations'
+                                    },
+                                    {
+                                        label: 'Sensors',
+                                        value: 'sensors'
+                                    },
+                                    {
+                                        label: 'Diagnostic',
+                                        value: 'diagnostics'
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                name: 'features',
+                label: 'Features',
+                type: 'expandable',
+                flatten: true,
+                icon: 'mdi:list-box',
+                schema: [
+                    {
+                        name: 'features',
+                        label: 'Enable Features',
+                        required: false,
+                        selector: {
+                            select: {
+                                multiple: true,
+                                mode: 'list',
+                                options: [
+                                    {
+                                        label: 'Compact Layout',
+                                        value: 'compact'
+                                    },
+                                    {
+                                        label: 'Hide Device Model',
+                                        value: 'hide_device_model'
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                name: 'interactions',
+                label: 'Interactions',
+                type: 'expandable',
+                flatten: true,
+                icon: 'mdi:gesture-tap',
+                schema: [
+                    {
+                        name: 'tap_action',
+                        label: 'Tap Action',
+                        selector: {
+                            ui_action: {}
+                        }
+                    },
+                    {
+                        name: 'hold_action',
+                        label: 'Hold Action',
+                        selector: {
+                            ui_action: {}
+                        }
+                    },
+                    {
+                        name: 'double_tap_action',
+                        label: 'Double Tap Action',
+                        selector: {
+                            ui_action: {}
+                        }
+                    }
+                ]
+            }
+        ];
+    }
+    /**
+   * renders the lit element card
+   * @returns {TemplateResult} The rendered HTML template
+   */ render() {
+        if (!this.hass || !this._config) return 0, $f58f44579a4747ac$export$45b790e32b2810ee;
+        return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
+      <ha-form
+        .hass=${this.hass}
+        .data=${this._config}
+        .schema=${this._getSchema()}
+        .computeLabel=${(s)=>s.label}
+        @value-changed=${this._valueChanged}
+      ></ha-form>
+    `;
+    }
+    /**
+   * Sets up the card configuration
+   * @param {Config} config - The card configuration
+   */ setConfig(config) {
+        this._config = config;
+    }
+    /**
+   * Handle form value changes
+   */ _valueChanged(ev) {
+        const config = ev.detail.value;
+        // Clean up empty arrays and undefined values
+        if (!config.features?.length) delete config.features;
+        if (!config.exclude_entities?.length) delete config.exclude_entities;
+        if (!config.exclude_sections?.length) delete config.exclude_sections;
+        if (!config.section_order?.length) delete config.section_order;
+        // @ts-ignore
+        (0, $9c83ab07519e6203$export$43835e9acf248a15)(this, 'config-changed', {
+            config: config
+        });
+    }
+}
+(0, $24c52f343453d62d$export$29e00dfd3077644b)([
+    (0, $04c21ea1ce1f6057$export$ca000e230c0caa3e)()
+], $bb372a36f92bd9c9$export$9e322cdd8735282.prototype, "_config", void 0);
+
+
+// Register the custom elements with the browser
+customElements.define('device-card', (0, $76efc5be730c974a$export$cee8aa229c046b5e));
+customElements.define('device-card-editor', (0, $4d8f78da09198f60$export$eb3c6eb92a4f4397));
+customElements.define('integration-card', (0, $3bda94c4eb71d8c0$export$ad4bbebd033175bb));
+customElements.define('integration-card-editor', (0, $bb372a36f92bd9c9$export$9e322cdd8735282));
 // Ensure the customCards array exists on the window object
 window.customCards = window.customCards || [];
-// Register the card with Home Assistant's custom card registry
+// Register the cards with Home Assistant's custom card registry
 window.customCards.push({
     // Unique identifier for the card type
     type: 'device-card',
@@ -2540,6 +2937,18 @@ window.customCards.push({
     name: 'Device Card',
     // Card description for the UI
     description: 'A card to summarize the status of a Device.',
+    // Show a preview of the card in the UI
+    preview: true,
+    // URL for the card's documentation
+    documentationURL: 'https://github.com/homeassistant-extras/device-card'
+});
+window.customCards.push({
+    // Unique identifier for the card type
+    type: 'integration-card',
+    // Display name in the UI
+    name: 'Integration Card',
+    // Card description for the UI
+    description: 'A card to display all devices from a specific integration.',
     // Show a preview of the card in the UI
     preview: true,
     // URL for the card's documentation
