@@ -2757,6 +2757,15 @@
         "name": "ear-sound"
     },
     {
+        "name": "earbud-left"
+    },
+    {
+        "name": "earbud-right"
+    },
+    {
+        "name": "earbuds-2"
+    },
+    {
         "name": "earbuds-battery"
     },
     {
@@ -4338,6 +4347,9 @@
         "name": "image"
     },
     {
+        "name": "image-arrow-up"
+    },
+    {
         "name": "image-aspect-ratio"
     },
     {
@@ -5283,10 +5295,25 @@
         "name": "mobile-friendly"
     },
     {
+        "name": "mobile-hand"
+    },
+    {
+        "name": "mobile-loupe"
+    },
+    {
         "name": "mobile-off"
     },
     {
         "name": "mobile-screen-share"
+    },
+    {
+        "name": "mobile-screensaver"
+    },
+    {
+        "name": "mobile-sound-2"
+    },
+    {
+        "name": "mobile-speaker"
     },
     {
         "name": "mobiledata-off"
@@ -6118,6 +6145,9 @@
     },
     {
         "name": "person-search"
+    },
+    {
+        "name": "person-shield"
     },
     {
         "name": "personal-bag"
@@ -7887,7 +7917,13 @@
         "name": "star-rate-half"
     },
     {
+        "name": "star-shine"
+    },
+    {
         "name": "stars"
+    },
+    {
+        "name": "stars-2"
     },
     {
         "name": "start"
@@ -9121,6 +9157,12 @@
     },
     {
         "name": "wallpaper-slideshow"
+    },
+    {
+        "name": "wand-shine"
+    },
+    {
+        "name": "wand-stars"
     },
     {
         "name": "ward"

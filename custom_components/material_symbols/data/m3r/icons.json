@@ -585,6 +585,9 @@
         "name": "barcode-reader"
     },
     {
+        "name": "batch-prediction"
+    },
+    {
         "name": "bath-outdoor"
     },
     {
@@ -1809,6 +1812,15 @@
         "name": "e911-emergency"
     },
     {
+        "name": "earbud-left"
+    },
+    {
+        "name": "earbud-right"
+    },
+    {
+        "name": "earbuds-2"
+    },
+    {
         "name": "earbuds-battery"
     },
     {
@@ -2233,6 +2245,9 @@
     },
     {
         "name": "find-in-page"
+    },
+    {
+        "name": "fire-extinguisher"
     },
     {
         "name": "fire-hydrant"
@@ -2862,6 +2877,9 @@
         "name": "image"
     },
     {
+        "name": "image-arrow-up"
+    },
+    {
         "name": "image-aspect-ratio"
     },
     {
@@ -3471,10 +3489,25 @@
         "name": "mobile-friendly"
     },
     {
+        "name": "mobile-hand"
+    },
+    {
+        "name": "mobile-loupe"
+    },
+    {
         "name": "mobile-off"
     },
     {
         "name": "mobile-screen-share"
+    },
+    {
+        "name": "mobile-screensaver"
+    },
+    {
+        "name": "mobile-sound-2"
+    },
+    {
+        "name": "mobile-speaker"
     },
     {
         "name": "mode-comment"
@@ -4075,6 +4108,9 @@
     },
     {
         "name": "person-search"
+    },
+    {
+        "name": "person-shield"
     },
     {
         "name": "personal-bag"
@@ -5217,7 +5253,13 @@
         "name": "star-rate"
     },
     {
+        "name": "star-shine"
+    },
+    {
         "name": "stars"
+    },
+    {
+        "name": "stars-2"
     },
     {
         "name": "stat-0"
@@ -6025,6 +6067,12 @@
     },
     {
         "name": "wall-lamp"
+    },
+    {
+        "name": "wand-shine"
+    },
+    {
+        "name": "wand-stars"
     },
     {
         "name": "ward"
