@@ -48,10 +48,10 @@ _Stats as at 05:00, unknown_
 | Stat | Qty |
 | ---|--- |
 | HA Version | 2025.4.2 |
-| No. Integrations | 224 |
-| No. Custom Integrations | 103 |
-| No. Entities | 5784 |
-| No. Sensors | 3758 |
+| No. Integrations | 225 |
+| No. Custom Integrations | 104 |
+| No. Entities | 5874 |
+| No. Sensors | 3762 |
 | No. Automations | 159 |
 
 <details>
@@ -71,7 +71,7 @@ Covers | 0
 Dates | 0
 Date/times | 0
 Device trackers | 54
-Devices | 606
+Devices | 607
 Fans | 3
 Humidifiers | 0
 Images | 7
@@ -85,13 +85,13 @@ Lights | 13
 Locks | 0
 Media players | 31
 Numbers | 52
-Persistent notifications | 3
+Persistent notifications | 4
 Persons | 4
 Remotes | 7
 Scenes | 2
 Scripts | 85
 Selects | 57
-Sensors | 3758
+Sensors | 3762
 Sirens | 0
 Speech-to-text | 1
 Suns | 1
@@ -99,7 +99,7 @@ Switches | 245
 Texts | 2
 Times | 0
 Text-to-speech | 1
-Update | 324
+Update | 325
 Vacuums | 0
 Water heaters | 0
 Weather | 14
@@ -115,7 +115,7 @@ Zones | 4
 Here is a list of all the integrations I use, including any Custom Components (which are also listed below)
 
 
-<details><summary>687 Integrations</summary>
+<details><summary>689 Integrations</summary>
 
 | Name |
 | --- |
@@ -264,6 +264,8 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [eufy_security.sensor](https://www.home-assistant.io/components/eufy_security.sensor) |
 | [eufy_security.switch](https://www.home-assistant.io/components/eufy_security.switch) |
 | [event](https://www.home-assistant.io/components/event) |
+| [f1_sensor](https://www.home-assistant.io/components/f1_sensor) |
+| [f1_sensor.sensor](https://www.home-assistant.io/components/f1_sensor.sensor) |
 | [fan](https://www.home-assistant.io/components/fan) |
 | [fastdotcom](https://www.home-assistant.io/components/fastdotcom) |
 | [fastdotcom.sensor](https://www.home-assistant.io/components/fastdotcom.sensor) |
@@ -808,7 +810,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [zone](https://www.home-assistant.io/components/zone) |
 </details>
 
-<details><summary>95 Custom Integrations</summary>
+<details><summary>96 Custom Integrations</summary>
 
 | Name | Version | Description | Authors |
 | --- | --- | --- | --- |
@@ -820,7 +822,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Australian Space Weather](https://github.com/kcoffau/AUS_BOM_Space_Weather_Alert_System) |  [v1.0.1] | Provides the Australian Bureau of Meteorology Space Weather Alert System values |[@kcoffau](https://github.com/kcoffau).|
 | [Average Sensor](https://github.com/Limych/ha-average) |  [v2.4.0] | Average Sensor for Home Assistant |[@Limych](https://github.com/Limych).|
 | [Awtrix Notifications](https://github.com/10der/homeassistant-custom_components-awtrix) |  | HASS awtrix |[@10der](https://github.com/10der).|
-| [Bermuda Ble Trilateration](https://github.com/agittins/bermuda) |  [v0.7.4] | Bermuda Bluetooth/BLE Triangulation / Trilateration for HomeAssistant |[@agittins](https://github.com/agittins).|
+| [Bermuda Ble Trilateration](https://github.com/agittins/bermuda) |  [v0.8.0-rc1] | Bermuda Bluetooth/BLE Triangulation / Trilateration for HomeAssistant |[@agittins](https://github.com/agittins).|
 | [Blitzortung.Org Lightning Detector](https://github.com/mrk-its/homeassistant-blitzortung) |  [v1.3.9] | Custom Component for fetching lightning data from blitzortung.org |[@mrk-its](https://github.com/mrk-its).|
 | [Browser Mod](https://github.com/thomasloven/hass-browser_mod) |  [v2.3.3] | 🔹 A Home Assistant integration to turn your browser into a controllable entity and media player ||
 | [Bureau Of Meteorology](https://github.com/bremor/bureau_of_meteorology) |  [v1.3.4] | Custom component for retrieving weather information from the Bureau of Meteorology. |[@bremor,@makin-things](https://github.com/bremor,makin-things).|
@@ -837,6 +839,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Dyson](https://github.com/libdyson-wg/ha-dyson) |  [v1.5.2] | Home Assistant custom integration for Wi-Fi connected Dyson devices |[@libdyson-wg](https://github.com/libdyson-wg), [@dotvezz](https://github.com/dotvezz).|
 | [Emsc Earthquake](https://github.com/febalci/ha_emsc_earthquake) |  | Home Assistant Custom Component for Near Realtime Notifications of Earthquakes from EMSC |[@your_github_handle](https://github.com/your_github_handle).|
 | [Eufy Security](https://github.com/fuatakgun/eufy_security) |  [v8.1.1] | Home Assistant integration to manage Eufy Security devices as cameras, home base stations, doorbells, motion and contact sensors. |[@fuatakgun](https://github.com/fuatakgun).|
+| [F1 Sensor](https://github.com/Nicxe/f1_sensor) |  [v0.1.0] | A Home Assistant Custom Integration that provides information about the next Formula 1 race and the full season calendar |[@Nicxe](https://github.com/Nicxe).|
 | [Feedparser](https://github.com/custom-components/feedparser) |  [v0.1.12] | 📰 RSS Feed Integration |[@iantrich](https://github.com/iantrich), [@ogajduse](https://github.com/ogajduse).|
 | [Flightradar24](https://github.com/AlexandrErohin/home-assistant-flightradar24) |  [v1.25.2] | Flightradar24 integration for Home Assistant |[@AlexandrErohin](https://github.com/AlexandrErohin).|
 | [Fontawesome](https://github.com/thomasloven/hass-fontawesome) |  [v2.2.3] | 🔹 Use icons from fontawesome in home-assistant |[@thomasloven](https://github.com/thomasloven).|
@@ -921,7 +924,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Bom Radar Card](https://github.com/Makin-Things/bom-radar-card) |  [v3.0.2] | A rain radar card using the new tiled images from the Australian BOM |
 | [Bubble Card](https://github.com/Clooos/Bubble-Card) |  [v2.5.0-beta.9] | Bubble Card is a minimalist card collection for Home Assistant with a nice pop-up touch. |
 | [Button Card](https://github.com/custom-cards/button-card) |  [v4.1.2] | ❇️ Lovelace button-card for home assistant |
-| [Calendar Card Pro](https://github.com/alexpfau/calendar-card-pro) |  [v2.4.2] | 📅 A sleek and highly customizable calendar card for Home Assistant, designed for performance and a clean, modern look. |
+| [Calendar Card Pro](https://github.com/alexpfau/calendar-card-pro) |  [v2.4.3] | 📅 A sleek and highly customizable calendar card for Home Assistant, designed for performance and a clean, modern look. |
 | [Card Mod](https://github.com/thomasloven/lovelace-card-mod) |  [v3.4.4] | 🔹 Add CSS styles to (almost) any lovelace card |
 | [Card Tools](https://github.com/thomasloven/lovelace-card-tools) |  [v11] | 🔹A collection of tools for other lovelace plugins to use |
 | [Clock Weather Card](https://github.com/pkissling/clock-weather-card) |  [v2.8.11] | A Home Assistant Card indicating today's date/time, along with an iOS inspired weather forecast for the next days with animated icons |
@@ -939,7 +942,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Flex Table   Highly Customizable, Data Visualization](https://github.com/custom-cards/flex-table-card) |  [v0.7.8] | Highly Flexible Lovelace Card - arbitrary contents/columns/rows, regex matched, perfect to show appdaemon created content and anything breaking out of the entity_id + attributes concept |
 | [Flightradar24 Card](https://github.com/Springvar/home-assistant-flightradar24-card) |  [v0.0.11] | Custom card to use with Flightradar24 integration for Home Assistant |
 | [Fold Entity Row](https://github.com/thomasloven/lovelace-fold-entity-row) |  [v2.2.0] | 🔹 A foldable row for entities card, containing other rows |
-| [Formula One Card](https://github.com/marcokreeft87/formulaone-card) |  [v1.10.5] | Present the data of Formula One in a pretty way |
+| [Formula One Card](https://github.com/marcokreeft87/formulaone-card) |  [v1.11.0] | Present the data of Formula One in a pretty way |
 | [Heatmap Card](https://github.com/kandsten/ha-heatmap-card) |  [vac99408] | Heatmap custom card for Home Assistant |
 | [Horizon Card](https://github.com/rejuvenate/lovelace-horizon-card) |  [v1.3.1] | Sun Card successor: Visualize the position of the Sun over the horizon. |
 | [Hourly Weather Card](https://github.com/decompil3d/lovelace-hourly-weather) |  [v6.6.1] | Hourly weather card for Home Assistant. Visualize upcoming weather conditions as a colored horizontal bar. |
