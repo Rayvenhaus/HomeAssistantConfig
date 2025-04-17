@@ -50,7 +50,7 @@ _Stats as at 05:00, unknown_
 | HA Version | 2025.4.2 |
 | No. Integrations | 225 |
 | No. Custom Integrations | 104 |
-| No. Entities | 5874 |
+| No. Entities | 5875 |
 | No. Sensors | 3762 |
 | No. Automations | 159 |
 
@@ -964,7 +964,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Plotly Graph Card](https://github.com/dbuezas/lovelace-plotly-graph-card) |  [v3.3.5] | Highly customisable Lovelace card to plot interactive graphs. Brings scrolling, zooming, and much more! |
 | [Power Flow Card Plus](https://github.com/flixlix/power-flow-card-plus) |  [v0.2.5] | A power distribution card inspired by the official Energy Distribution card for Home Assistant |
 | [Pqina Flip Clock](https://github.com/Thyraz/pqina-flip-clock-card) |  [v1.1.1] | Home Assistant Lovelace custom card showing a flip clock using the "PQINA flip" web component |
-| [Sankey Chart Card](https://github.com/MindFreeze/ha-sankey-chart) |  [v3.6.0] | A Home Assistant lovelace card to display a sankey chart. For example for power consumption |
+| [Sankey Chart Card](https://github.com/MindFreeze/ha-sankey-chart) |  [v3.7.0] | A Home Assistant lovelace card to display a sankey chart. For example for power consumption |
 | [Search Card](https://github.com/postlund/search-card) |  [vefd0c2c] | Quickly search for entities from a Lovelace card. |
 | [Secondaryinfo Entity Row](https://github.com/custom-cards/secondaryinfo-entity-row) |  [v5.0] | Custom entity row for HomeAssistant, providing additional types of data to be displayed in the secondary info area of the Lovelace Entities card |
 | [Simple Weather Card](https://github.com/kalkih/simple-weather-card) |  [v0.8.5] | Minimalistic weather card for Home Assistant |
