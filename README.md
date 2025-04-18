@@ -50,8 +50,8 @@ _Stats as at 05:00, unknown_
 | HA Version | 2025.4.2 |
 | No. Integrations | 225 |
 | No. Custom Integrations | 104 |
-| No. Entities | 5875 |
-| No. Sensors | 3762 |
+| No. Entities | 5880 |
+| No. Sensors | 3768 |
 | No. Automations | 159 |
 
 <details>
@@ -91,7 +91,7 @@ Remotes | 7
 Scenes | 2
 Scripts | 85
 Selects | 57
-Sensors | 3762
+Sensors | 3768
 Sirens | 0
 Speech-to-text | 1
 Suns | 1
@@ -115,7 +115,7 @@ Zones | 4
 Here is a list of all the integrations I use, including any Custom Components (which are also listed below)
 
 
-<details><summary>689 Integrations</summary>
+<details><summary>691 Integrations</summary>
 
 | Name |
 | --- |
@@ -208,6 +208,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [cloudflare_speed_test](https://www.home-assistant.io/components/cloudflare_speed_test) |
 | [cloudflare_speed_test.sensor](https://www.home-assistant.io/components/cloudflare_speed_test.sensor) |
 | [cloudflare_tunnel_monitor](https://www.home-assistant.io/components/cloudflare_tunnel_monitor) |
+| [cloudflare_tunnel_monitor.sensor](https://www.home-assistant.io/components/cloudflare_tunnel_monitor.sensor) |
 | [co2signal](https://www.home-assistant.io/components/co2signal) |
 | [co2signal.sensor](https://www.home-assistant.io/components/co2signal.sensor) |
 | [command_line](https://www.home-assistant.io/components/command_line) |
@@ -287,6 +288,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [forecast_solar.sensor](https://www.home-assistant.io/components/forecast_solar.sensor) |
 | [frontend](https://www.home-assistant.io/components/frontend) |
 | [fuel_prices](https://www.home-assistant.io/components/fuel_prices) |
+| [fuel_prices.sensor](https://www.home-assistant.io/components/fuel_prices.sensor) |
 | [fully_kiosk](https://www.home-assistant.io/components/fully_kiosk) |
 | [fully_kiosk.binary_sensor](https://www.home-assistant.io/components/fully_kiosk.binary_sensor) |
 | [fully_kiosk.button](https://www.home-assistant.io/components/fully_kiosk.button) |
@@ -876,7 +878,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Pirate Weather](https://github.com/Pirate-Weather/pirate-weather-ha) |  [v1.7.1] | Replacement for the default Dark Sky Home Assistant integration using Pirate Weather |[@alexander0042](https://github.com/alexander0042).|
 | [Playstation Network](https://github.com/JackJPowell/hass-psn) |  [v0.7.4] | Home Assistant integration for the Playstation Network |[@jackjpowell](https://github.com/jackjpowell).|
 | [Plex Recently Added](https://github.com/custom-components/sensor.plex_recently_added) |  [v0.5.3] | ▶️ Plex component to feed Upcoming Media Card. |[@maykar](https://github.com/maykar).|
-| [Powercalc](https://github.com/bramstroker/homeassistant-powercalc) |  [v1.17.10] | Custom component to calculate estimated power consumption of lights and other appliances |[@bramstroker](https://github.com/bramstroker).|
+| [Powercalc](https://github.com/bramstroker/homeassistant-powercalc) |  [v1.17.11] | Custom component to calculate estimated power consumption of lights and other appliances |[@bramstroker](https://github.com/bramstroker).|
 | [Prometheus Sensor](https://github.com/mweinelt/ha-prometheus-sensor) |  [v1.1.2] | Import 🔥 Prometheus query results into 🏡 Home Assistant 📈 |[@mweinelt](https://github.com/mweinelt).|
 | [Proxmox Ve](https://github.com/dougiteixeira/proxmoxve) |  [v3.5.2] | Proxmox VE Custom Integration Home Assistant |[@dougiteixeira](https://github.com/dougiteixeira).|
 | [Pyscript](https://github.com/custom-components/pyscript) |  [v1.6.4] | Pyscript adds rich Python scripting to HASS |[@craigbarratt](https://github.com/craigbarratt).|
@@ -924,7 +926,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Bom Radar Card](https://github.com/Makin-Things/bom-radar-card) |  [v3.0.2] | A rain radar card using the new tiled images from the Australian BOM |
 | [Bubble Card](https://github.com/Clooos/Bubble-Card) |  [v2.5.0-beta.9] | Bubble Card is a minimalist card collection for Home Assistant with a nice pop-up touch. |
 | [Button Card](https://github.com/custom-cards/button-card) |  [v4.1.2] | ❇️ Lovelace button-card for home assistant |
-| [Calendar Card Pro](https://github.com/alexpfau/calendar-card-pro) |  [v2.4.3] | 📅 A sleek and highly customizable calendar card for Home Assistant, designed for performance and a clean, modern look. |
+| [Calendar Card Pro](https://github.com/alexpfau/calendar-card-pro) |  [v2.4.4] | 📅 A sleek and highly customizable calendar card for Home Assistant, designed for performance and a clean, modern look. |
 | [Card Mod](https://github.com/thomasloven/lovelace-card-mod) |  [v3.4.4] | 🔹 Add CSS styles to (almost) any lovelace card |
 | [Card Tools](https://github.com/thomasloven/lovelace-card-tools) |  [v11] | 🔹A collection of tools for other lovelace plugins to use |
 | [Clock Weather Card](https://github.com/pkissling/clock-weather-card) |  [v2.8.11] | A Home Assistant Card indicating today's date/time, along with an iOS inspired weather forecast for the next days with animated icons |
@@ -952,7 +954,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Layout Card](https://github.com/thomasloven/lovelace-layout-card) |  [v2.4.5] | 🔹 Get more control over the placement of lovelace cards. |
 | [Lovelace Card Templater](https://github.com/gadgetchnnel/lovelace-card-templater) |  [v0.0.17] | Custom Lovelace card which allows Jinja2 templates to be applied to other cards |
 | [Mediarr Card](https://github.com/Vansmak/mediarr_card) |  [v1.5.1-tmdb] | custom component for home assistant |
-| [Mediocre Hass Media Player Cards](https://github.com/antontanderup/mediocre-hass-media-player-cards) |  [v0.17.1] | Media Player Cards for Homeassistant. |
+| [Mediocre Hass Media Player Cards](https://github.com/antontanderup/mediocre-hass-media-player-cards) |  [v0.18.0] | Media Player Cards for Homeassistant. |
 | [Mini Graph Card](https://github.com/kalkih/mini-graph-card) |  [v0.12.1] | Minimalistic graph card for Home Assistant Lovelace UI |
 | [Mini Media Player](https://github.com/kalkih/mini-media-player) |  [v1.16.9] | Minimalistic media card for Home Assistant Lovelace UI |
 | [Multiple Entity Row](https://github.com/benct/lovelace-multiple-entity-row) |  [v4.5.1] | Show multiple entity states and attributes on entity rows in Home Assistant's Lovelace UI |
@@ -1004,7 +1006,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | Browserless Chromium | 2.27.0 |  | db21ed7f |
 | Cloudflared | 5.2.12 |  | 9074a9fa |
 | DbStats | 0.5.12 |  | 8bce8ef4 |
-| ESPHome Device Builder | 2025.3.3 |  | 15ef4d2f |
+| ESPHome Device Builder | 2025.4.0 |  | 15ef4d2f |
 | eufy-security-ws | 1.9.2 |  | 402f1039 |
 | Get HACS | 1.3.1 |  | cb646a50 |
 | Glances | 0.21.1 |  | a0d7b954 |
