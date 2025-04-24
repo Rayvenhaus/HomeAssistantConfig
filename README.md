@@ -50,8 +50,8 @@ _Stats as at 05:00, unknown_
 | HA Version | 2025.4.3 |
 | No. Integrations | 225 |
 | No. Custom Integrations | 104 |
-| No. Entities | 5848 |
-| No. Sensors | 3827 |
+| No. Entities | 5843 |
+| No. Sensors | 3823 |
 | No. Automations | 159 |
 
 <details>
@@ -71,7 +71,7 @@ Covers | 0
 Dates | 0
 Date/times | 0
 Device trackers | 54
-Devices | 607
+Devices | 608
 Fans | 3
 Humidifiers | 0
 Images | 7
@@ -85,13 +85,13 @@ Lights | 13
 Locks | 0
 Media players | 30
 Numbers | 52
-Persistent notifications | 5
+Persistent notifications | 6
 Persons | 4
 Remotes | 7
 Scenes | 2
 Scripts | 85
 Selects | 57
-Sensors | 3827
+Sensors | 3823
 Sirens | 0
 Speech-to-text | 1
 Suns | 1
@@ -99,7 +99,7 @@ Switches | 245
 Texts | 2
 Times | 0
 Text-to-speech | 1
-Update | 240
+Update | 241
 Vacuums | 0
 Water heaters | 0
 Weather | 14
@@ -823,7 +823,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Australian Space Weather](https://github.com/kcoffau/AUS_BOM_Space_Weather_Alert_System) |  [v1.0.1] | Provides the Australian Bureau of Meteorology Space Weather Alert System values |[@kcoffau](https://github.com/kcoffau).|
 | [Average Sensor](https://github.com/Limych/ha-average) |  [v2.4.0] | Average Sensor for Home Assistant |[@Limych](https://github.com/Limych).|
 | [Awtrix Notifications](https://github.com/10der/homeassistant-custom_components-awtrix) |  | HASS awtrix |[@10der](https://github.com/10der).|
-| [Bermuda Ble Trilateration](https://github.com/agittins/bermuda) |  [v0.8.0] | Bermuda Bluetooth/BLE Triangulation / Trilateration for HomeAssistant |[@agittins](https://github.com/agittins).|
+| [Bermuda Ble Trilateration](https://github.com/agittins/bermuda) |  [v0.8.1] | Bermuda Bluetooth/BLE Triangulation / Trilateration for HomeAssistant |[@agittins](https://github.com/agittins).|
 | [Blitzortung.Org Lightning Detector](https://github.com/mrk-its/homeassistant-blitzortung) |  [v1.3.9] | Custom Component for fetching lightning data from blitzortung.org |[@mrk-its](https://github.com/mrk-its).|
 | [Browser Mod](https://github.com/thomasloven/hass-browser_mod) |  [v2.3.3] | 🔹 A Home Assistant integration to turn your browser into a controllable entity and media player ||
 | [Bureau Of Meteorology](https://github.com/bremor/bureau_of_meteorology) |  [v1.3.5] | Custom component for retrieving weather information from the Bureau of Meteorology. |[@bremor,@makin-things](https://github.com/bremor,makin-things).|
@@ -909,7 +909,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Wican](https://github.com/jay-oswald/ha-wican) |  [v0.3.0] |  |[@jay-oswald](https://github.com/jay-oswald).|
 | [World'S Air Quality Index](https://github.com/pawkakol1/worlds-air-quality-index) |  [v1.1.0] | HACS World's Air Quality Index integration from waqi.info |[@pawkakol1](https://github.com/pawkakol1).|
 | [XMLTV EPG](https://github.com/shadow578/homeassistant_xmltv-epg) |  [v2.4.1] | XMLTV EPG for HomeAssisstant |[@shadow578](https://github.com/shadow578).|
-| [Xtend Tuya](https://github.com/azerty9971/xtend_tuya) |  [v3.0.11] | eXtend Tuya's integration |[@azerty9971](https://github.com/azerty9971).|
+| [Xtend Tuya](https://github.com/azerty9971/xtend_tuya) |  [v3.0.12] | eXtend Tuya's integration |[@azerty9971](https://github.com/azerty9971).|
 | [Yahoo Finance](https://github.com/iprak/yahoofinance) |  [v1.2.15] | Home Assistant component which allows you to get stock updates from Yahoo finance. |[@iprak](https://github.com/iprak).|
 </details>
 
@@ -923,7 +923,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Bar Card](https://github.com/custom-cards/bar-card) |  [v3.2.0] | Customizable Animated Bar card for Home Assistant Lovelace |
 | [Better Moment Card](https://github.com/ibz0q/better-moment-card) |  [v2025.01.11] | Digital date/time card for Lovelace 🕔 |
 | [Bom Radar Card](https://github.com/Makin-Things/bom-radar-card) |  [v3.0.2] | A rain radar card using the new tiled images from the Australian BOM |
-| [Bubble Card](https://github.com/Clooos/Bubble-Card) |  [v2.5.0-beta.9] | Bubble Card is a minimalist card collection for Home Assistant with a nice pop-up touch. |
+| [Bubble Card](https://github.com/Clooos/Bubble-Card) |  [v3.0.0-beta.1] | Bubble Card is a minimalist card collection for Home Assistant with a nice pop-up touch. |
 | [Button Card](https://github.com/custom-cards/button-card) |  [v4.1.2] | ❇️ Lovelace button-card for home assistant |
 | [Calendar Card Pro](https://github.com/alexpfau/calendar-card-pro) |  [v2.4.5] | 📅 A sleek and highly customizable calendar card for Home Assistant, designed for performance and a clean, modern look. |
 | [Card Mod](https://github.com/thomasloven/lovelace-card-mod) |  [v3.4.4] | 🔹 Add CSS styles to (almost) any lovelace card |
@@ -933,7 +933,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Compass Card](https://github.com/tomvanswam/compass-card) |  [v2.0.2] | A Lovelace card that shows a directional indicator on a compass for Home Assistant |
 | [Config Template Card](https://github.com/iantrich/config-template-card) |  [v1.3.6] | 📝 Templatable Lovelace Configurations |
 | [Custom Brand Icons](https://github.com/elax46/custom-brand-icons) |  [v2025.2.0] | Custom brand icons for Home Assistant |
-| [Custom Features For Home Assistant Cards](https://github.com/Nerwyn/custom-card-features) |  [v4.3.8] | Home Assistant custom features for tile cards and more. Call any action using buttons, dropdowns, selectors, sliders, spinboxes, and toggles. |
+| [Custom Features For Home Assistant Cards](https://github.com/Nerwyn/custom-card-features) |  [v4.3.9] | Home Assistant custom features for tile cards and more. Call any action using buttons, dropdowns, selectors, sliders, spinboxes, and toggles. |
 | [Decluttering Card](https://github.com/custom-cards/decluttering-card) |  [v1.0.0] | 🧹 Declutter your lovelace configuration with the help of this card |
 | [Device Card](https://github.com/homeassistant-extras/device-card) |  [v0.8.0] | Device Card to summarize device information in Home Assistant |
 | [Digital Clock](https://github.com/wassy92x/lovelace-digital-clock) |  [v1.2.4] | A custom digital clock card for Home Assistant |
@@ -997,7 +997,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Noctis](https://github.com/aFFekopp/noctis) |  [v3.1] | 🐵 Dark Blue Theme for Home Assistant |
 </details>
 
-<details><summary>24 Addons via HA Operating System</summary>
+<details><summary>25 Addons via HA Operating System</summary>
 
 | Name | Version | Description | Repository |
 | --- | --- | --- | --- |
@@ -1021,6 +1021,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | phpMyAdmin | 0.11.1 |  | a0d7b954 |
 | Samba share | 12.5.0 |  | core |
 | Silicon Labs Multiprotocol | 2.4.5 |  | core |
+| SNMPD | 0.4.0 |  | ca021f77 |
 | SunGather | 0.1.4 |  | 7b536ee6 |
 | Zigbee2MQTT | 2.2.1-1 |  | 45df7312 |
 | ZigStar Silicon Labs FW Flasher | 0.1.1 |  | 193f5383 |
