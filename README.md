@@ -48,10 +48,10 @@ _Stats as at 05:00, unknown_
 | Stat | Qty |
 | ---|--- |
 | HA Version | 2025.4.3 |
-| No. Integrations | 225 |
+| No. Integrations | 224 |
 | No. Custom Integrations | 104 |
-| No. Entities | 5843 |
-| No. Sensors | 3823 |
+| No. Entities | 5846 |
+| No. Sensors | 3827 |
 | No. Automations | 159 |
 
 <details>
@@ -63,7 +63,7 @@ Air quality | 0
 Alarm control panels | 2
 Areas | 18
 Binary sensors | 475
-Buttons | 213
+Buttons | 212
 Calendars | 84
 Cameras | 6
 Climate | 2
@@ -85,17 +85,17 @@ Lights | 13
 Locks | 0
 Media players | 30
 Numbers | 52
-Persistent notifications | 6
+Persistent notifications | 5
 Persons | 4
 Remotes | 7
 Scenes | 2
 Scripts | 85
 Selects | 57
-Sensors | 3823
+Sensors | 3827
 Sirens | 0
 Speech-to-text | 1
 Suns | 1
-Switches | 245
+Switches | 244
 Texts | 2
 Times | 0
 Text-to-speech | 1
@@ -115,7 +115,7 @@ Zones | 4
 Here is a list of all the integrations I use, including any Custom Components (which are also listed below)
 
 
-<details><summary>690 Integrations</summary>
+<details><summary>681 Integrations</summary>
 
 | Name |
 | --- |
@@ -390,16 +390,6 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [lastfm](https://www.home-assistant.io/components/lastfm) |
 | [lastfm.sensor](https://www.home-assistant.io/components/lastfm.sensor) |
 | [lg_thinq](https://www.home-assistant.io/components/lg_thinq) |
-| [lg_thinq.binary_sensor](https://www.home-assistant.io/components/lg_thinq.binary_sensor) |
-| [lg_thinq.climate](https://www.home-assistant.io/components/lg_thinq.climate) |
-| [lg_thinq.event](https://www.home-assistant.io/components/lg_thinq.event) |
-| [lg_thinq.fan](https://www.home-assistant.io/components/lg_thinq.fan) |
-| [lg_thinq.number](https://www.home-assistant.io/components/lg_thinq.number) |
-| [lg_thinq.select](https://www.home-assistant.io/components/lg_thinq.select) |
-| [lg_thinq.sensor](https://www.home-assistant.io/components/lg_thinq.sensor) |
-| [lg_thinq.switch](https://www.home-assistant.io/components/lg_thinq.switch) |
-| [lg_thinq.vacuum](https://www.home-assistant.io/components/lg_thinq.vacuum) |
-| [lg_thinq.water_heater](https://www.home-assistant.io/components/lg_thinq.water_heater) |
 | [light](https://www.home-assistant.io/components/light) |
 | [llmvision](https://www.home-assistant.io/components/llmvision) |
 | [local_ip](https://www.home-assistant.io/components/local_ip) |
@@ -766,6 +756,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [worlds_air_quality_index](https://www.home-assistant.io/components/worlds_air_quality_index) |
 | [worlds_air_quality_index.sensor](https://www.home-assistant.io/components/worlds_air_quality_index.sensor) |
 | [wud_getupdates](https://www.home-assistant.io/components/wud_getupdates) |
+| [wud_getupdates.sensor](https://www.home-assistant.io/components/wud_getupdates.sensor) |
 | [xtend_tuya](https://www.home-assistant.io/components/xtend_tuya) |
 | [xtend_tuya.alarm_control_panel](https://www.home-assistant.io/components/xtend_tuya.alarm_control_panel) |
 | [xtend_tuya.binary_sensor](https://www.home-assistant.io/components/xtend_tuya.binary_sensor) |
@@ -819,7 +810,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Adsb.Lol For Homeassistant](https://github.com/vingerha/ha_adsb_lol) |  [v0.1.3] | Home Assistant Integration with adsb.lol |[@vingerha](https://github.com/vingerha).|
 | [Anniversaries](https://github.com/pinkywafer/Anniversaries) |  [v6.0.1] | Anniversary Countdown Sensor for Home Assistant |[@pinkywafer](https://github.com/pinkywafer).|
 | [Apparent Temperature](https://github.com/Limych/ha-apparent-temperature) |  [v1.1.1] | Sensor of Apparent Temperature for Home Assistant. |[@Limych](https://github.com/Limych).|
-| [Astroweather](https://github.com/mawinkler/astroweather) |  [v0.72.1] | Asynchronous Astro Weather Forecast for Home Assistant |[@mawinkler](https://github.com/mawinkler).|
+| [Astroweather](https://github.com/mawinkler/astroweather) |  [v0.73.0] | Asynchronous Astro Weather Forecast for Home Assistant |[@mawinkler](https://github.com/mawinkler).|
 | [Australian Space Weather](https://github.com/kcoffau/AUS_BOM_Space_Weather_Alert_System) |  [v1.0.1] | Provides the Australian Bureau of Meteorology Space Weather Alert System values |[@kcoffau](https://github.com/kcoffau).|
 | [Average Sensor](https://github.com/Limych/ha-average) |  [v2.4.0] | Average Sensor for Home Assistant |[@Limych](https://github.com/Limych).|
 | [Awtrix Notifications](https://github.com/10der/homeassistant-custom_components-awtrix) |  | HASS awtrix |[@10der](https://github.com/10der).|
@@ -923,7 +914,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Bar Card](https://github.com/custom-cards/bar-card) |  [v3.2.0] | Customizable Animated Bar card for Home Assistant Lovelace |
 | [Better Moment Card](https://github.com/ibz0q/better-moment-card) |  [v2025.01.11] | Digital date/time card for Lovelace 🕔 |
 | [Bom Radar Card](https://github.com/Makin-Things/bom-radar-card) |  [v3.0.2] | A rain radar card using the new tiled images from the Australian BOM |
-| [Bubble Card](https://github.com/Clooos/Bubble-Card) |  [v3.0.0-beta.1] | Bubble Card is a minimalist card collection for Home Assistant with a nice pop-up touch. |
+| [Bubble Card](https://github.com/Clooos/Bubble-Card) |  [v3.0.0-beta.2] | Bubble Card is a minimalist card collection for Home Assistant with a nice pop-up touch. |
 | [Button Card](https://github.com/custom-cards/button-card) |  [v4.1.2] | ❇️ Lovelace button-card for home assistant |
 | [Calendar Card Pro](https://github.com/alexpfau/calendar-card-pro) |  [v2.4.5] | 📅 A sleek and highly customizable calendar card for Home Assistant, designed for performance and a clean, modern look. |
 | [Card Mod](https://github.com/thomasloven/lovelace-card-mod) |  [v3.4.4] | 🔹 Add CSS styles to (almost) any lovelace card |
@@ -974,7 +965,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Spotify Lovelace Card](https://github.com/custom-cards/spotify-card) |  [v2.4.0] | Spotify playlist card for Home Assistant card |
 | [Stack In Card](https://github.com/custom-cards/stack-in-card) |  [v0.2.0] | 🛠 group multiple cards into one card without the borders |
 | [State Switch](https://github.com/thomasloven/lovelace-state-switch) |  [v1.9.5] | 🔹Dynamically replace lovelace cards depending on occasion |
-| [Streamline Card](https://github.com/brunosabot/streamline-card) |  [v0.0.23] | Streamline your Lovelace configuration with with a card template system. |
+| [Streamline Card](https://github.com/brunosabot/streamline-card) |  [v0.1.0] | Streamline your Lovelace configuration with with a card template system. |
 | [Swipe Card](https://github.com/bramkragten/swipe-card) |  [v5.0.0] | Card that allows you to swipe throught multiple cards for Home Assistant Lovelace |
 | [Swiss Army Knife Custom Card](https://github.com/AmoebeLabs/swiss-army-knife-card) |  [v2.5.1] | The versatile custom Swiss Army Knife card for Home Assistant allows you to create your unique visualization using several graphical tools, styling options and animations. |
 | [Tabbed Card](https://github.com/kinghat/tabbed-card) |  [v0.3.2] | a custom card for home assistant that utilizes tabs to segregate individual cards. |
