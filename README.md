@@ -47,11 +47,11 @@ _Stats as at 05:00, unknown_
 
 | Stat | Qty |
 | ---|--- |
-| HA Version | 2025.4.3 |
-| No. Integrations | 224 |
+| HA Version | 2025.4.4 |
+| No. Integrations | 225 |
 | No. Custom Integrations | 104 |
-| No. Entities | 5846 |
-| No. Sensors | 3827 |
+| No. Entities | 5840 |
+| No. Sensors | 3823 |
 | No. Automations | 159 |
 
 <details>
@@ -85,13 +85,13 @@ Lights | 13
 Locks | 0
 Media players | 30
 Numbers | 52
-Persistent notifications | 5
+Persistent notifications | 4
 Persons | 4
 Remotes | 7
 Scenes | 2
 Scripts | 85
 Selects | 57
-Sensors | 3827
+Sensors | 3823
 Sirens | 0
 Speech-to-text | 1
 Suns | 1
@@ -115,7 +115,7 @@ Zones | 4
 Here is a list of all the integrations I use, including any Custom Components (which are also listed below)
 
 
-<details><summary>681 Integrations</summary>
+<details><summary>690 Integrations</summary>
 
 | Name |
 | --- |
@@ -287,7 +287,6 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [forecast_solar.sensor](https://www.home-assistant.io/components/forecast_solar.sensor) |
 | [frontend](https://www.home-assistant.io/components/frontend) |
 | [fuel_prices](https://www.home-assistant.io/components/fuel_prices) |
-| [fuel_prices.sensor](https://www.home-assistant.io/components/fuel_prices.sensor) |
 | [fully_kiosk](https://www.home-assistant.io/components/fully_kiosk) |
 | [fully_kiosk.binary_sensor](https://www.home-assistant.io/components/fully_kiosk.binary_sensor) |
 | [fully_kiosk.button](https://www.home-assistant.io/components/fully_kiosk.button) |
@@ -390,6 +389,16 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [lastfm](https://www.home-assistant.io/components/lastfm) |
 | [lastfm.sensor](https://www.home-assistant.io/components/lastfm.sensor) |
 | [lg_thinq](https://www.home-assistant.io/components/lg_thinq) |
+| [lg_thinq.binary_sensor](https://www.home-assistant.io/components/lg_thinq.binary_sensor) |
+| [lg_thinq.climate](https://www.home-assistant.io/components/lg_thinq.climate) |
+| [lg_thinq.event](https://www.home-assistant.io/components/lg_thinq.event) |
+| [lg_thinq.fan](https://www.home-assistant.io/components/lg_thinq.fan) |
+| [lg_thinq.number](https://www.home-assistant.io/components/lg_thinq.number) |
+| [lg_thinq.select](https://www.home-assistant.io/components/lg_thinq.select) |
+| [lg_thinq.sensor](https://www.home-assistant.io/components/lg_thinq.sensor) |
+| [lg_thinq.switch](https://www.home-assistant.io/components/lg_thinq.switch) |
+| [lg_thinq.vacuum](https://www.home-assistant.io/components/lg_thinq.vacuum) |
+| [lg_thinq.water_heater](https://www.home-assistant.io/components/lg_thinq.water_heater) |
 | [light](https://www.home-assistant.io/components/light) |
 | [llmvision](https://www.home-assistant.io/components/llmvision) |
 | [local_ip](https://www.home-assistant.io/components/local_ip) |
@@ -914,7 +923,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Bar Card](https://github.com/custom-cards/bar-card) |  [v3.2.0] | Customizable Animated Bar card for Home Assistant Lovelace |
 | [Better Moment Card](https://github.com/ibz0q/better-moment-card) |  [v2025.01.11] | Digital date/time card for Lovelace 🕔 |
 | [Bom Radar Card](https://github.com/Makin-Things/bom-radar-card) |  [v3.0.2] | A rain radar card using the new tiled images from the Australian BOM |
-| [Bubble Card](https://github.com/Clooos/Bubble-Card) |  [v3.0.0-beta.2] | Bubble Card is a minimalist card collection for Home Assistant with a nice pop-up touch. |
+| [Bubble Card](https://github.com/Clooos/Bubble-Card) |  [v3.0.0-beta.3] | Bubble Card is a minimalist card collection for Home Assistant with a nice pop-up touch. |
 | [Button Card](https://github.com/custom-cards/button-card) |  [v4.1.2] | ❇️ Lovelace button-card for home assistant |
 | [Calendar Card Pro](https://github.com/alexpfau/calendar-card-pro) |  [v2.4.5] | 📅 A sleek and highly customizable calendar card for Home Assistant, designed for performance and a clean, modern look. |
 | [Card Mod](https://github.com/thomasloven/lovelace-card-mod) |  [v3.4.4] | 🔹 Add CSS styles to (almost) any lovelace card |
@@ -934,7 +943,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Flex Table   Highly Customizable, Data Visualization](https://github.com/custom-cards/flex-table-card) |  [v0.7.8] | Highly Flexible Lovelace Card - arbitrary contents/columns/rows, regex matched, perfect to show appdaemon created content and anything breaking out of the entity_id + attributes concept |
 | [Flightradar24 Card](https://github.com/Springvar/home-assistant-flightradar24-card) |  [v0.0.11] | Custom card to use with Flightradar24 integration for Home Assistant |
 | [Fold Entity Row](https://github.com/thomasloven/lovelace-fold-entity-row) |  [v2.2.0] | 🔹 A foldable row for entities card, containing other rows |
-| [Formula One Card](https://github.com/marcokreeft87/formulaone-card) |  [v1.12.3] | Present the data of Formula One in a pretty way |
+| [Formula One Card](https://github.com/marcokreeft87/formulaone-card) |  [v1.12.4] | Present the data of Formula One in a pretty way |
 | [Heatmap Card](https://github.com/kandsten/ha-heatmap-card) |  [vac99408] | Heatmap custom card for Home Assistant |
 | [Horizon Card](https://github.com/rejuvenate/lovelace-horizon-card) |  [v1.3.1] | Sun Card successor: Visualize the position of the Sun over the horizon. |
 | [Hourly Weather Card](https://github.com/decompil3d/lovelace-hourly-weather) |  [v6.6.1] | Hourly weather card for Home Assistant. Visualize upcoming weather conditions as a colored horizontal bar. |
@@ -1006,7 +1015,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | JupyterLab | 0.15.9 |  | a0d7b954 |
 | MariaDB | 2.7.2 |  | core |
 | Matter Server | 7.0.0 |  | core |
-| Music Assistant Server | 2.5.1 |  | d5369777 |
+| Music Assistant Server | 2.5.2 |  | d5369777 |
 | Node-RED | 19.0.2 |  | a0d7b954 |
 | OpenThread Border Router | 2.13.0 |  | core |
 | phpMyAdmin | 0.11.1 |  | a0d7b954 |
@@ -1062,7 +1071,7 @@ Generated by the [custom readme integration](https://github.com/custom-component
 [home-assistant]: https://home-assistant.io
 
 [ha-version]: https://www.home-assistant.io/blog/categories/release-notes/
-[ha-version-shield]: https://img.shields.io/badge/2025.4.3-555555?style=flat-square&logo=home-assistant
+[ha-version-shield]: https://img.shields.io/badge/2025.4.4-555555?style=flat-square&logo=home-assistant
 
 [github-build-status-shield]: https://img.shields.io/github/actions/workflow/status/bacco007/HomeAssistantConfig/homeassistant.yaml?branch=master&style=flat-square&logo=github-actions&logoColor=838B95
 [github-build-status]: https://github.com/bacco007/HomeAssistantConfig/actions/workflows/homeassistant.yaml
