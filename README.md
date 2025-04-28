@@ -50,8 +50,8 @@ _Stats as at 05:00, unknown_
 | HA Version | 2025.4.4 |
 | No. Integrations | 225 |
 | No. Custom Integrations | 104 |
-| No. Entities | 5838 |
-| No. Sensors | 3823 |
+| No. Entities | 5842 |
+| No. Sensors | 3824 |
 | No. Automations | 159 |
 
 <details>
@@ -85,13 +85,13 @@ Lights | 13
 Locks | 0
 Media players | 30
 Numbers | 52
-Persistent notifications | 4
+Persistent notifications | 5
 Persons | 4
 Remotes | 7
 Scenes | 2
 Scripts | 85
 Selects | 57
-Sensors | 3823
+Sensors | 3824
 Sirens | 0
 Speech-to-text | 1
 Suns | 1
@@ -99,7 +99,7 @@ Switches | 244
 Texts | 2
 Times | 0
 Text-to-speech | 1
-Update | 241
+Update | 242
 Vacuums | 0
 Water heaters | 0
 Weather | 14
@@ -846,7 +846,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Feedparser](https://github.com/custom-components/feedparser) |  [v0.1.12] | 📰 RSS Feed Integration |[@iantrich](https://github.com/iantrich), [@ogajduse](https://github.com/ogajduse).|
 | [Flightradar24](https://github.com/AlexandrErohin/home-assistant-flightradar24) |  [v1.25.2] | Flightradar24 integration for Home Assistant |[@AlexandrErohin](https://github.com/AlexandrErohin).|
 | [Fontawesome](https://github.com/thomasloven/hass-fontawesome) |  [v2.2.3] | 🔹 Use icons from fontawesome in home-assistant |[@thomasloven](https://github.com/thomasloven).|
-| [Fuel Prices](https://github.com/pantherale0/ha-fuelprices) |  [v2025.4.1] | A generic and extensible integration with pyfuelprices to retrieve local (or remote) fuel price data. |[@pantherale0](https://github.com/pantherale0).|
+| [Fuel Prices](https://github.com/pantherale0/ha-fuelprices) |  [v2025.4.2] | A generic and extensible integration with pyfuelprices to retrieve local (or remote) fuel price data. |[@pantherale0](https://github.com/pantherale0).|
 | [Generate Readme](https://github.com/custom-components/readme) |  [v0.5.0] | Use Jinja and data from Home Assistant to generate your README.md file |[@ludeeus](https://github.com/ludeeus).|
 | [Google Home](https://github.com/leikoilja/ha-google-home) |  [v1.12.1] | Home Assistant Google Home custom component |[@leikoilja](https://github.com/leikoilja), [@DurgNomis-drol](https://github.com/DurgNomis-drol), [@ArnyminerZ](https://github.com/ArnyminerZ), [@KapJI](https://github.com/KapJI).|
 | [Gtfs Realtime](https://github.com/bcpearce/homeassistant-gtfs-realtime) |  [v0.2.5] | Home Assistant Custom Integration for GTFS Realtime Data |[@bcpearce](https://github.com/bcpearce).|
@@ -892,7 +892,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Solcast Pv Forecast](https://github.com/BJReplay/ha-solcast-solar) |  [v4.3.2] | Solcast Integration for Home Assistant |[@BJReplay](https://github.com/BJReplay), [@autoSteve](https://github.com/autoSteve).|
 | [Sonarr Upcoming Media](https://github.com/custom-components/sensor.sonarr_upcoming_media) |  [v0.4.3] | 📺 Sonarr component to feed Upcoming Media Card. |[@maykar](https://github.com/maykar).|
 | [Spook 👻 Your Homie](https://github.com/frenck/spook) |  [v3.1.0] | A scary 👻 powerful toolbox 🧰 for Home Assistant 🏡 |[@frenck](https://github.com/frenck).|
-| [Spotifyplus](https://github.com/thlucas1/homeassistantcomponent_spotifyplus) |  [v1.0.113] | Home Assistant integration for Spotify Player control, services, and soundtouchplus integration support. |[@thlucas1](https://github.com/thlucas1).|
+| [Spotifyplus](https://github.com/thlucas1/homeassistantcomponent_spotifyplus) |  [v1.0.118] | Home Assistant integration for Spotify Player control, services, and soundtouchplus integration support. |[@thlucas1](https://github.com/thlucas1).|
 | [Sql (With Json Detection)](https://github.com/crowbarz/ha-sql_json) |  [v1.1.3] | Updated SQL integration for Home Assistant that supports JSON attributes |[@dgomes](https://github.com/dgomes), [@crowbarz](https://github.com/crowbarz).|
 | [Start Time](https://github.com/AlexxIT/StartTime) |  [v1.1.8] | Start Time sensor for Home Assistant |[@AlexxIT](https://github.com/AlexxIT).|
 | [Sun2](https://github.com/pnbruckner/ha-sun2) |  [v3.3.5] | Home Assistant Sun2 Sensor |[@pnbruckner](https://github.com/pnbruckner).|
@@ -925,7 +925,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Bar Card](https://github.com/custom-cards/bar-card) |  [v3.2.0] | Customizable Animated Bar card for Home Assistant Lovelace |
 | [Better Moment Card](https://github.com/ibz0q/better-moment-card) |  [v2025.01.11] | Digital date/time card for Lovelace 🕔 |
 | [Bom Radar Card](https://github.com/Makin-Things/bom-radar-card) |  [v3.0.2] | A rain radar card using the new tiled images from the Australian BOM |
-| [Bubble Card](https://github.com/Clooos/Bubble-Card) |  [v3.0.0-beta.3] | Bubble Card is a minimalist card collection for Home Assistant with a nice pop-up touch. |
+| [Bubble Card](https://github.com/Clooos/Bubble-Card) |  [v3.0.0-beta.4] | Bubble Card is a minimalist card collection for Home Assistant with a nice pop-up touch. |
 | [Button Card](https://github.com/custom-cards/button-card) |  [v4.1.2] | ❇️ Lovelace button-card for home assistant |
 | [Calendar Card Pro](https://github.com/alexpfau/calendar-card-pro) |  [v2.4.5] | 📅 A sleek and highly customizable calendar card for Home Assistant, designed for performance and a clean, modern look. |
 | [Card Mod](https://github.com/thomasloven/lovelace-card-mod) |  [v3.4.4] | 🔹 Add CSS styles to (almost) any lovelace card |
@@ -983,7 +983,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Team Tracker Card](https://github.com/vasqued2/ha-teamtracker-card) |  [v0.14.15] | A Home Assistant frontend custom card that will display real-time updates for teams tracked with the ha-teamtracker integration.  Has custom in-game layouts for football, baseball, basketball, hockey, soccer, golf, tennis, racing, and mma. |
 | [Temperature Heatmap Card](https://github.com/zanac/temperature-heatmap-card) |  [v1.0.8] | Temperature Hetmap for Home Assistant heatmap |
 | [Template Entity Row](https://github.com/thomasloven/lovelace-template-entity-row) |  [v1.4.1] | 🔹 Display whatever you want in an entities card row. |
-| [Universal Remote Card](https://github.com/Nerwyn/android-tv-card) |  [v4.3.12] | A completely customizable universal remote card for Home Assistant. Supports multiple platforms out of the box. |
+| [Universal Remote Card](https://github.com/Nerwyn/universal-remote-card) |  [v4.3.12] | A completely customizable universal remote card for Home Assistant. Supports multiple platforms out of the box. |
 | [Uptime Card](https://github.com/dylandoamaral/uptime-card) |  [v0.16.0] | Minimalistic uptime card for Home Assistant Lovelace UI |
 | [Vertical Stack In Card](https://github.com/ofekashery/vertical-stack-in-card) |  [v1.0.1] | 📐 Home Assistant Card: Group multiple cards into a single sleek card. |
 | [Weather Card](https://github.com/bramkragten/weather-card) |  [v1.5.0] | Weather Card with animated icons for Home Assistant Lovelace |
