@@ -708,32 +708,42 @@ const $562e4e067cd81a2b$export$30c823bc834d6ab4 = (hass, config)=>{
     ].filter((s)=>s).join(' ');
     const entities = (0, $093edc2594769ee5$export$c6a2d06cc40e579)(hass, config, hassDevice.id, hassDevice.name);
     entities.forEach((entity)=>{
-        if (config.exclude_entities?.includes(entity.entity_id)) return;
-        if (entity.category === 'diagnostic') {
-            if (config.exclude_sections?.includes('diagnostics')) return;
-            device.diagnostics.push(entity);
-        } else if (entity.category === 'config') {
-            if (config.exclude_sections?.includes('configurations')) return;
-            device.configurations.push(entity);
-        } else {
-            const domain = (0, $e7dc90bb09bfe22d$export$2044bdc9670769ab)(entity.entity_id);
-            if ([
-                'text',
-                'button',
-                'number',
-                'switch',
-                'select'
-            ].includes(domain)) {
-                if (config.exclude_sections?.includes('controls')) return;
-                device.controls.push(entity);
-            } else {
-                if (config.exclude_sections?.includes('sensors')) return;
-                // everything else is a sensor
-                device.sensors.push(entity);
-            }
-        }
+        if ($562e4e067cd81a2b$var$shouldSkipEntity(entity, config)) return;
+        $562e4e067cd81a2b$var$addEntityToDevice(entity, device, config);
     });
     return device;
+};
+/**
+ * Determines if an entity should be skipped based on configuration
+ * @param entity - The entity to check
+ * @param config - The configuration object containing exclusion rules
+ * @returns True if the entity should be skipped, false otherwise
+ */ const $562e4e067cd81a2b$var$shouldSkipEntity = (entity, config)=>{
+    return config.exclude_entities?.includes(entity.entity_id);
+};
+/**
+ * Adds an entity to the appropriate category in the device object
+ * based on entity type and configuration exclusion rules
+ * @param entity - The entity to categorize and add
+ * @param device - The device object to update
+ * @param config - The configuration object containing exclusion rules
+ */ const $562e4e067cd81a2b$var$addEntityToDevice = (entity, device, config)=>{
+    if (entity.category === 'diagnostic') {
+        if (!config.exclude_sections?.includes('diagnostics')) device.diagnostics.push(entity);
+    } else if (entity.category === 'config') {
+        if (!config.exclude_sections?.includes('configurations')) device.configurations.push(entity);
+    } else {
+        const domain = (0, $e7dc90bb09bfe22d$export$2044bdc9670769ab)(entity.entity_id);
+        const isControl = [
+            'text',
+            'button',
+            'number',
+            'switch',
+            'select'
+        ].includes(domain);
+        if (isControl && !config.exclude_sections?.includes('controls')) device.controls.push(entity);
+        else if (!isControl && !config.exclude_sections?.includes('sensors')) device.sensors.push(entity);
+    }
 };
 
 
@@ -792,7 +802,7 @@ const $def2de46b9306e8a$export$8d80f9cac07cdb3 = (t)=>new $def2de46b9306e8a$expo
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */ const { is: $19fe8e3abedf4df0$var$i, defineProperty: $19fe8e3abedf4df0$var$e, getOwnPropertyDescriptor: $19fe8e3abedf4df0$var$r, getOwnPropertyNames: $19fe8e3abedf4df0$var$h, getOwnPropertySymbols: $19fe8e3abedf4df0$var$o, getPrototypeOf: $19fe8e3abedf4df0$var$n } = Object, $19fe8e3abedf4df0$var$a = globalThis, $19fe8e3abedf4df0$var$c = $19fe8e3abedf4df0$var$a.trustedTypes, $19fe8e3abedf4df0$var$l = $19fe8e3abedf4df0$var$c ? $19fe8e3abedf4df0$var$c.emptyScript : "", $19fe8e3abedf4df0$var$p = $19fe8e3abedf4df0$var$a.reactiveElementPolyfillSupport, $19fe8e3abedf4df0$var$d = (t, s)=>t, $19fe8e3abedf4df0$export$7312b35fbf521afb = {
+ */ const { is: $19fe8e3abedf4df0$var$i, defineProperty: $19fe8e3abedf4df0$var$e, getOwnPropertyDescriptor: $19fe8e3abedf4df0$var$h, getOwnPropertyNames: $19fe8e3abedf4df0$var$r, getOwnPropertySymbols: $19fe8e3abedf4df0$var$o, getPrototypeOf: $19fe8e3abedf4df0$var$n } = Object, $19fe8e3abedf4df0$var$a = globalThis, $19fe8e3abedf4df0$var$c = $19fe8e3abedf4df0$var$a.trustedTypes, $19fe8e3abedf4df0$var$l = $19fe8e3abedf4df0$var$c ? $19fe8e3abedf4df0$var$c.emptyScript : "", $19fe8e3abedf4df0$var$p = $19fe8e3abedf4df0$var$a.reactiveElementPolyfillSupport, $19fe8e3abedf4df0$var$d = (t, s)=>t, $19fe8e3abedf4df0$export$7312b35fbf521afb = {
     toAttribute (t, s) {
         switch(s){
             case Boolean:
@@ -823,11 +833,12 @@ const $def2de46b9306e8a$export$8d80f9cac07cdb3 = (t)=>new $def2de46b9306e8a$expo
         }
         return i;
     }
-}, $19fe8e3abedf4df0$export$53a6892c50694894 = (t, s)=>!$19fe8e3abedf4df0$var$i(t, s), $19fe8e3abedf4df0$var$y = {
+}, $19fe8e3abedf4df0$export$53a6892c50694894 = (t, s)=>!$19fe8e3abedf4df0$var$i(t, s), $19fe8e3abedf4df0$var$b = {
     attribute: !0,
     type: String,
     converter: $19fe8e3abedf4df0$export$7312b35fbf521afb,
     reflect: !1,
+    useDefault: !1,
     hasChanged: $19fe8e3abedf4df0$export$53a6892c50694894
 };
 Symbol.metadata ??= Symbol("metadata"), $19fe8e3abedf4df0$var$a.litPropertyMetadata ??= new WeakMap;
@@ -840,14 +851,14 @@ class $19fe8e3abedf4df0$export$c7c07a37856565d extends HTMLElement {
             ...this._$Eh.keys()
         ];
     }
-    static createProperty(t, s = $19fe8e3abedf4df0$var$y) {
-        if (s.state && (s.attribute = !1), this._$Ei(), this.elementProperties.set(t, s), !s.noAccessor) {
-            const i = Symbol(), r = this.getPropertyDescriptor(t, i, s);
-            void 0 !== r && $19fe8e3abedf4df0$var$e(this.prototype, t, r);
+    static createProperty(t, s = $19fe8e3abedf4df0$var$b) {
+        if (s.state && (s.attribute = !1), this._$Ei(), this.prototype.hasOwnProperty(t) && ((s = Object.create(s)).wrapped = !0), this.elementProperties.set(t, s), !s.noAccessor) {
+            const i = Symbol(), h = this.getPropertyDescriptor(t, i, s);
+            void 0 !== h && $19fe8e3abedf4df0$var$e(this.prototype, t, h);
         }
     }
     static getPropertyDescriptor(t, s, i) {
-        const { get: e, set: h } = $19fe8e3abedf4df0$var$r(this.prototype, t) ?? {
+        const { get: e, set: r } = $19fe8e3abedf4df0$var$h(this.prototype, t) ?? {
             get () {
                 return this[s];
             },
@@ -856,19 +867,17 @@ class $19fe8e3abedf4df0$export$c7c07a37856565d extends HTMLElement {
             }
         };
         return {
-            get () {
-                return e?.call(this);
-            },
+            get: e,
             set (s) {
-                const r = e?.call(this);
-                h.call(this, s), this.requestUpdate(t, r, i);
+                const h = e?.call(this);
+                r?.call(this, s), this.requestUpdate(t, h, i);
             },
             configurable: !0,
             enumerable: !0
         };
     }
     static getPropertyOptions(t) {
-        return this.elementProperties.get(t) ?? $19fe8e3abedf4df0$var$y;
+        return this.elementProperties.get(t) ?? $19fe8e3abedf4df0$var$b;
     }
     static _$Ei() {
         if (this.hasOwnProperty($19fe8e3abedf4df0$var$d("elementProperties"))) return;
@@ -881,7 +890,7 @@ class $19fe8e3abedf4df0$export$c7c07a37856565d extends HTMLElement {
         if (this.hasOwnProperty($19fe8e3abedf4df0$var$d("finalized"))) return;
         if (this.finalized = !0, this._$Ei(), this.hasOwnProperty($19fe8e3abedf4df0$var$d("properties"))) {
             const t = this.properties, s = [
-                ...$19fe8e3abedf4df0$var$h(t),
+                ...$19fe8e3abedf4df0$var$r(t),
                 ...$19fe8e3abedf4df0$var$o(t)
             ];
             for (const i of s)this.createProperty(i, t[i]);
@@ -941,33 +950,34 @@ class $19fe8e3abedf4df0$export$c7c07a37856565d extends HTMLElement {
     attributeChangedCallback(t, s, i) {
         this._$AK(t, i);
     }
-    _$EC(t, s) {
+    _$ET(t, s) {
         const i = this.constructor.elementProperties.get(t), e = this.constructor._$Eu(t, i);
         if (void 0 !== e && !0 === i.reflect) {
-            const r = (void 0 !== i.converter?.toAttribute ? i.converter : $19fe8e3abedf4df0$export$7312b35fbf521afb).toAttribute(s, i.type);
-            this._$Em = t, null == r ? this.removeAttribute(e) : this.setAttribute(e, r), this._$Em = null;
+            const h = (void 0 !== i.converter?.toAttribute ? i.converter : $19fe8e3abedf4df0$export$7312b35fbf521afb).toAttribute(s, i.type);
+            this._$Em = t, null == h ? this.removeAttribute(e) : this.setAttribute(e, h), this._$Em = null;
         }
     }
     _$AK(t, s) {
         const i = this.constructor, e = i._$Eh.get(t);
         if (void 0 !== e && this._$Em !== e) {
-            const t = i.getPropertyOptions(e), r = "function" == typeof t.converter ? {
+            const t = i.getPropertyOptions(e), h = "function" == typeof t.converter ? {
                 fromAttribute: t.converter
             } : void 0 !== t.converter?.fromAttribute ? t.converter : $19fe8e3abedf4df0$export$7312b35fbf521afb;
-            this._$Em = e, this[e] = r.fromAttribute(s, t.type), this._$Em = null;
+            this._$Em = e, this[e] = h.fromAttribute(s, t.type) ?? this._$Ej?.get(e) ?? null, this._$Em = null;
         }
     }
     requestUpdate(t, s, i) {
         if (void 0 !== t) {
-            if (i ??= this.constructor.getPropertyOptions(t), !(i.hasChanged ?? $19fe8e3abedf4df0$export$53a6892c50694894)(this[t], s)) return;
-            this.P(t, s, i);
+            const e = this.constructor, h = this[t];
+            if (i ??= e.getPropertyOptions(t), !((i.hasChanged ?? $19fe8e3abedf4df0$export$53a6892c50694894)(h, s) || i.useDefault && i.reflect && h === this._$Ej?.get(t) && !this.hasAttribute(e._$Eu(t, i)))) return;
+            this.C(t, s, i);
         }
-        !1 === this.isUpdatePending && (this._$ES = this._$ET());
+        !1 === this.isUpdatePending && (this._$ES = this._$EP());
     }
-    P(t, s, i) {
-        this._$AL.has(t) || this._$AL.set(t, s), !0 === i.reflect && this._$Em !== t && (this._$Ej ??= new Set).add(t);
+    C(t, s, { useDefault: i, reflect: e, wrapped: h }, r) {
+        i && !(this._$Ej ??= new Map).has(t) && (this._$Ej.set(t, r ?? s ?? this[t]), !0 !== h || void 0 !== r) || (this._$AL.has(t) || (this.hasUpdated || i || (s = void 0), this._$AL.set(t, s)), !0 === e && this._$Em !== t && (this._$Eq ??= new Set).add(t));
     }
-    async _$ET() {
+    async _$EP() {
         this.isUpdatePending = !0;
         try {
             await this._$ES;
@@ -988,14 +998,17 @@ class $19fe8e3abedf4df0$export$c7c07a37856565d extends HTMLElement {
                 this._$Ep = void 0;
             }
             const t = this.constructor.elementProperties;
-            if (t.size > 0) for (const [s, i] of t)!0 !== i.wrapped || this._$AL.has(s) || void 0 === this[s] || this.P(s, this[s], i);
+            if (t.size > 0) for (const [s, i] of t){
+                const { wrapped: t } = i, e = this[s];
+                !0 !== t || this._$AL.has(s) || void 0 === e || this.C(s, void 0, i, e);
+            }
         }
         let t = !1;
         const s = this._$AL;
         try {
-            t = this.shouldUpdate(s), t ? (this.willUpdate(s), this._$EO?.forEach((t)=>t.hostUpdate?.()), this.update(s)) : this._$EU();
+            t = this.shouldUpdate(s), t ? (this.willUpdate(s), this._$EO?.forEach((t)=>t.hostUpdate?.()), this.update(s)) : this._$EM();
         } catch (s) {
-            throw t = !1, this._$EU(), s;
+            throw t = !1, this._$EM(), s;
         }
         t && this._$AE(s);
     }
@@ -1003,7 +1016,7 @@ class $19fe8e3abedf4df0$export$c7c07a37856565d extends HTMLElement {
     _$AE(t) {
         this._$EO?.forEach((t)=>t.hostUpdated?.()), this.hasUpdated || (this.hasUpdated = !0, this.firstUpdated(t)), this.updated(t);
     }
-    _$EU() {
+    _$EM() {
         this._$AL = new Map, this.isUpdatePending = !1;
     }
     get updateComplete() {
@@ -1016,7 +1029,7 @@ class $19fe8e3abedf4df0$export$c7c07a37856565d extends HTMLElement {
         return !0;
     }
     update(t) {
-        this._$Ej &&= this._$Ej.forEach((t)=>this._$EC(t, this[t])), this._$EU();
+        this._$Eq &&= this._$Eq.forEach((t)=>this._$ET(t, this[t])), this._$EM();
     }
     updated(t) {}
     firstUpdated(t) {}
@@ -1025,7 +1038,7 @@ $19fe8e3abedf4df0$export$c7c07a37856565d.elementStyles = [], $19fe8e3abedf4df0$e
     mode: "open"
 }, $19fe8e3abedf4df0$export$c7c07a37856565d[$19fe8e3abedf4df0$var$d("elementProperties")] = new Map, $19fe8e3abedf4df0$export$c7c07a37856565d[$19fe8e3abedf4df0$var$d("finalized")] = new Map, $19fe8e3abedf4df0$var$p?.({
     ReactiveElement: $19fe8e3abedf4df0$export$c7c07a37856565d
-}), ($19fe8e3abedf4df0$var$a.reactiveElementVersions ??= []).push("2.0.4");
+}), ($19fe8e3abedf4df0$var$a.reactiveElementVersions ??= []).push("2.1.0");
 
 
 /**
@@ -1289,7 +1302,7 @@ const $f58f44579a4747ac$export$8613d1ca9052b22e = {
     B: $f58f44579a4747ac$var$H,
     F: $f58f44579a4747ac$var$z
 }, $f58f44579a4747ac$var$j = $f58f44579a4747ac$var$t.litHtmlPolyfillSupport;
-$f58f44579a4747ac$var$j?.($f58f44579a4747ac$var$N, $f58f44579a4747ac$var$R), ($f58f44579a4747ac$var$t.litHtmlVersions ??= []).push("3.2.1");
+$f58f44579a4747ac$var$j?.($f58f44579a4747ac$var$N, $f58f44579a4747ac$var$R), ($f58f44579a4747ac$var$t.litHtmlVersions ??= []).push("3.3.0");
 const $f58f44579a4747ac$export$b3890eb0ae9dca99 = (t, i, s)=>{
     const e = s?.renderBefore ?? i;
     let h = e._$litPart$;
@@ -1307,7 +1320,8 @@ const $f58f44579a4747ac$export$b3890eb0ae9dca99 = (t, i, s)=>{
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */ class $ab210b2da7b39b9d$export$3f2f9f5909897157 extends (0, $19fe8e3abedf4df0$export$c7c07a37856565d) {
+ */ const $ab210b2da7b39b9d$var$s = globalThis;
+class $ab210b2da7b39b9d$export$3f2f9f5909897157 extends (0, $19fe8e3abedf4df0$export$c7c07a37856565d) {
     constructor(){
         super(...arguments), this.renderOptions = {
             host: this
@@ -1318,8 +1332,8 @@ const $f58f44579a4747ac$export$b3890eb0ae9dca99 = (t, i, s)=>{
         return this.renderOptions.renderBefore ??= t.firstChild, t;
     }
     update(t) {
-        const s = this.render();
-        this.hasUpdated || (this.renderOptions.isConnected = this.isConnected), super.update(t), this._$Do = (0, $f58f44579a4747ac$export$b3890eb0ae9dca99)(s, this.renderRoot, this.renderOptions);
+        const r = this.render();
+        this.hasUpdated || (this.renderOptions.isConnected = this.isConnected), super.update(t), this._$Do = (0, $f58f44579a4747ac$export$b3890eb0ae9dca99)(r, this.renderRoot, this.renderOptions);
     }
     connectedCallback() {
         super.connectedCallback(), this._$Do?.setConnected(!0);
@@ -1331,20 +1345,20 @@ const $f58f44579a4747ac$export$b3890eb0ae9dca99 = (t, i, s)=>{
         return 0, $f58f44579a4747ac$export$9c068ae9cc5db4e8;
     }
 }
-$ab210b2da7b39b9d$export$3f2f9f5909897157._$litElement$ = !0, $ab210b2da7b39b9d$export$3f2f9f5909897157["finalized"] = !0, globalThis.litElementHydrateSupport?.({
+$ab210b2da7b39b9d$export$3f2f9f5909897157._$litElement$ = !0, $ab210b2da7b39b9d$export$3f2f9f5909897157["finalized"] = !0, $ab210b2da7b39b9d$var$s.litElementHydrateSupport?.({
     LitElement: $ab210b2da7b39b9d$export$3f2f9f5909897157
 });
-const $ab210b2da7b39b9d$var$i = globalThis.litElementPolyfillSupport;
-$ab210b2da7b39b9d$var$i?.({
+const $ab210b2da7b39b9d$var$o = $ab210b2da7b39b9d$var$s.litElementPolyfillSupport;
+$ab210b2da7b39b9d$var$o?.({
     LitElement: $ab210b2da7b39b9d$export$3f2f9f5909897157
 });
 const $ab210b2da7b39b9d$export$f5c524615a7708d6 = {
-    _$AK: (t, e, s)=>{
-        t._$AK(e, s);
+    _$AK: (t, e, r)=>{
+        t._$AK(e, r);
     },
     _$AL: (t)=>t._$AL
 };
-(globalThis.litElementVersions ??= []).push("4.1.1");
+($ab210b2da7b39b9d$var$s.litElementVersions ??= []).push("4.2.0");
 
 
 /**
@@ -2038,7 +2052,7 @@ const $856d8633325a4fe5$export$1188214e9d38144e = (device)=>{
 }, $9cd908ed2625c047$export$8d623b1670eb40f4 = (t = $9cd908ed2625c047$var$o, e, r)=>{
     const { kind: n, metadata: i } = r;
     let s = globalThis.litPropertyMetadata.get(i);
-    if (void 0 === s && globalThis.litPropertyMetadata.set(i, s = new Map), s.set(r.name, t), "accessor" === n) {
+    if (void 0 === s && globalThis.litPropertyMetadata.set(i, s = new Map), "setter" === n && ((t = Object.create(t)).wrapped = !0), s.set(r.name, t), "accessor" === n) {
         const { name: o } = r;
         return {
             set (r) {
@@ -2046,7 +2060,7 @@ const $856d8633325a4fe5$export$1188214e9d38144e = (device)=>{
                 e.set.call(this, r), this.requestUpdate(o, n, t);
             },
             init (e) {
-                return void 0 !== e && this.P(o, void 0, t), e;
+                return void 0 !== e && this.C(o, void 0, t, e), e;
             }
         };
     }
@@ -2062,10 +2076,7 @@ const $856d8633325a4fe5$export$1188214e9d38144e = (device)=>{
 function $9cd908ed2625c047$export$d541bacb2bda4494(t) {
     return (e, o)=>"object" == typeof o ? $9cd908ed2625c047$export$8d623b1670eb40f4(t, e, o) : ((t, e, o)=>{
             const r = e.hasOwnProperty(o);
-            return e.constructor.createProperty(o, r ? {
-                ...t,
-                wrapped: !0
-            } : t), r ? Object.getOwnPropertyDescriptor(e, o) : void 0;
+            return e.constructor.createProperty(o, t), r ? Object.getOwnPropertyDescriptor(e, o) : void 0;
         })(t, e, o);
 }
 
@@ -2205,10 +2216,6 @@ function $ed34c589b230c255$export$dcd0d083aa86c355(r) {
 
 
 
-var $b06602ab53bd58a3$exports = {};
-$b06602ab53bd58a3$exports = JSON.parse("{\"name\":\"device-card\",\"version\":\"0.7.0\",\"author\":\"Patrick Masters\",\"license\":\"ISC\",\"description\":\"Custom Home Assistant card to show info about your devices.\",\"source\":\"src/index.ts\",\"module\":\"dist/device-card.js\",\"targets\":{\"module\":{\"includeNodeModules\":true}},\"scripts\":{\"watch\":\"parcel watch\",\"build\":\"parcel build\",\"test\":\"TS_NODE_PROJECT='./tsconfig.test.json' mocha\",\"test:coverage\":\"nyc npm run test\",\"test:watch\":\"TS_NODE_PROJECT='./tsconfig.test.json' mocha --watch\",\"update\":\"npx npm-check-updates -u && npm i\"},\"devDependencies\":{\"@istanbuljs/nyc-config-typescript\":\"^1.0.2\",\"@open-wc/testing\":\"^4.0.0\",\"@parcel/transformer-inline-string\":\"^2.14.4\",\"@testing-library/dom\":\"^10.4.0\",\"@trivago/prettier-plugin-sort-imports\":\"^5.2.2\",\"@types/chai\":\"^5.2.1\",\"@types/jsdom\":\"^21.1.7\",\"@types/mocha\":\"^10.0.10\",\"@types/sinon\":\"^17.0.4\",\"chai\":\"^5.2.0\",\"jsdom\":\"^26.0.0\",\"mocha\":\"^11.1.0\",\"nyc\":\"^17.1.0\",\"parcel\":\"^2.14.4\",\"prettier\":\"3.5.3\",\"prettier-plugin-organize-imports\":\"^4.1.0\",\"proxyquire\":\"^2.1.3\",\"sinon\":\"^20.0.0\",\"ts-node\":\"^10.9.2\",\"tsconfig-paths\":\"^4.2.0\",\"typescript\":\"^5.8.3\"},\"dependencies\":{\"@lit/task\":\"^1.0.2\",\"fast-deep-equal\":\"^3.1.3\",\"lit\":\"^3.2.1\"}}");
-
-
 var $30856da572fd852b$exports = {};
 'use strict';
 // do not edit .js files directly - edit src/index.jst
@@ -2242,14 +2249,6 @@ $30856da572fd852b$exports = function equal(a, b) {
 
 
 class $76efc5be730c974a$export$cee8aa229c046b5e extends (0, $ab210b2da7b39b9d$export$3f2f9f5909897157) {
-    constructor(){
-        super(), /**
-   * Track expanded state of sections
-   */ this.expandedSections = {}, /**
-   * Track expanded state of entity attributes
-   */ this.expandedEntities = {};
-        console.info(`%c\u{1F431} Poat's Tools: device-card-card - ${(0, $b06602ab53bd58a3$exports.version)}`, 'color: #CFC493;');
-    }
     /**
    * Returns the component's styles
    */ static get styles() {
@@ -2280,7 +2279,7 @@ class $76efc5be730c974a$export$cee8aa229c046b5e extends (0, $ab210b2da7b39b9d$ex
     static async getStubConfig(hass) {
         const device = Object.values(hass.devices)[0];
         return {
-            device_id: device?.id || ''
+            device_id: device?.id ?? ''
         };
     }
     /**
@@ -2294,7 +2293,7 @@ class $76efc5be730c974a$export$cee8aa229c046b5e extends (0, $ab210b2da7b39b9d$ex
       <ha-card class="${problem ? 'problem' : ''}">
         <div class="card-header">
           <div class="title">
-            <span>${this._config.title || this._device.name}</span>
+            <span>${this._config.title ?? this._device.name}</span>
             ${(0, $a64cd1666b27644b$export$805ddaeeece0413e)(this._config, 'hide_device_model') ? (0, $f58f44579a4747ac$export$45b790e32b2810ee) : (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<span class="model">${this._device.model}</span>`}
           </div>
         </div>
@@ -2302,6 +2301,13 @@ class $76efc5be730c974a$export$cee8aa229c046b5e extends (0, $ab210b2da7b39b9d$ex
         ${(0, $10f7eb590266dd05$export$7dcefa9ef83b8269)(this, this._hass, this._config, this._device)}
       </ha-card>
     `;
+    }
+    constructor(...args){
+        super(...args), /**
+   * Track expanded state of sections
+   */ this.expandedSections = {}, /**
+   * Track expanded state of entity attributes
+   */ this.expandedEntities = {};
     }
 }
 (0, $24c52f343453d62d$export$29e00dfd3077644b)([
@@ -2320,10 +2326,241 @@ class $76efc5be730c974a$export$cee8aa229c046b5e extends (0, $ab210b2da7b39b9d$ex
 
 
 
-
-
-
-const $4d8f78da09198f60$var$getSchema = (entityIds)=>[
+/**
+ * Common interactions schema used in both device and integration cards
+ * Defines the configuration options for tap, hold, and double tap actions
+ * that control card behavior when users interact with it
+ */ const $84451a3e48ae541f$var$INTERACTIONS_SCHEMA = {
+    name: 'interactions',
+    label: 'Interactions',
+    type: 'expandable',
+    flatten: true,
+    icon: 'mdi:gesture-tap',
+    schema: [
+        {
+            name: 'tap_action',
+            label: 'Tap Action',
+            selector: {
+                ui_action: {}
+            }
+        },
+        {
+            name: 'hold_action',
+            label: 'Hold Action',
+            selector: {
+                ui_action: {}
+            }
+        },
+        {
+            name: 'double_tap_action',
+            label: 'Double Tap Action',
+            selector: {
+                ui_action: {}
+            }
+        }
+    ]
+};
+const $84451a3e48ae541f$var$contentSchema = (integration)=>{
+    const schema = {
+        name: 'content',
+        label: 'Content',
+        type: 'expandable',
+        flatten: true,
+        icon: 'mdi:text-short',
+        schema: [
+            {
+                name: 'title',
+                required: false,
+                label: 'Card Title',
+                selector: {
+                    text: {}
+                }
+            },
+            {
+                name: 'preview_count',
+                required: false,
+                label: 'Preview Count',
+                selector: {
+                    text: {
+                        type: 'number'
+                    }
+                }
+            },
+            {
+                name: 'columns',
+                required: false,
+                label: 'Number of Columns',
+                selector: {
+                    number: {
+                        min: 1,
+                        max: 6,
+                        mode: 'slider'
+                    }
+                }
+            },
+            {
+                name: 'excluded_devices',
+                label: 'Devices to exclude',
+                required: false,
+                selector: {
+                    device: {
+                        multiple: true,
+                        filter: {
+                            integration: integration
+                        }
+                    }
+                }
+            },
+            {
+                name: 'exclude_sections',
+                label: 'Sections to exclude',
+                required: false,
+                selector: {
+                    select: {
+                        multiple: true,
+                        mode: 'list',
+                        options: [
+                            {
+                                label: 'Controls',
+                                value: 'controls'
+                            },
+                            {
+                                label: 'Configuration',
+                                value: 'configurations'
+                            },
+                            {
+                                label: 'Sensors',
+                                value: 'sensors'
+                            },
+                            {
+                                label: 'Diagnostic',
+                                value: 'diagnostics'
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                name: 'section_order',
+                label: 'Section display order (click in order)',
+                required: false,
+                selector: {
+                    select: {
+                        multiple: true,
+                        mode: 'list',
+                        options: [
+                            {
+                                label: 'Controls',
+                                value: 'controls'
+                            },
+                            {
+                                label: 'Configuration',
+                                value: 'configurations'
+                            },
+                            {
+                                label: 'Sensors',
+                                value: 'sensors'
+                            },
+                            {
+                                label: 'Diagnostic',
+                                value: 'diagnostics'
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    };
+    if (!integration) schema.schema = schema.schema.filter((s)=>![
+            'excluded_devices',
+            'columns'
+        ].includes(s.name));
+    return schema;
+};
+const $84451a3e48ae541f$var$featuresSchema = (integration, entities)=>{
+    return {
+        name: 'features',
+        label: 'Features',
+        type: 'expandable',
+        flatten: true,
+        icon: 'mdi:list-box',
+        schema: [
+            {
+                name: 'features',
+                label: 'Enable Features',
+                required: false,
+                selector: {
+                    select: {
+                        multiple: true,
+                        mode: 'list',
+                        options: [
+                            {
+                                label: 'Use Entity Picture',
+                                value: 'entity_picture'
+                            },
+                            {
+                                label: 'Hide Device Model',
+                                value: 'hide_device_model'
+                            },
+                            {
+                                label: 'Compact Layout',
+                                value: 'compact'
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                name: 'exclude_entities',
+                label: 'Entities to exclude',
+                required: false,
+                selector: {
+                    entity: {
+                        multiple: true,
+                        include_entities: entities,
+                        filter: {
+                            integration: integration
+                        }
+                    }
+                }
+            }
+        ]
+    };
+};
+const $84451a3e48ae541f$export$66d64ae4fccd6d67 = async (hass, integration)=>{
+    // Get all integrations from the manifest
+    const manifests = (await hass.callWS({
+        type: 'manifest/list'
+    })).filter((m)=>!m.integration_type || [
+            'device',
+            'hub',
+            'service',
+            'integration'
+        ].includes(m.integration_type));
+    manifests.sort((a, b)=>a.name.localeCompare(b.name));
+    return [
+        {
+            name: 'integration',
+            selector: {
+                select: {
+                    options: manifests.map((integration)=>({
+                            value: integration.domain,
+                            label: integration.name
+                        })),
+                    mode: 'dropdown'
+                }
+            },
+            required: true,
+            label: 'Integration'
+        },
+        $84451a3e48ae541f$var$contentSchema(integration),
+        $84451a3e48ae541f$var$featuresSchema(integration),
+        $84451a3e48ae541f$var$INTERACTIONS_SCHEMA
+    ];
+};
+const $84451a3e48ae541f$export$da5c1d4caabd4738 = (hass, config)=>{
+    const entities = (0, $093edc2594769ee5$export$c6a2d06cc40e579)(hass, config, config.device_id).map((e)=>e.entity_id);
+    return [
         {
             name: 'device_id',
             selector: {
@@ -2332,179 +2569,27 @@ const $4d8f78da09198f60$var$getSchema = (entityIds)=>[
             required: true,
             label: `Device`
         },
-        {
-            name: 'content',
-            label: 'Content',
-            type: 'expandable',
-            flatten: true,
-            icon: 'mdi:text-short',
-            schema: [
-                {
-                    name: 'title',
-                    required: false,
-                    label: 'Card Title',
-                    selector: {
-                        text: {}
-                    }
-                },
-                {
-                    name: 'preview_count',
-                    required: false,
-                    label: 'Preview Count',
-                    selector: {
-                        text: {
-                            type: 'number'
-                        }
-                    }
-                },
-                {
-                    name: 'exclude_sections',
-                    label: 'Sections to exclude',
-                    required: false,
-                    selector: {
-                        select: {
-                            multiple: true,
-                            mode: 'list',
-                            options: [
-                                {
-                                    label: 'Controls',
-                                    value: 'controls'
-                                },
-                                {
-                                    label: 'Configuration',
-                                    value: 'configurations'
-                                },
-                                {
-                                    label: 'Sensors',
-                                    value: 'sensors'
-                                },
-                                {
-                                    label: 'Diagnostic',
-                                    value: 'diagnostics'
-                                }
-                            ]
-                        }
-                    }
-                },
-                {
-                    name: 'section_order',
-                    label: 'Section display order (click in order)',
-                    required: false,
-                    selector: {
-                        select: {
-                            multiple: true,
-                            mode: 'list',
-                            options: [
-                                {
-                                    label: 'Controls',
-                                    value: 'controls'
-                                },
-                                {
-                                    label: 'Configuration',
-                                    value: 'configurations'
-                                },
-                                {
-                                    label: 'Sensors',
-                                    value: 'sensors'
-                                },
-                                {
-                                    label: 'Diagnostic',
-                                    value: 'diagnostics'
-                                }
-                            ]
-                        }
-                    }
-                }
-            ]
-        },
-        {
-            name: 'features',
-            label: 'Features',
-            type: 'expandable',
-            flatten: true,
-            icon: 'mdi:list-box',
-            schema: [
-                {
-                    name: 'features',
-                    label: 'Enable Features',
-                    required: false,
-                    selector: {
-                        select: {
-                            multiple: true,
-                            mode: 'list',
-                            options: [
-                                {
-                                    label: 'Use Entity Picture',
-                                    value: 'entity_picture'
-                                },
-                                {
-                                    label: 'Hide Device Model',
-                                    value: 'hide_device_model'
-                                },
-                                {
-                                    label: 'Compact Layout',
-                                    value: 'compact'
-                                }
-                            ]
-                        }
-                    }
-                },
-                {
-                    name: 'exclude_entities',
-                    label: 'Entities to exclude',
-                    required: false,
-                    selector: {
-                        entity: {
-                            multiple: true,
-                            include_entities: entityIds
-                        }
-                    }
-                }
-            ]
-        },
-        {
-            name: 'interactions',
-            label: 'Interactions',
-            type: 'expandable',
-            flatten: true,
-            icon: 'mdi:gesture-tap',
-            schema: [
-                {
-                    name: 'tap_action',
-                    label: 'Tap Action',
-                    selector: {
-                        ui_action: {}
-                    }
-                },
-                {
-                    name: 'hold_action',
-                    label: 'Hold Action',
-                    selector: {
-                        ui_action: {}
-                    }
-                },
-                {
-                    name: 'double_tap_action',
-                    label: 'Double Tap Action',
-                    selector: {
-                        ui_action: {}
-                    }
-                }
-            ]
-        }
+        $84451a3e48ae541f$var$contentSchema(),
+        $84451a3e48ae541f$var$featuresSchema(undefined, entities),
+        $84451a3e48ae541f$var$INTERACTIONS_SCHEMA
     ];
+};
+
+
+
+
+
 class $4d8f78da09198f60$export$eb3c6eb92a4f4397 extends (0, $ab210b2da7b39b9d$export$3f2f9f5909897157) {
     /**
    * renders the lit element card
    * @returns {TemplateResult} The rendered HTML template
    */ render() {
         if (!this.hass || !this._config) return 0, $f58f44579a4747ac$export$45b790e32b2810ee;
-        const entities = (0, $093edc2594769ee5$export$c6a2d06cc40e579)(this.hass, this._config, this._config.device_id).map((e)=>e.entity_id);
         return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
       <ha-form
         .hass=${this.hass}
         .data=${this._config}
-        .schema=${$4d8f78da09198f60$var$getSchema(entities)}
+        .schema=${(0, $84451a3e48ae541f$export$da5c1d4caabd4738)(this.hass, this._config)}
         .computeLabel=${(s)=>s.label}
         @value-changed=${this._valueChanged}
       ></ha-form>
@@ -2542,13 +2627,8 @@ class $4d8f78da09198f60$export$eb3c6eb92a4f4397 extends (0, $ab210b2da7b39b9d$ex
 const $68e99829eee639f8$export$26c6f48841fe1a8a = (str)=>str.split('_').map((s)=>(0, $1409036132f3ee41$export$d07f57595c356899)(s)).join(' ');
 
 
-const $be605d8f132c1e28$export$48cc0f50054c9113 = (device, integration)=>{
-    if (!device.identifiers) return false;
-    for (const parts of device.identifiers)for (const part of parts){
-        if (part === integration) return true;
-    }
-    return false;
-};
+const $be605d8f132c1e28$export$48cc0f50054c9113 = (device, entryIds)=>device.config_entries && device.config_entries.some((entryId)=>entryIds.includes(entryId));
+
 
 
 
@@ -2635,15 +2715,21 @@ class $3bda94c4eb71d8c0$export$ad4bbebd033175bb extends (0, $ab210b2da7b39b9d$ex
             name: '',
             devices: []
         };
+        if (!this._config.integration) return;
         // Get all devices from the specified integration
-        if (this._config.integration) {
-            data.name = (0, $68e99829eee639f8$export$26c6f48841fe1a8a)(this._config.integration);
+        data.name = (0, $68e99829eee639f8$export$26c6f48841fe1a8a)(this._config.integration);
+        // Get config entries for the integration domain
+        hass.callWS({
+            type: 'config_entries/get',
+            domain: this._config.integration
+        }).then((results)=>{
+            const configEntries = results.map((e)=>e.entry_id);
             Object.values(hass.devices).forEach((device)=>{
-                if ((0, $be605d8f132c1e28$export$48cc0f50054c9113)(device, this._config.integration)) data.devices.push(device.id);
+                // Check if device belongs to any of the config entries
+                if (!this._config.excluded_devices?.includes(device.id) && (0, $be605d8f132c1e28$export$48cc0f50054c9113)(device, configEntries)) data.devices.push(device.id);
             });
-        }
-        // Update state if changed
-        if (!$30856da572fd852b$exports(data, this._integration)) this._integration = data;
+            if (!$30856da572fd852b$exports(data, this._integration)) this._integration = data;
+        });
     }
     // card configuration
     static getConfigElement() {
@@ -2673,12 +2759,14 @@ class $3bda94c4eb71d8c0$export$ad4bbebd033175bb extends (0, $ab210b2da7b39b9d$ex
       </ha-card>`;
         // For preview, only show one device
         const devicesToShow = this.isPreview ? this._integration.devices.slice(0, 1) : this._integration.devices;
-        const title = this._config.title || this._integration.name;
+        const title = this._config.title ?? this._integration.name;
+        // Get grid styles based on columns configuration
+        const gridStyles = this._getGridStyles();
         return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
       <div class="integration-wrapper">
         ${title ? (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`<h1 class="integration-title">${title}</h1>` : (0, $f58f44579a4747ac$export$45b790e32b2810ee)}
 
-        <div class="devices-container">
+        <div class="devices-container" style=${(0, $19f464fcda7d2482$export$1e5b4ce2fa884e6a)(gridStyles)}>
           ${devicesToShow.map((deviceId)=>{
             return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
               <device-card
@@ -2694,6 +2782,17 @@ class $3bda94c4eb71d8c0$export$ad4bbebd033175bb extends (0, $ab210b2da7b39b9d$ex
       </div>
     `;
     }
+    /**
+   * Generate the grid styles based on the columns configuration
+   * @returns {Record<string, string>} Style properties object
+   */ _getGridStyles() {
+        // If columns setting is provided, use it to set a fixed number of columns
+        if (this._config.columns && Number.isInteger(this._config.columns) && this._config.columns > 0) return {
+            'grid-template-columns': `repeat(${this._config.columns}, 1fr)`
+        };
+        // Otherwise, return an empty object to use the default responsive behavior
+        return {};
+    }
 }
 (0, $24c52f343453d62d$export$29e00dfd3077644b)([
     (0, $04c21ea1ce1f6057$export$ca000e230c0caa3e)()
@@ -2707,194 +2806,132 @@ class $3bda94c4eb71d8c0$export$ad4bbebd033175bb extends (0, $ab210b2da7b39b9d$ex
 
 
 
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */ const $1dfff43fc77cdecb$export$61db76a97f26b7e1 = {
+    INITIAL: 0,
+    PENDING: 1,
+    COMPLETE: 2,
+    ERROR: 3
+}, $1dfff43fc77cdecb$export$d4c72bab9d6cc13a = Symbol();
+class $1dfff43fc77cdecb$export$2dea7024bcdd7731 {
+    get taskComplete() {
+        return this.t || (1 === this.i ? this.t = new Promise((t, s)=>{
+            this.o = t, this.h = s;
+        }) : 3 === this.i ? this.t = Promise.reject(this.l) : this.t = Promise.resolve(this.u)), this.t;
+    }
+    constructor(t, s, i){
+        this.p = 0, this.i = 0, (this._ = t).addController(this);
+        const h = "object" == typeof s ? s : {
+            task: s,
+            args: i
+        };
+        this.v = h.task, this.j = h.args, this.m = h.argsEqual ?? $1dfff43fc77cdecb$export$41b40a0c6412e2a2, this.k = h.onComplete, this.A = h.onError, this.autoRun = h.autoRun ?? !0, "initialValue" in h && (this.u = h.initialValue, this.i = 2, this.O = this.T?.());
+    }
+    hostUpdate() {
+        !0 === this.autoRun && this.S();
+    }
+    hostUpdated() {
+        "afterUpdate" === this.autoRun && this.S();
+    }
+    T() {
+        if (void 0 === this.j) return;
+        const t = this.j();
+        if (!Array.isArray(t)) throw Error("The args function must return an array");
+        return t;
+    }
+    async S() {
+        const t = this.T(), s = this.O;
+        this.O = t, t === s || void 0 === t || void 0 !== s && this.m(s, t) || await this.run(t);
+    }
+    async run(t) {
+        let s, h;
+        t ??= this.T(), this.O = t, 1 === this.i ? this.q?.abort() : (this.t = void 0, this.o = void 0, this.h = void 0), this.i = 1, "afterUpdate" === this.autoRun ? queueMicrotask(()=>this._.requestUpdate()) : this._.requestUpdate();
+        const r = ++this.p;
+        this.q = new AbortController;
+        let e = !1;
+        try {
+            s = await this.v(t, {
+                signal: this.q.signal
+            });
+        } catch (t) {
+            e = !0, h = t;
+        }
+        if (this.p === r) {
+            if (s === $1dfff43fc77cdecb$export$d4c72bab9d6cc13a) this.i = 0;
+            else {
+                if (!1 === e) {
+                    try {
+                        this.k?.(s);
+                    } catch  {}
+                    this.i = 2, this.o?.(s);
+                } else {
+                    try {
+                        this.A?.(h);
+                    } catch  {}
+                    this.i = 3, this.h?.(h);
+                }
+                this.u = s, this.l = h;
+            }
+            this._.requestUpdate();
+        }
+    }
+    abort(t) {
+        1 === this.i && this.q?.abort(t);
+    }
+    get value() {
+        return this.u;
+    }
+    get error() {
+        return this.l;
+    }
+    get status() {
+        return this.i;
+    }
+    render(t) {
+        switch(this.i){
+            case 0:
+                return t.initial?.();
+            case 1:
+                return t.pending?.();
+            case 2:
+                return t.complete?.(this.value);
+            case 3:
+                return t.error?.(this.error);
+            default:
+                throw Error("Unexpected status: " + this.i);
+        }
+    }
+}
+const $1dfff43fc77cdecb$export$41b40a0c6412e2a2 = (s, i)=>s === i || s.length === i.length && s.every((s, h)=>!(0, $19fe8e3abedf4df0$export$53a6892c50694894)(s, i[h]));
+
+
+
+
+
 
 class $bb372a36f92bd9c9$export$9e322cdd8735282 extends (0, $ab210b2da7b39b9d$export$3f2f9f5909897157) {
-    /**
-   * Generates the schema for the card editor form
-   */ _getSchema() {
-        const integrations = [];
-        Object.values(this.hass.devices).forEach((device)=>{
-            for (const parts of device.identifiers){
-                const part = parts[0];
-                if (!integrations.includes(part)) integrations.push(part);
-            }
-        });
-        return [
-            {
-                name: 'integration',
-                selector: {
-                    select: {
-                        options: integrations.sort().map((integration)=>({
-                                value: integration,
-                                label: (0, $68e99829eee639f8$export$26c6f48841fe1a8a)(integration)
-                            })),
-                        mode: 'dropdown'
-                    }
-                },
-                required: true,
-                label: 'Integration'
-            },
-            {
-                name: 'content',
-                label: 'Content',
-                type: 'expandable',
-                flatten: true,
-                icon: 'mdi:text-short',
-                schema: [
-                    {
-                        name: 'title',
-                        required: false,
-                        label: 'Card Title',
-                        selector: {
-                            text: {}
-                        }
-                    },
-                    {
-                        name: 'preview_count',
-                        required: false,
-                        label: 'Preview Count',
-                        selector: {
-                            text: {
-                                type: 'number'
-                            }
-                        }
-                    },
-                    {
-                        name: 'exclude_sections',
-                        label: 'Sections to exclude',
-                        required: false,
-                        selector: {
-                            select: {
-                                multiple: true,
-                                mode: 'list',
-                                options: [
-                                    {
-                                        label: 'Controls',
-                                        value: 'controls'
-                                    },
-                                    {
-                                        label: 'Configuration',
-                                        value: 'configurations'
-                                    },
-                                    {
-                                        label: 'Sensors',
-                                        value: 'sensors'
-                                    },
-                                    {
-                                        label: 'Diagnostic',
-                                        value: 'diagnostics'
-                                    }
-                                ]
-                            }
-                        }
-                    },
-                    {
-                        name: 'section_order',
-                        label: 'Section display order (click in order)',
-                        required: false,
-                        selector: {
-                            select: {
-                                multiple: true,
-                                mode: 'list',
-                                options: [
-                                    {
-                                        label: 'Controls',
-                                        value: 'controls'
-                                    },
-                                    {
-                                        label: 'Configuration',
-                                        value: 'configurations'
-                                    },
-                                    {
-                                        label: 'Sensors',
-                                        value: 'sensors'
-                                    },
-                                    {
-                                        label: 'Diagnostic',
-                                        value: 'diagnostics'
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                ]
-            },
-            {
-                name: 'features',
-                label: 'Features',
-                type: 'expandable',
-                flatten: true,
-                icon: 'mdi:list-box',
-                schema: [
-                    {
-                        name: 'features',
-                        label: 'Enable Features',
-                        required: false,
-                        selector: {
-                            select: {
-                                multiple: true,
-                                mode: 'list',
-                                options: [
-                                    {
-                                        label: 'Compact Layout',
-                                        value: 'compact'
-                                    },
-                                    {
-                                        label: 'Hide Device Model',
-                                        value: 'hide_device_model'
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                ]
-            },
-            {
-                name: 'interactions',
-                label: 'Interactions',
-                type: 'expandable',
-                flatten: true,
-                icon: 'mdi:gesture-tap',
-                schema: [
-                    {
-                        name: 'tap_action',
-                        label: 'Tap Action',
-                        selector: {
-                            ui_action: {}
-                        }
-                    },
-                    {
-                        name: 'hold_action',
-                        label: 'Hold Action',
-                        selector: {
-                            ui_action: {}
-                        }
-                    },
-                    {
-                        name: 'double_tap_action',
-                        label: 'Double Tap Action',
-                        selector: {
-                            ui_action: {}
-                        }
-                    }
-                ]
-            }
-        ];
-    }
     /**
    * renders the lit element card
    * @returns {TemplateResult} The rendered HTML template
    */ render() {
         if (!this.hass || !this._config) return 0, $f58f44579a4747ac$export$45b790e32b2810ee;
-        return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
-      <ha-form
-        .hass=${this.hass}
-        .data=${this._config}
-        .schema=${this._getSchema()}
-        .computeLabel=${(s)=>s.label}
-        @value-changed=${this._valueChanged}
-      ></ha-form>
-    `;
+        return (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`${this._getIntegrationsTask.render({
+            initial: ()=>(0, $f58f44579a4747ac$export$45b790e32b2810ee),
+            pending: ()=>(0, $f58f44579a4747ac$export$45b790e32b2810ee),
+            complete: (value)=>(0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
+        <ha-form
+          .hass=${this.hass}
+          .data=${this._config}
+          .schema=${value}
+          .computeLabel=${(s)=>s.label}
+          @value-changed=${this._valueChanged}
+        ></ha-form>
+      `,
+            error: (error)=>(0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`${error}`
+        })}`;
     }
     /**
    * Sets up the card configuration
@@ -2911,15 +2948,33 @@ class $bb372a36f92bd9c9$export$9e322cdd8735282 extends (0, $ab210b2da7b39b9d$exp
         if (!config.exclude_entities?.length) delete config.exclude_entities;
         if (!config.exclude_sections?.length) delete config.exclude_sections;
         if (!config.section_order?.length) delete config.section_order;
+        if (!config.excluded_devices?.length) delete config.excluded_devices;
+        // Remove columns if set to 0 or invalid
+        if (!config.columns || config.columns <= 0) delete config.columns;
         // @ts-ignore
         (0, $9c83ab07519e6203$export$43835e9acf248a15)(this, 'config-changed', {
             config: config
+        });
+    }
+    constructor(...args){
+        super(...args), /**
+   * Task that fetches the integrations asynchronously
+   * Uses the Home Assistant web sockets Promise
+   */ this._getIntegrationsTask = new (0, $1dfff43fc77cdecb$export$2dea7024bcdd7731)(this, {
+            task: async ([integration])=>await (0, $84451a3e48ae541f$export$66d64ae4fccd6d67)(this.hass, integration),
+            args: ()=>[
+                    this._config?.integration
+                ]
         });
     }
 }
 (0, $24c52f343453d62d$export$29e00dfd3077644b)([
     (0, $04c21ea1ce1f6057$export$ca000e230c0caa3e)()
 ], $bb372a36f92bd9c9$export$9e322cdd8735282.prototype, "_config", void 0);
+
+
+var $b06602ab53bd58a3$exports = {};
+$b06602ab53bd58a3$exports = JSON.parse("{\"name\":\"device-card\",\"version\":\"0.8.3\",\"author\":\"Patrick Masters\",\"license\":\"ISC\",\"description\":\"Custom Home Assistant card to show info about your devices.\",\"source\":\"src/index.ts\",\"module\":\"dist/device-card.js\",\"targets\":{\"module\":{\"includeNodeModules\":true}},\"scripts\":{\"watch\":\"parcel watch\",\"build\":\"parcel build\",\"test\":\"TS_NODE_PROJECT='./tsconfig.test.json' mocha\",\"test:coverage\":\"nyc npm run test\",\"test:watch\":\"TS_NODE_PROJECT='./tsconfig.test.json' mocha --watch\",\"update\":\"npx npm-check-updates -u && npm i\"},\"devDependencies\":{\"@istanbuljs/nyc-config-typescript\":\"^1.0.2\",\"@open-wc/testing\":\"^4.0.0\",\"@parcel/transformer-inline-string\":\"^2.14.4\",\"@testing-library/dom\":\"^10.4.0\",\"@trivago/prettier-plugin-sort-imports\":\"^5.2.2\",\"@types/chai\":\"^5.2.1\",\"@types/jsdom\":\"^21.1.7\",\"@types/mocha\":\"^10.0.10\",\"@types/sinon\":\"^17.0.4\",\"chai\":\"^5.2.0\",\"jsdom\":\"^26.1.0\",\"mocha\":\"^11.1.0\",\"nyc\":\"^17.1.0\",\"parcel\":\"^2.14.4\",\"prettier\":\"3.5.3\",\"prettier-plugin-organize-imports\":\"^4.1.0\",\"proxyquire\":\"^2.1.3\",\"sinon\":\"^20.0.0\",\"ts-node\":\"^10.9.2\",\"tsconfig-paths\":\"^4.2.0\",\"typescript\":\"^5.8.3\"},\"dependencies\":{\"@lit/task\":\"^1.0.2\",\"fast-deep-equal\":\"^3.1.3\",\"lit\":\"^3.3.0\"}}");
 
 
 // Register the custom elements with the browser
@@ -2954,6 +3009,7 @@ window.customCards.push({
     // URL for the card's documentation
     documentationURL: 'https://github.com/homeassistant-extras/device-card'
 });
+console.info(`%c\u{1F431} Poat's Tools: device-card - ${(0, $b06602ab53bd58a3$exports.version)}`, 'color: #CFC493;');
 
 
 //# sourceMappingURL=device-card.js.map
