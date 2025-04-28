@@ -125,6 +125,7 @@ ATTR_SPOTIFYPLUS_DEVICE_ID = "sp_device_id"
 ATTR_SPOTIFYPLUS_DEVICE_NAME = "sp_device_name"
 ATTR_SPOTIFYPLUS_DEVICE_IS_BRAND_SONOS = "sp_device_is_brand_sonos"
 ATTR_SPOTIFYPLUS_DEVICE_IS_CHROMECAST = "sp_device_is_chromecast"
+ATTR_SPOTIFYPLUS_DEVICE_IS_RESTRICTED = "sp_device_is_restricted"
 ATTR_SPOTIFYPLUS_DEVICE_MUSIC_SOURCE = "sp_device_music_source"
 ATTR_SPOTIFYPLUS_ITEM_TYPE = "sp_item_type"
 ATTR_SPOTIFYPLUS_PLAY_TIME_REMAINING_EST = "sp_play_time_remaining_est"
@@ -426,9 +427,12 @@ class SpotifyMediaPlayer(MediaPlayerEntity):
                 self._attr_supported_features &= ~MediaPlayerEntityFeature.TURN_ON
                 self._attr_state = MediaPlayerState.IDLE
 
-            # set default device name to use for player transport functions that are executed
-            # but there is no active Spotify player device.
-            self.data.spotifyClient.DefaultDeviceId = PlayerDevice.GetNameFromSelectItem(self.data.OptionDeviceDefault)
+            # set default device id to use for player transport functions that are executed
+            # when there is no active Spotify player device.
+            value:str = PlayerDevice.GetIdFromSelectItem(self.data.OptionDeviceDefault)
+            if (value is None):
+                value = PlayerDevice.GetNameFromSelectItem(self.data.OptionDeviceDefault)
+            self.data.spotifyClient.DefaultDeviceId = value
             
             # trace.
             _logsi.LogObject(SILevel.Verbose, "'%s': MediaPlayer SpotifyClient object" % self.name, self.data.spotifyClient)
@@ -454,6 +458,7 @@ class SpotifyMediaPlayer(MediaPlayerEntity):
         attributes[ATTR_SPOTIFYPLUS_DEVICE_ID] = ATTRVALUE_NO_DEVICE
         attributes[ATTR_SPOTIFYPLUS_DEVICE_IS_BRAND_SONOS] = False
         attributes[ATTR_SPOTIFYPLUS_DEVICE_IS_CHROMECAST] = False
+        attributes[ATTR_SPOTIFYPLUS_DEVICE_IS_RESTRICTED] = False
         attributes[ATTR_SPOTIFYPLUS_DEVICE_MUSIC_SOURCE] = ATTRVALUE_UNKNOWN
         attributes[ATTR_SPOTIFYPLUS_DEVICE_NAME] = ATTRVALUE_NO_DEVICE
         attributes[ATTR_SPOTIFYPLUS_ITEM_TYPE] = ATTRVALUE_UNKNOWN
@@ -497,6 +502,7 @@ class SpotifyMediaPlayer(MediaPlayerEntity):
         if self._spotifyConnectDevice is not None:
             attributes[ATTR_SPOTIFYPLUS_DEVICE_IS_BRAND_SONOS] = self._spotifyConnectDevice.IsSonos
             attributes[ATTR_SPOTIFYPLUS_DEVICE_IS_CHROMECAST] = self._spotifyConnectDevice.IsChromeCast
+            attributes[ATTR_SPOTIFYPLUS_DEVICE_IS_RESTRICTED] = self._spotifyConnectDevice.IsRestricted
 
         # add currently active playlist information.
         if self._playlist is not None:
@@ -892,13 +898,19 @@ class SpotifyMediaPlayer(MediaPlayerEntity):
                 
             else:
 
+                # resolve from device id.
+                fromDeviceId:str = self._attr_source
+                if (self._playerState is not None):
+                    if (self._playerState.Device is not None):
+                        fromDeviceId = self._playerState.Device.Id
+
                 # transfer playback to the specified source.
                 self.service_spotify_player_transfer_playback(
                     source, 
                     play=self.data.OptionTurnOnAutoResume,
                     refreshDeviceList=True,
                     forceActivateDevice=True,
-                    deviceIdFrom=self._attr_source)
+                    deviceIdFrom=fromDeviceId)
         
             # set the selected source.
             _logsi.LogVerbose("'%s': Selected source was changed to \"%s\"" % (self.name, self._attr_source))
@@ -1030,55 +1042,65 @@ class SpotifyMediaPlayer(MediaPlayerEntity):
             # get current Spotify Connect device player state.
             self._playerState = self.data.spotifyClient.GetDevicePlaybackState(deviceId=self._attr_source)
 
-            # is this a spotify premium account?
-            if (self.data.spotifyClient.UserProfile.IsProductPremium) or (self.data.spotifyClient.HasSpotifyWebPlayerCredentials):
+            # are we automatically selecting a source at turn on?
+            if (self.data.OptionTurnOnAutoSelectSource):
+
+                # is this a spotify premium account?
+                if (self.data.spotifyClient.UserProfile.IsProductPremium) or (self.data.spotifyClient.HasSpotifyWebPlayerCredentials):
     
-                # try to automatically select a source for play, in this order:
-                # 1) Source at power on, if there is one (set in source_select if powered off).
-                # 2) Currently active Spotify Connect device source, if there is one.
-                # 3) Source at last power off, if there is one.
-                # 4) SpotifyPlus configuration option default device, if there is one.
-                # otherwise, we cannot automatically select a source!
-                _logsi.LogVerbose("'%s': Selecting initial source at power on" % (self.name))
-                source:str = None
-                if (self._source_at_poweron is not None):
-                    source = self._source_at_poweron
-                    _logsi.LogVerbose("'%s': source_select at power on will be selected: \"%s\"" % (self.name, source))
-                    self._source_at_poweron = None
-                elif (self._playerState is not None) and (self._playerState.Device is not None) and (self._playerState.Device.Name is not None):
-                    source = self._playerState.Device.Name
-                    _logsi.LogVerbose("'%s': Currently active Spotify Connect device source will be selected: \"%s\"" % (self.name, source))
-                elif (self._source_at_poweroff is not None):
-                    source = self._source_at_poweroff
-                    _logsi.LogVerbose("'%s': Source at last power off will be selected: \"%s\"" % (self.name, source))
-                elif (self.data.OptionDeviceDefault is not None):
-                    source = PlayerDevice.GetNameFromSelectItem(self.data.OptionDeviceDefault)
-                    _logsi.LogVerbose("'%s': SpotifyPlus configuration option default device will be selected: \"%s\"" % (self.name, source))
+                    # try to automatically select a source for play, in this order:
+                    # 1) Source at power on, if there is one (set in source_select if powered off).
+                    # 2) Currently active Spotify Connect device source, if there is one.
+                    # 3) Source at last power off, if there is one.
+                    # 4) SpotifyPlus configuration option default device, if there is one.
+                    # otherwise, we cannot automatically select a source!
+                    _logsi.LogVerbose("'%s': Selecting initial source at power on" % (self.name))
+                    source:str = None
+                    if (self._source_at_poweron is not None):
+                        source = self._source_at_poweron
+                        _logsi.LogVerbose("'%s': source_select at power on will be selected: \"%s\"" % (self.name, source))
+                        self._source_at_poweron = None
+                    elif (self._playerState is not None) and (self._playerState.Device is not None) and (self._playerState.Device.Name is not None):
+                        source = self._playerState.Device.Name
+                        _logsi.LogVerbose("'%s': Currently active Spotify Connect device source will be selected: \"%s\"" % (self.name, source))
+                    elif (self._source_at_poweroff is not None):
+                        source = self._source_at_poweroff
+                        _logsi.LogVerbose("'%s': Source at last power off will be selected: \"%s\"" % (self.name, source))
+                    elif (self.data.OptionDeviceDefault is not None):
+                        source = PlayerDevice.GetIdFromSelectItem(self.data.OptionDeviceDefault)
+                        if (source is None):
+                            source = PlayerDevice.GetNameFromSelectItem(self.data.OptionDeviceDefault)
+                        _logsi.LogVerbose("'%s': SpotifyPlus configuration option default device will be selected: \"%s\"" % (self.name, source))
+                    else:
+                        _logsi.LogVerbose("'%s': Could not auto-select a source for play" % (self.name))
+
+                    # was a source selected?
+                    if source is not None:
+
+                        # yes - transfer playback to the source.
+                        self.select_source(source)
+                        self._isInCommandEvent = True  # turn "in a command event" indicator back on.
+
+                    # trace.
+                    _logsi.LogVerbose("'%s': About to resume play; last known media content: ContextUri=%s, Uri=%s, Position=%d" % (self.name, self._lastMediaPlayedContextUri, self._lastMediaPlayedUri, self._lastMediaPlayedPosition))
+
+                    # is playing content paused?  if so, then resume play.
+                    if (self._playerState.Device.IsActive) \
+                    and (self._playerState.Actions.Pausing) \
+                    and (self.data.OptionTurnOnAutoResume):
+                        _logsi.LogVerbose("'%s': MediaPlayer turned on - resuming play on source device: '%s'" % (self.name, self._playerState.Device.Name))
+                        self.media_play()
+                        self._isInCommandEvent = True  # turn "in a command event" indicator back on.
+
                 else:
-                    _logsi.LogVerbose("'%s': Could not auto-select a source for play" % (self.name))
 
-                # was a source selected?
-                if source is not None:
-
-                    # yes - transfer playback to the source.
-                    self.select_source(source)
-                    self._isInCommandEvent = True  # turn "in a command event" indicator back on.
-
-                # trace.
-                _logsi.LogVerbose("'%s': About to resume play; last known media content: ContextUri=%s, Uri=%s, Position=%d" % (self.name, self._lastMediaPlayedContextUri, self._lastMediaPlayedUri, self._lastMediaPlayedPosition))
-
-                # is playing content paused?  if so, then resume play.
-                if (self._playerState.Device.IsActive) \
-                and (self._playerState.Actions.Pausing) \
-                and (self.data.OptionTurnOnAutoResume):
-                    _logsi.LogVerbose("'%s': MediaPlayer turned on - resuming play on source device: '%s'" % (self.name, self._playerState.Device.Name))
-                    self.media_play()
-                    self._isInCommandEvent = True  # turn "in a command event" indicator back on.
+                    # trace.
+                    _logsi.LogVerbose("'%s': Spotify account is not Premium; could not transfer playback, nor resume play" % (self.name))
 
             else:
 
                 # trace.
-                _logsi.LogVerbose("'%s': Spotify account is not Premium; could not transfer playback, nor resume play" % (self.name))
+                _logsi.LogVerbose("'%s': Selecting initial source at power on was disabled; Spotify PlayerState will determine source" % (self.name))
 
             # trace.
             _logsi.LogVerbose("'%s': MediaPlayer turn_on complete" % (self.name))
