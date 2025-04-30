@@ -50,8 +50,8 @@ _Stats as at 05:00, unknown_
 | HA Version | 2025.4.4 |
 | No. Integrations | 225 |
 | No. Custom Integrations | 104 |
-| No. Entities | 5761 |
-| No. Sensors | 3829 |
+| No. Entities | 5846 |
+| No. Sensors | 3828 |
 | No. Automations | 159 |
 
 <details>
@@ -85,13 +85,13 @@ Lights | 13
 Locks | 0
 Media players | 30
 Numbers | 52
-Persistent notifications | 5
+Persistent notifications | 7
 Persons | 4
 Remotes | 7
 Scenes | 2
 Scripts | 85
 Selects | 57
-Sensors | 3829
+Sensors | 3828
 Sirens | 0
 Speech-to-text | 1
 Suns | 1
@@ -876,7 +876,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Open Meteo Solar Forecast](https://github.com/rany2/ha-open-meteo-solar-forecast) |  [v0.1.21] | Home Assistant Open-Meteo Solar Forecast Integration |[@rany2](https://github.com/rany2).|
 | [Opennem (Au) Data](https://github.com/bacco007/sensor.opennem) |  [v2023.09.1] | OpenNEM Sensor for Home Assistant |[@bacco007](https://github.com/bacco007).|
 | [Passive Ble Monitor Integration](https://github.com/custom-components/ble_monitor) |  [v13.2.0-beta] | BLE monitor for passive BLE sensors |[@Ernst79](https://github.com/Ernst79), [@myhomeiot](https://github.com/myhomeiot).|
-| [Pirate Weather](https://github.com/Pirate-Weather/pirate-weather-ha) |  [v1.7.1] | Replacement for the default Dark Sky Home Assistant integration using Pirate Weather |[@alexander0042](https://github.com/alexander0042).|
+| [Pirate Weather](https://github.com/Pirate-Weather/pirate-weather-ha) |  [v1.7.2] | Replacement for the default Dark Sky Home Assistant integration using Pirate Weather |[@alexander0042](https://github.com/alexander0042).|
 | [Playstation Network](https://github.com/JackJPowell/hass-psn) |  [v0.7.4] | Home Assistant integration for the Playstation Network |[@jackjpowell](https://github.com/jackjpowell).|
 | [Plex Recently Added](https://github.com/custom-components/sensor.plex_recently_added) |  [v0.5.3] | ▶️ Plex component to feed Upcoming Media Card. |[@maykar](https://github.com/maykar).|
 | [Powercalc](https://github.com/bramstroker/homeassistant-powercalc) |  [v1.17.11] | Custom component to calculate estimated power consumption of lights and other appliances |[@bramstroker](https://github.com/bramstroker).|
@@ -892,7 +892,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Solcast Pv Forecast](https://github.com/BJReplay/ha-solcast-solar) |  [v4.3.2] | Solcast Integration for Home Assistant |[@BJReplay](https://github.com/BJReplay), [@autoSteve](https://github.com/autoSteve).|
 | [Sonarr Upcoming Media](https://github.com/custom-components/sensor.sonarr_upcoming_media) |  [v0.4.3] | 📺 Sonarr component to feed Upcoming Media Card. |[@maykar](https://github.com/maykar).|
 | [Spook 👻 Your Homie](https://github.com/frenck/spook) |  [v3.1.0] | A scary 👻 powerful toolbox 🧰 for Home Assistant 🏡 |[@frenck](https://github.com/frenck).|
-| [Spotifyplus](https://github.com/thlucas1/homeassistantcomponent_spotifyplus) |  [v1.0.119] | Home Assistant integration for Spotify Player control, services, and soundtouchplus integration support. |[@thlucas1](https://github.com/thlucas1).|
+| [Spotifyplus](https://github.com/thlucas1/homeassistantcomponent_spotifyplus) |  [v1.0.120] | Home Assistant integration for Spotify Player control, services, and soundtouchplus integration support. |[@thlucas1](https://github.com/thlucas1).|
 | [Sql (With Json Detection)](https://github.com/crowbarz/ha-sql_json) |  [v1.1.3] | Updated SQL integration for Home Assistant that supports JSON attributes |[@dgomes](https://github.com/dgomes), [@crowbarz](https://github.com/crowbarz).|
 | [Start Time](https://github.com/AlexxIT/StartTime) |  [v1.1.8] | Start Time sensor for Home Assistant |[@AlexxIT](https://github.com/AlexxIT).|
 | [Sun2](https://github.com/pnbruckner/ha-sun2) |  [v3.3.5] | Home Assistant Sun2 Sensor |[@pnbruckner](https://github.com/pnbruckner).|
@@ -911,7 +911,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | [Wican](https://github.com/jay-oswald/ha-wican) |  [v0.3.0] |  |[@jay-oswald](https://github.com/jay-oswald).|
 | [World'S Air Quality Index](https://github.com/pawkakol1/worlds-air-quality-index) |  [v1.1.0] | HACS World's Air Quality Index integration from waqi.info |[@pawkakol1](https://github.com/pawkakol1).|
 | [XMLTV EPG](https://github.com/shadow578/homeassistant_xmltv-epg) |  [v2.4.1] | XMLTV EPG for HomeAssisstant |[@shadow578](https://github.com/shadow578).|
-| [Xtend Tuya](https://github.com/azerty9971/xtend_tuya) |  [v3.0.12] | eXtend Tuya's integration |[@azerty9971](https://github.com/azerty9971).|
+| [Xtend Tuya](https://github.com/azerty9971/xtend_tuya) |  [v3.1.0] | eXtend Tuya's integration |[@azerty9971](https://github.com/azerty9971).|
 | [Yahoo Finance](https://github.com/iprak/yahoofinance) |  [v1.2.15] | Home Assistant component which allows you to get stock updates from Yahoo finance. |[@iprak](https://github.com/iprak).|
 </details>
 
@@ -1021,7 +1021,7 @@ Here is a list of all the integrations I use, including any Custom Components (w
 | Node-RED | 19.0.2 |  | a0d7b954 |
 | OpenThread Border Router | 2.13.0 |  | core |
 | phpMyAdmin | 0.11.1 |  | a0d7b954 |
-| Samba share | 12.5.0 |  | core |
+| Samba share | 12.5.1 |  | core |
 | Silicon Labs Multiprotocol | 2.4.5 |  | core |
 | SNMPD | 0.4.0 |  | ca021f77 |
 | SunGather | 0.1.4 |  | 7b536ee6 |
