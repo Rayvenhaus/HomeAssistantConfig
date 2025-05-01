@@ -1534,7 +1534,7 @@ if (DEV_MODE5) {
   };
 }
 // package.json
-var version = "0.6.0";
+var version = "0.7.0";
 
 // node_modules/custom-card-helpers/dist/index.m.js
 var t;
@@ -1623,6 +1623,7 @@ var HOST_STYLES = css`
   :host {
     --navbar-background-color: var(--card-background-color);
     --navbar-route-icon-size: 24px;
+    --navbar-route-image-size: 32px;
     --navbar-primary-color: var(--primary-color);
     --navbar-box-shadow: 0px -1px 4px 0px rgba(0, 0, 0, 0.14);
     --navbar-box-shadow-desktop: var(--material-shadow-elevation-2dp);
@@ -1678,7 +1679,7 @@ var NAVBAR_STYLES = css`
     top: unset;
     right: unset;
     bottom: 16px;
-    left: calc(50% + var(--mdc-drawer-width, 0px));
+    left: calc(50% + var(--mdc-drawer-width, 0px) / 2);
     transform: translate(-50%, 0);
   }
   .navbar.desktop.top {
@@ -1686,7 +1687,7 @@ var NAVBAR_STYLES = css`
     bottom: unset;
     right: unset;
     top: 16px;
-    left: calc(50% + var(--mdc-drawer-width, 0px));
+    left: calc(50% + var(--mdc-drawer-width, 0px) / 2);
     transform: translate(-50%, 0);
   }
   .navbar.desktop.left {
@@ -1744,9 +1745,18 @@ var ROUTE_STYLES = css`
     --icon-primary-color: var(--navbar-primary-color);
   }
 
-  /* Icon styling */
+  /* Icon and Image styling */
   .icon {
     --mdc-icon-size: var(--navbar-route-icon-size);
+  }
+
+  .image {
+    width: var(--navbar-route-image-size);
+    height: var(--navbar-route-image-size);
+    object-fit: contain;
+  }
+
+  .image.active {
   }
 
   /* Label styling */
@@ -1755,9 +1765,8 @@ var ROUTE_STYLES = css`
     width: 100%;
     /* TODO fix ellipsis*/
     text-align: center;
-    font-size: var(--paper-font-caption_-_font-size);
+    font-size: var(--paper-font-caption_-_font-size, 12px);
     font-weight: 500;
-    font-family: var(--paper-font-caption_-_font-size);
   }
 
   /* Badge styling */
@@ -1988,8 +1997,8 @@ class NavbarCard extends LitElement {
       throw new Error('"routes" param is required for navbar card');
     }
     config.routes.forEach((route) => {
-      if (route.icon == null) {
-        throw new Error('Each route must have an "icon" property configured');
+      if (route.icon == null && route.image == null) {
+        throw new Error('Each route must have either an "icon" or "image" property configured');
       }
       if (route.popup == null && route.submenu == null && route.tap_action == null && route.url == null) {
         throw new Error('Each route must have either "url", "popup" or "tap_action" property configured');
@@ -2055,10 +2064,19 @@ class NavbarCard extends LitElement {
       ]
     };
   }
+  _getRouteIcon(route, isActive) {
+    return route.image ? html`<img
+          class="image ${isActive ? "active" : ""}"
+          src="${isActive && route.image_selected ? route.image_selected : route.image}"
+          alt="${route.label || ""}" />` : html`<ha-icon
+          class="icon ${isActive ? "active" : ""}"
+          icon="${isActive && route.icon_selected ? route.icon_selected : route.icon}"></ha-icon>`;
+  }
   _shouldShowLabels = () => {
-    const { show_labels: desktopShowLabels } = this._config?.desktop ?? {};
-    const { show_labels: mobileShowLabels } = this._config?.mobile ?? {};
-    return this._isDesktop && desktopShowLabels || !this._isDesktop && mobileShowLabels;
+    if (this._isDesktop) {
+      return this._config?.desktop?.show_labels ?? false;
+    }
+    return this._config?.mobile?.show_labels ?? false;
   };
   _checkDesktop = () => {
     this._isDesktop = (window.innerWidth ?? 0) >= (this._config?.desktop?.min_width ?? 768);
@@ -2086,9 +2104,7 @@ class NavbarCard extends LitElement {
               style="background-color: ${route.badge?.color || "red"};"></div>` : html``}
 
         <div class="button ${isActive ? "active" : ""}">
-          <ha-icon
-            class="icon ${isActive ? "active" : ""}"
-            icon="${isActive && route.icon_selected ? route.icon_selected : route.icon}"></ha-icon>
+          ${this._getRouteIcon(route, isActive)}
         </div>
         ${this._shouldShowLabels() ? html`<div class="label ${isActive ? "active" : ""}">
               ${processTemplate(this.hass, route.label) ?? " "}
@@ -2183,7 +2199,12 @@ class NavbarCard extends LitElement {
         "
         style="${style}">
         ${popupItems.map((popupItem, index) => {
-      const showBadge = processBadgeTemplate(this.hass, popupItem.badge?.template);
+      let showBadge = false;
+      if (popupItem.badge?.show) {
+        showBadge = processTemplate(this.hass, popupItem.badge?.show);
+      } else if (popupItem.badge?.template) {
+        showBadge = processBadgeTemplate(this.hass, popupItem.badge?.template);
+      }
       if (processTemplate(this.hass, popupItem.hidden)) {
         return null;
       }
@@ -2199,9 +2220,7 @@ class NavbarCard extends LitElement {
                     class="badge"
                     style="background-color: ${popupItem.badge?.color || "red"};"></div>` : html``}
 
-              <div class="button">
-                <ha-icon class="icon" icon="${popupItem.icon}"></ha-icon>
-              </div>
+              <div class="button">${this._getRouteIcon(popupItem, false)}</div>
               ${this._shouldShowLabels() ? html`<div class="label">
                     ${processTemplate(this.hass, popupItem.label) ?? " "}
                   </div>` : html``}
